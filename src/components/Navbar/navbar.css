@@ -1,0 +1,121 @@
+.nav__container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    width: auto;
+    max-width: 180px;
+    position: fixed; 
+    height: 100%;
+    
+  }
+  main {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .top_section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .bars {
+    display: flex;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .mid__section {
+    margin-top: 40px;
+    display: block;
+  }
+  .link {
+    display: flex;
+    color: #fff;
+    margin: 15px 10px;
+    padding: 5px 10px;
+    gap: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+  }
+  .link:hover {
+    background: rgba(241, 245, 249, 0.17);
+  }
+  .active {
+    background-color: var(--chip-color);
+    color: #2b2b2b;
+  }
+  
+  .icon {
+    font-size: 16px;
+  }
+  .link_text {
+    font-size: 13px;
+  }
+  
+  /* bottom section */
+  .bottom__section {
+    margin-top: auto;
+  }
+  .profile__text {
+    font-size: 11px;
+  }
+  @media (max-width: 600px) {
+    .nav__container {
+      flex-direction: column-reverse;
+    }
+    .sidebar {
+        background-color: var(--primary-color);
+        margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      height: 70px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    }
+    .top_section,
+    .bottom__section {
+      display: none;
+    }
+  
+    .mid__section {
+      margin-top: 0;
+      display: flex;
+    }
+    .link {
+      background-color: transparent;
+      border: none;
+      flex-direction: column;
+  
+      align-items: center;
+      margin: 10px 10px;
+      padding: 0;
+      gap: 0;
+      color: #71839b;
+    }
+    .link:hover {
+      background-color: transparent;
+    }
+    .active {
+      background-color: transparent;
+    }
+    .icon {
+      font-size: 18px;
+    }
+    .link_text {
+      word-wrap: break-word;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .main {
+      padding-bottom: 0;
+    }
+  }
+  

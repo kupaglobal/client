@@ -1,0 +1,71 @@
+.horizontal-card {
+  align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  gap: 24px;
+  height: 80px;
+  padding: 24px;
+  width: auto;
+  border-radius: 4px;
+  box-shadow: 0 12px 24px 0px rgba(34, 34, 34, 0.12);
+  transition: background-color 0.3s ease-in-out;
+
+}
+
+.horizontal-card:hover{
+
+    cursor: pointer;
+    background-color:#F8F9FC;
+}
+.horizontal-card .frame {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  position: relative;
+  width: 240px;
+}
+
+.horizontal-card .div {
+  align-self: stretch;
+  color: #222222;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.03px;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+}
+
+.horizontal-card .frame-2 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 32px;
+  position: relative;
+  width: 549px;
+}
+
+.horizontal-card .frame-3 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  gap: 16px;
+  height: 44px;
+  margin-bottom: -12px;
+  position: relative;
+  width: 100%;
+}
+
+.horizontal-card .text-wrapper-2 {
+  color: #333333;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin-top: -1px;
+  position: relative;
+  width: 141px;
+}
