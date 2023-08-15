@@ -4,8 +4,7 @@ import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
 import { Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Popupcontent from "../Popup/Popupcontent";
-
+import Popupcontent from "../../features/Students/Popup/Popupcontent";
 const customStyles = {
   rows: {
     style: {

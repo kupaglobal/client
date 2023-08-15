@@ -6,14 +6,20 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  DialogContentText,
 } from "@mui/material";
 import { MdClose } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
+import Dropdown from "../../../components/Dropdown";
 
 export default function Popupcontent() {
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
-
+  const [selectedOption, setSelectedOption] = React.useState("");
+  const [projectOptions, setProjectOptions] = React.useState([
+    { id: 1, name: "Via template" },
+    { id: 2, name: "Manual Input" },
+  ]);
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
     setScroll(scrollType);
@@ -22,8 +28,9 @@ export default function Popupcontent() {
   const handleClose = () => {
     setOpen(false);
   };
-
-
+  const handleOptionSelect = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   const renderCloseButton = (onClose) => (
     <IconButton
@@ -69,13 +76,17 @@ export default function Popupcontent() {
         aria-describedby="dialog-description"
         fullWidth
       >
-        <DialogTitle id="dialog-title" fontSize={14}>
-          {renderCloseButton(handleClose)} 
-
+        <DialogTitle id="dialog-title" fontSize={16}>
+          {renderCloseButton(handleClose)}
           New student data
         </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
-        
+          <div>
+            <DialogContentText fontSize={13}>
+              How do you want to add the new data ?
+            </DialogContentText>
+        <Dropdown  labelname={'Select Option'} projectoption={projectOptions} selectedOption={selectedOption} handleOptionSelect={handleOptionSelect}/>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
