@@ -6,7 +6,7 @@ import Studentgroup from "./Studentgroup";
 import MeatballMenu from "../../components/MeatballMenu";
 
 
-function CustomTabPanel(props) {
+export function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -129,6 +129,9 @@ const rows = [
       st_class: "Cohort 2",
     },
 ];
+
+
+
 const Studentcontainer = () => {
 
   const [value, setValue] = useState(0);

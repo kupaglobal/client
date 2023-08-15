@@ -11,6 +11,7 @@ import {
 import { MdClose } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import Dropdown from "../../../components/Dropdown";
+import Templatetab from "./Templatetab";
 
 export default function Popupcontent() {
   const [open, setOpen] = React.useState(false);
@@ -75,6 +76,7 @@ export default function Popupcontent() {
         aria-labelledby="dialog-title"
         aria-describedby="dialog-description"
         fullWidth
+        maxWidth={'md'}
       >
         <DialogTitle id="dialog-title" fontSize={16}>
           {renderCloseButton(handleClose)}
@@ -87,6 +89,11 @@ export default function Popupcontent() {
             </DialogContentText>
         <Dropdown  labelname={'Select Option'} projectoption={projectOptions} selectedOption={selectedOption} handleOptionSelect={handleOptionSelect}/>
           </div>
+
+<div>
+  <Templatetab/>
+</div>
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

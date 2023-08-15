@@ -15,6 +15,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiChip:{
+      styleOverrides:{
+        root:{
+          backgroundColor: "var(--secondary-color)",
+          color: '#fff'
+        }
+      }
+    }
   },
   typography: {
     fontFamily: "inherit",
