@@ -4,6 +4,8 @@ import { CustomTabPanel } from "../Studentcontainer";
 import { Tabs, Tab, Box } from "@mui/material";
 import { styled } from "@mui/system";
 import Templateroutes from "./Templateroutes";
+import Verticalcard from "../../../components/Cards/Verticalcard";
+import Createroute1 from "./Createroute1";
 
 const CustomTab = styled(Tab)(({ theme }) => ({
   fontSize: 13,
@@ -33,10 +35,10 @@ const Templatetab = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <Templateroutes/>
+          <Templateroutes case1card={Verticalcard}/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <p>Create template</p>
+        <Templateroutes case1card={Createroute1}/>
         </CustomTabPanel>
       </Box>
     </>

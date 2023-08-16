@@ -3,10 +3,7 @@ import { FileUpload } from "primereact/fileupload";
 import styled from 'styled-components';
 
 const StyledFileUpload = styled(FileUpload)`
-  /* Style the Choose button */
   .p-button {
-    background: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
     font-size: 13px;
     padding: 8px 15px
   }

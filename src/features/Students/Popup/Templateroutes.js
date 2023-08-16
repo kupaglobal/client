@@ -17,7 +17,7 @@ const CustomTypo = styled(Typography)(({ theme }) => ({
   },
 }));
 
-function BreadcrumbNav({ activeStep, handleStepClick }) {
+export function BreadcrumbNav({ activeStep, handleStepClick }) {
   return (
     <Breadcrumbs
       aria-label="breadcrumb"
@@ -38,7 +38,7 @@ function BreadcrumbNav({ activeStep, handleStepClick }) {
   );
 }
 
-function Templateroutes() {
+function Templateroutes({case1card: Case1Card}) {
   const [activeStep, setActiveStep] = useState(0);
 
   const handleStepClick = (stepIndex) => {
@@ -48,7 +48,7 @@ function Templateroutes() {
   let contentComponent;
   switch (activeStep) {
     case 0:
-      contentComponent = <Verticalcard />;
+      contentComponent = <Case1Card />;
       break;
     case 1:
       contentComponent = <Templateroute1 />;
