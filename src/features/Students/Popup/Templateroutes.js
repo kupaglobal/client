@@ -7,7 +7,7 @@ import { styled } from "@mui/system";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Uploadcontainer from "../../../components/Uploadcontainer";
 
-const tabs = ["Step 1", "Step 2", "Step 3"];
+const tabs = ["Select Fields", "Preview", "Upload"];
 
 const CustomTypo = styled(Typography)(({ theme }) => ({
   transition: "color 0.3s ease-in-out",

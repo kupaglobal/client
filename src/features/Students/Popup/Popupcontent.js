@@ -1,5 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "primereact/button";
 import Dialog from "@mui/material/Dialog";
 import {
   DialogActions,
@@ -52,22 +52,12 @@ export default function Popupcontent() {
     <>
       <Button
         onClick={handleClickOpen("paper")}
-        variant="outlined"
-        id="demo-customized-button"
-        aria-controls={open ? "demo-customized-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        disableElevation
-        startIcon={<AiOutlinePlus />}
-        sx={{
-          fontSize: "12px",
-          textTransform: "initial",
-          borderColor: "var(--secondary-color)",
-          color: "var(--secondary-color)",
-        }}
-      >
-        Add new student
-      </Button>
+        outlined
+        icon= {<AiOutlinePlus />}
+        label="Add new student"
+       className="custom-button"
+      />
+   
 
       <Dialog
         open={open}
@@ -96,8 +86,18 @@ export default function Popupcontent() {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Submit</Button>
+        <Button
+        label="Cancel"
+        className="custom-button"
+        onClick={handleClose}
+      />
+       <Button
+        label="Next"
+        outlined
+        className="custom-button"
+        onClick={handleClose}
+
+      />
         </DialogActions>
       </Dialog>
     </>

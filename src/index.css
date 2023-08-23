@@ -4,7 +4,9 @@
 @import './theme.css'   ;
 
 @import url("primereact/resources/primereact.min.css");                                       
-        
+
+@import url('primeicons/primeicons.css');
+                
     
         
 :root {
@@ -72,9 +74,13 @@ body {
 .custom-button {
   font-size: 13px;
   padding: 8px 15px;
-  letter-spacing: 1px;
-}
 
+}.p-button-label {
+  font-weight: 400; /* Adjust the font weight as needed */
+}
+.p-tabview-title {
+  font-weight: 500; 
+}
 .custom-button:hover {
 background-color: rgba(8, 124, 143, 0.5);
 }

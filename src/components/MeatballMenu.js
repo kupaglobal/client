@@ -16,7 +16,7 @@ const MeatballMenu = ({options}) => {
     };
   
   return (
-    <div>
+    <>
        <IconButton
         aria-label="more"
         aria-controls={open ? "long-menu" : undefined}
@@ -51,7 +51,7 @@ const MeatballMenu = ({options}) => {
           </MenuItem>
         ))}
       </Menu>
-    </div>
+    </>
   )
 }
 

@@ -2,6 +2,8 @@ import * as React from "react";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+
 
 const CustomLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -18,6 +20,7 @@ const Breadcrumb = ({ name, firstItem, linkTo }) => {
     <div role="presentation">
       <Breadcrumbs
         aria-label="breadcrumb"
+        separator={<NavigateNextIcon fontSize="small" />}
         sx={{ fontSize: "12px", cursor: "pointer" }}
       >
         <CustomLink to={`/${linkTo}`}>{firstItem}</CustomLink>

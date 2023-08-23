@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
-
 import { Button } from "primereact/button";
 import styled from "styled-components";
 
@@ -14,10 +13,19 @@ const StyledButton = styled(Button)`
 const Createroute1 = () => {
   const [value, setValue] = useState("");
   const categories = [
-    { name: "Student name", key: "SN" },
+    { name: "First name", key: "FN" },
+    { name: "Last name", key: "LN" },
     { name: "Gender", key: "G" },
+    { name: "Date of Birth", key: "DOB" },
+    { name: "Course Enrollment", key: "CE" },
     { name: "Cohort", key: "C" },
-    { name: "Subject", key: "S" },
+    { name: "Guardian", key: "GUARD" },
+    { name: "Contact Info", key: "E" },
+    { name: "Ambitions", key: "E" },
+    { name: "Skills", key: "E" },
+    { name: "Interest", key: "E" },
+    { name: "Educational Background", key: "E" },
+
   ];
   const [selectedCategories, setSelectedCategories] = useState([categories[1]]);
 
@@ -41,7 +49,14 @@ const Createroute1 = () => {
       </div>
       <div>
         <p style={{ fontSize: 13, alignSelf: "center" }}>Select Fields</p>
-        <div style={{ marginTop: 20 }}>
+        <div
+          style={{
+            marginTop: 20,
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "10px",
+          }}
+        >
           {categories.map((category) => {
             return (
               <div key={category.key} style={{ marginBottom: 10 }}>
@@ -63,12 +78,6 @@ const Createroute1 = () => {
           })}
         </div>
       </div>
-      <Button
-        label="NEXT"
-        text
-        style={{ float: "right" }}
-        className="custom-button"
-      />
     </div>
   );
 };

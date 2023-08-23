@@ -4,7 +4,7 @@ import { Typography,Tabs, Tab, Box } from "@mui/material";
 import Table from "../../components/Table/Table";
 import Studentgroup from "./Studentgroup";
 import MeatballMenu from "../../components/MeatballMenu";
-
+import './student.css'
 
 export function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,11 +43,6 @@ const handleButtonClick = (row) => {
   console.log("Button clicked for row:", row);
 };
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-];
 
 
 const columns = [
@@ -81,17 +76,9 @@ const columns = [
     selector: (row) => row.st_class,
     sortable: true,
   },
-  {
-    name: "", // Name of the new column
-    cell: (row) => (
-   <MeatballMenu  options={options}/>
-    ),
-    ignoreRowClick: true, // Prevent row selection on button click
-    allowOverflow: true, // Allow content to overflow cell
-    button: true, // Render as a button
-  },
 
 ];
+const tableRowItem = "students";
 
 const rows = [
   {
@@ -154,7 +141,7 @@ const Studentcontainer = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Table columns={columns} data={rows} />
+        <Table columns={columns} data={rows} tableRowItem={tableRowItem}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
       <Studentgroup/>

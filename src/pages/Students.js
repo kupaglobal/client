@@ -1,12 +1,12 @@
-import React from 'react'
-import Studentcontainer from '../features/Students/Studentcontainer';
+import React from "react";
+import Studentcontainer from "../features/Students/Studentcontainer";
 
 const Students = () => {
   return (
     <div>
-<Studentcontainer/>
+      <Studentcontainer />
     </div>
-  )
-}
+  );
+};
 
 export default Students;

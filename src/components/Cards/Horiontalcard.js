@@ -31,9 +31,9 @@ const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, coh
           </div>
 
         </div>
-        <Chip label= {cohortnumber} />
-        <MeatballMenu  options={options}/>
-
+        <div>
+        <MeatballMenu  options={options} />
+</div>
       </div>
     </>
   );
