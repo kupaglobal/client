@@ -84,3 +84,19 @@ body {
 .custom-button:hover {
 background-color: rgba(8, 124, 143, 0.5);
 }
+.p-datatable .p-datatable-thead>tr>th {
+  background: #087C8F;
+  color: #fff
+}
+
+.p-datatable .p-datatable-tbody>tr>td{
+  font-size: 12px;
+}
+
+.p-datatable .p-sortable-column .p-sortable-column-icon{
+  color: #fff;
+}
+
+.p-datatable .p-datatable-header{
+  background: #087C8F;
+}

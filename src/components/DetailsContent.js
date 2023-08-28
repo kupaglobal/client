@@ -3,7 +3,6 @@ import { LiaCircleSolid } from "react-icons/lia";
 import styled from "styled-components";
 
 const DetailsContentWrapper = styled.div`
-  margin-bottom: 12px;
   display: flex;
 `;
 
@@ -12,7 +11,7 @@ const DetailsContent2 = styled.div`
 `;
 
 const DetailsPara = styled.p`
-  font-size: 14px;
+  font-size: 13px;
   padding-bottom: 5px;
 `;
 
@@ -24,7 +23,6 @@ const DetailsPara2 = styled.p`
 
 const TsDetailsContainer = styled.div`
   padding: 10px;
-  /* Add more styles here if needed */
 `;
 
 const DetailsTitle = styled.div`
@@ -34,7 +32,6 @@ const DetailsTitle = styled.div`
   border-top-right-radius: 5px;
   color: #fff;
   font-size: 14px;
-  padding-left: 15px;
   font-weight: 500;
   text-transform: uppercase;
 `;

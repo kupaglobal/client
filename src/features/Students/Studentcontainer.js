@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Typography,Tabs, Tab, Box } from "@mui/material";
 import Table from "../../components/Table/Table";
 import Studentgroup from "./Studentgroup";
-import MeatballMenu from "../../components/MeatballMenu";
 import './student.css'
 
 export function CustomTabPanel(props) {

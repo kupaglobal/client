@@ -69,3 +69,20 @@
   position: relative;
   width: 141px;
 }
+
+.vertical__card{
+  width: 30%;
+}
+
+.p-card .p-card-title {
+  font-size: 15px !important;
+}
+.p-card .p-card-subtitle{
+  font-size: 13px;
+}
+.p-card .p-card-content	{
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+

@@ -2,15 +2,17 @@ import { Routes, Route } from "react-router-dom";
 import Navcomponent from "./components/Navbar/Navcomponent";
 import { ThemeProvider } from "@mui/material";
 import theme from "./components/Theme";
+import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
 
 function App() {
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route exact path="/*" element={<Navcomponent />} />
-        </Routes>
-      </ThemeProvider>
+      {" "}
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route exact path="/*" element={<Navcomponent />} />
+          </Routes>
+        </ThemeProvider>{" "}
     </div>
   );
 }
