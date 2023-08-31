@@ -1,19 +1,10 @@
 import React from "react";
 import "./card.css";
-import {Chip} from "@mui/material"
 import MeatballMenu from "../MeatballMenu";
 
 
-const options = [
-  'Edit Group',
-  'Add Student',
-  'Message Group',
-  'Delete Group',
 
-];
-
-const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, cohortnumber}) => {
-
+const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, options}) => {
     const handleClick = () =>{
         console.log("new")
     }
@@ -27,13 +18,14 @@ const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, coh
           <div className="frame-3">
             <div className="text-wrapper-2">{studentname1}</div>
             <div className="text-wrapper-2">{studentname2}</div>
-            <div className="text-wrapper-2">{studentname3}</div>
+            <div className="text-wrapper-2">{studentname3}</div>            <div className="text-wrapper-2">{studentname3}</div>
+
           </div>
 
         </div>
-        <Chip label= {cohortnumber} />
-        <MeatballMenu  options={options}/>
-
+        <div>
+        <MeatballMenu  options={options} />
+</div>
       </div>
     </>
   );

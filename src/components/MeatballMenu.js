@@ -1,58 +1,25 @@
-import {useState} from 'react'
-import {  Menu, MenuItem , IconButton, } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React, { useRef } from "react";
+import { Button } from "primereact/button";
+import { Menu } from "primereact/menu";
+import { Toast } from 'primereact/toast';
 
+const MeatballMenu = ({ options }) => {
+  const menuRight = useRef(null);
+  const toast = useRef(null);
 
-const MeatballMenu = ({options}) => {
-    const [anchorEl, setAnchorEl] = useState();
-    const open = Boolean(anchorEl);
-  
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-  
   return (
-    <div>
-       <IconButton
-        aria-label="more"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        MenuListProps={{
-          "aria-labelledby": "long-button",
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+    <>
+      <Toast ref={toast}></Toast>
 
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-
-      >
-        {options.map((option) => (
-          <MenuItem key={option} onClick={handleClose} sx={{fontSize: "12px"}}>
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-    </div>
-  )
-}
+      <Menu model={options} popup  popupAlignment="right"  ref={menuRight}/>
+      <Button
+        icon="pi pi-ellipsis-v"
+        onClick={(event) => menuRight.current.toggle(event)}
+        aria-controls="popup_menu_left"
+        aria-haspopup text
+      />
+    </>
+  );
+};
 
 export default MeatballMenu;

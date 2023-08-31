@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import "./table.css";
 import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
-import { Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Popupcontent from "../Popup/Popupcontent";
-
+import Popupcontent from "../../features/Students/Popup/Popupcontent";
 const customStyles = {
   rows: {
     style: {
@@ -17,7 +15,7 @@ const customStyles = {
     style: {
       paddingLeft: "8px", // override the cell padding for head cells
       paddingRight: "8px",
-      backgroundColor: "var(--chip-color)",
+      backgroundColor: "var(--primary-color)",
       color: "#fff",
     },
   },
@@ -42,8 +40,10 @@ const Table = ({
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
-  const handleRowClick = (row) => {};
-
+  const handleRowClick = (row) => {
+    navigate(`/${tableRowItem}/id`);
+  };
+ 
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
@@ -89,18 +89,8 @@ const Table = ({
             <MdOutlineSearch />
           </span>
         </div>
-        <div style={{ alignSelf: "center" }}>
-          <Button
-            variant="contained"
-            sx={{
-              marginRight: "20px",
-              fontSize: "12px",
-              textTransform: "initial",
-              backgroundColor: "var(--secondary-color)",
-            }}
-          >
-            Filter
-          </Button>
+        <div style={{ alignSelf: "center"}}>
+       
           <Popupcontent />
         </div>
       </div>
