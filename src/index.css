@@ -8,36 +8,17 @@
 @import url('primeicons/primeicons.css');
                 
     
-        
 :root {
-/* fonts */
-
-
-/* font sizes */
 --base-body-size: 13px;
 --body-medium-semibold-size: 15px;
 --font-size-xs: 11px;
 --Heading: 18px;
-
-
-/* Colors */
---primary-color: #324054;
---secondary-color: #087C8F;
---button-color-main:#087C8F ;
+--primary-color: #402B6B;
+--secondary-color: #8F5FEE;
+--button-color-main:#8F5FEE ;
 --tertiary-color:#99D3DF ;
---chip-color:#BF9DEC ;
+--chip-color:#8F5FEE ;
 --border-color: #CDCDCD;
-
-
-
-/* Gaps */
-
-/* Paddings */
-
-
-/* border radiuses */
-
-
 }
 
 * {
@@ -74,6 +55,7 @@ body {
 .custom-button {
   font-size: 13px;
   padding: 8px 15px;
+  border-width: 0.;
 
 }.p-button-label {
   font-weight: 400; /* Adjust the font weight as needed */
@@ -82,10 +64,10 @@ body {
   font-weight: 500; 
 }
 .custom-button:hover {
-background-color: rgba(8, 124, 143, 0.5);
+background-color: var(--secondary-color);
 }
 .p-datatable .p-datatable-thead>tr>th {
-  background: #087C8F;
+  background: var(--primary-color);
   color: #fff
 }
 
@@ -98,5 +80,13 @@ background-color: rgba(8, 124, 143, 0.5);
 }
 
 .p-datatable .p-datatable-header{
-  background: #087C8F;
+  background: var(--primary-color);
+}
+
+.p-dropdown-label		{
+font-size: 13px;
+}
+.p-dropdown-items	{
+  font-size: 13px;
+
 }

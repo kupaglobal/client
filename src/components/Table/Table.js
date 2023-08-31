@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./table.css";
 import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
-import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import Popupcontent from "../../features/Students/Popup/Popupcontent";
 const customStyles = {
@@ -16,7 +15,7 @@ const customStyles = {
     style: {
       paddingLeft: "8px", // override the cell padding for head cells
       paddingRight: "8px",
-      backgroundColor: "var(--chip-color)",
+      backgroundColor: "var(--primary-color)",
       color: "#fff",
     },
   },

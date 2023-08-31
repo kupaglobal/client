@@ -8,10 +8,8 @@
   font-weight: 500;
 }
 .flex__container {
-  display: flex;
-  flex-wrap:wrap;
-  justify-content: space-around;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);;
   margin-bottom: 3rem;
 }
 .achieve__container{
@@ -45,5 +43,25 @@ font-size: 13px;
 }
 .text__icon{
   padding-right: 8px;
-  color: #087C8F;
+  color: var(--secondary-color);
 }
+
+/* Custom styles for Breadcrumb */
+.p-breadcrumb {
+  padding: 0;
+border: none;
+margin-bottom: 20px;
+}
+.p-menuitem	{
+  padding: 10px;
+  font-size: 12px;
+}
+
+.p-menuitem-text:hover{
+  color: var(--primary-color);
+font-weight: 600;
+}
+.first-breadcrumb .p-breadcrumb-home .p-breadcrumb-chevron {
+  display: none;
+}
+

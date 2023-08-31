@@ -8,6 +8,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 const CustomLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   color: "inherit",
+  fontFamily: 'Montserrat',
   transition: "color 0.3s ease-in-out",
   "&:hover": {
     color: "#25245D",

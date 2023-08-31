@@ -1,104 +1,74 @@
-import * as React from "react";
 import { Button } from "primereact/button";
-import Dialog from "@mui/material/Dialog";
-import {
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  DialogContentText,
-} from "@mui/material";
-import { MdClose } from "react-icons/md";
+import { Dialog } from "primereact/dialog";
 import { AiOutlinePlus } from "react-icons/ai";
-import Dropdown from "../../../components/Dropdown";
+import Dropdowncomp from "../../../components/Dropdown";
 import Templatetab from "./Templatetab";
-
+import { useState } from "react";
+        
 export default function Popupcontent() {
-  const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
-  const [selectedOption, setSelectedOption] = React.useState("");
-  const [projectOptions, setProjectOptions] = React.useState([
-    { id: 1, name: "Via template" },
-    { id: 2, name: "Manual Input" },
-  ]);
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-    setScroll(scrollType);
-  };
+  const [visible, setVisible] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const footerContent = (
+
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setVisible(false)}
+        className="custom-button"
+        outlined
+      />
+      <Button
+        label="Submit"
+        icon="pi pi-check"
+        onClick={() => setVisible(false)}
+        className="custom-button"
+
+      />
+    </div>
+  );
+  const [selectedOption, setSelectedOption] = useState("");
+  const [projectOptions, setProjectOptions] = useState([
+    { name: "Via template", code: 'VT' },
+    { name: "Manual Input",  code: 'MI' },
+  ]);
+
   const handleOptionSelect = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  const renderCloseButton = (onClose) => (
-    <IconButton
-      aria-label="close"
-      onClick={onClose}
-      sx={{
-        position: "absolute",
-        right: 8,
-        top: 8,
-        color: (theme) => theme.palette.grey[500],
-      }}
-    >
-      <MdClose />
-    </IconButton>
-  );
-
   return (
     <>
       <Button
-        onClick={handleClickOpen("paper")}
         outlined
-        icon= {<AiOutlinePlus />}
+        icon={<AiOutlinePlus />}
         label="Add new student"
-       className="custom-button"
+        className="custom-button"
+        onClick={() => setVisible(true)}
       />
-   
 
       <Dialog
-        open={open}
-        onClose={handleClose}
-        scroll={scroll}
-        aria-labelledby="dialog-title"
-        aria-describedby="dialog-description"
-        fullWidth
-        maxWidth={'md'}
+        header="New student data"
+        visible={visible}
+        style={{ width: "60vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setVisible(false)}
+        footer={footerContent}
       >
-        <DialogTitle id="dialog-title" fontSize={16}>
-          {renderCloseButton(handleClose)}
-          New student data
-        </DialogTitle>
-        <DialogContent dividers={scroll === "paper"}>
-          <div>
-            <DialogContentText fontSize={13}>
-              How do you want to add the new data ?
-            </DialogContentText>
-        <Dropdown  labelname={'Select Option'} projectoption={projectOptions} selectedOption={selectedOption} handleOptionSelect={handleOptionSelect}/>
-          </div>
 
-<div>
-  <Templatetab/>
-</div>
+        <div>
+          <p style={{ fontSize: "13px" }}>
+            How do you want to add the new data ?
+          </p>
+          <Dropdowncomp
+            projectoption={projectOptions}
+          />
+        </div>
 
-        </DialogContent>
-        <DialogActions>
-        <Button
-        label="Cancel"
-        className="custom-button"
-        onClick={handleClose}
-      />
-       <Button
-        label="Next"
-        outlined
-        className="custom-button"
-        onClick={handleClose}
-
-      />
-        </DialogActions>
+        <div>
+          <Templatetab />
+        </div>
       </Dialog>
     </>
   );

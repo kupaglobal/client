@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
-import { Button } from "primereact/button";
-import styled from "styled-components";
 
-const StyledButton = styled(Button)`
-  .p-button {
-    font-size: 12px;
-    padding: 8px 15px;
-  }
-`;
+
+
 const Createroute1 = () => {
   const [value, setValue] = useState("");
   const categories = [

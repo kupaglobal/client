@@ -1,26 +1,56 @@
 import React from "react";
 import { Avatar } from "primereact/avatar";
-import { BsAward, BsTrophyFill } from "react-icons/bs";
+import { BsTrophyFill } from "react-icons/bs";
 import { Divider } from "primereact/divider";
 import { BsPlus, BsPencil } from "react-icons/bs";
 import { Button } from "primereact/button";
 
 const Tab2 = () => {
+  const programAchievements = [
+    {
+      name: "Science Fair Winner",
+      date: "Sept 2022",
+      description: "First Place in the Regional Science Fair for the project ,Renewable Energy Sources.",
+      skills: ["Communication", "Javascript", "Problem Solving"],
+    },
+    {
+      name: "Community Service Recognition",
+      date: "June 2022",
+      description: "Received recognition for her outstanding volunteer work in the local community.",
+      skills: ["Volunteering", "Teamwork", "Communication"],
+    },
+  ];
+
+  const otherAchievements = [
+    {
+      name: "Youth Leadership Award",
+      date: "May 2021",
+      description: "Received the Youth Leadership Award for her dedication to community service and leadership skills.",
+      skills: ["Leadership", "Public Speaking", "Data Analysis"],
+    },
+    {
+      name: "Environmental Activism Recognition",
+      date: "Sept 2020",
+      description: "Recognised for her efforts to promote environmental awareness and sustainability",
+      skills: ["Microsoft", "Time Management", "Data Analysis"],
+    },
+  ];
+
   return (
     <>
       <div>
         <Tab2headings Name={'Program Achievements'} />
 
-        <Tab2containers />
-        <Tab2containers />
-
+        {programAchievements.map((achievement, index) => (
+          <Tab2containers key={index} achievement={achievement} />
+        ))}
       </div>
       <div>
         <Tab2headings Name={'Other Achievements'} />
 
-        <Tab2containers />
-        <Tab2containers />
-
+        {otherAchievements.map((achievement, index) => (
+          <Tab2containers key={index} achievement={achievement} />
+        ))}
       </div>
     </>
   );
@@ -28,15 +58,15 @@ const Tab2 = () => {
 
 export default Tab2;
 
-export const Tab2containers = () => {
+export const Tab2containers = ({ achievement }) => {
   return (
-    <div style={{marginBottom: '2rem'}}>
+    <div style={{ marginBottom: '2rem' }}>
       <div className="achieve__container">
         <div className="image__container">
           <Avatar
-            icon={<BsAward />}
+            icon={<BsTrophyFill />}
             size="xlarge"
-            style={{ backgroundColor: "#087C8F", color: "#fff" }}
+            style={{ backgroundColor: "var(--secondary-color)", color: "#fff" }}
           />
         </div>
         <div>
@@ -48,14 +78,13 @@ export const Tab2containers = () => {
               marginBottom: 5,
             }}
           >
-            Achievement Name
+            {achievement.name}
           </p>
           <p style={{ marginBottom: "1rem", fontSize: 13, color: "#cccccc" }}>
-            Sept 2022
+            {achievement.date}
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Reprehenderit, error.
+            {achievement.description}
           </p>
         </div>
       </div>
@@ -71,9 +100,9 @@ export const Tab2containers = () => {
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          <p className="bottom-text">Communication</p>
-          <p className="bottom-text">Javascript</p>
-          <p className="bottom-text">Problem Soving</p>
+          {achievement.skills.map((skill, index) => (
+            <p key={index} className="bottom-text">{skill}</p>
+          ))}
         </div>
       </div>
     </div>

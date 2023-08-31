@@ -4,7 +4,7 @@ import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
 import DetailsContent from "../../../components/DetailsContent";
 import { BiLogoWhatsapp } from "react-icons/bi";
-import { AiOutlinePlus, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
 import { Checkbox } from "primereact/checkbox";
 
@@ -20,7 +20,7 @@ const Studentcontent = () => {
   const userDetails = [
     { heading: "Date of Birth", paragraph: "12/07/2004" },
     { heading: "Gender", paragraph: "Female" },
-    { heading: "Cohort", paragraph: "January 2023 Intake" },
+    { heading: "Cohort", paragraph: "Cohort #2" },
     { heading: "City, Country", paragraph: "Kigali, Rwanda" },
   ];
   return (
@@ -40,7 +40,7 @@ const Studentcontent = () => {
             size="100"
             textSizeRatio={1.75}
             round={true}
-            color="#087C8F"
+            color="var(--primary-color)"
           />
         </div>
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Card } from "primereact/card";
-import { useState } from "react";
 import Tab1 from "./Tabs/Tab1";
 import Tab2 from "./Tabs/Tab2";
 import Tab4 from "./Tabs/Tab4";
@@ -26,7 +25,7 @@ const Studenttabs1 = () => {
           <Tab2 />
         </TabPanel>
         <TabPanel
-          header="Assessments"
+          header="Performance"
           rightIcon=""
           style={{ fontSize: "14px" }}
         >

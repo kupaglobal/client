@@ -37,14 +37,14 @@ const DetailsTitle = styled.div`
 `;
 
 const IconWrapper = styled(LiaCircleSolid)`
-  color: #3a57e8;
+  color: #8f5fee;
 `;
 
 const DetailsContent = ({ heading, paragraph }) => {
   return (
     <TsDetailsContainer>
       <DetailsContentWrapper>
-        <IconWrapper color="#3A57E8" />
+        <IconWrapper color="#402B6B" />
         <DetailsContent2>
           <DetailsPara>{heading}</DetailsPara>
           <DetailsPara2>{paragraph}</DetailsPara2>

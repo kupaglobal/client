@@ -8,14 +8,14 @@ import { Splitter, SplitterPanel } from "primereact/splitter";
 
 const Tab1 = () => {
   const userDetails = [
-    { heading: "Student Email", paragraph: "12/07/2004" },
-    { heading: "Student Phone", paragraph: "Female" },
-    { heading: "Current Education Level", paragraph: "January 2023 Intake" },
-    { heading: "Expected Graduation", paragraph: "Kigali, Rwanda" },
-    { heading: "Guardian Name", paragraph: "12/07/2004" },
-    { heading: "Guardian Email", paragraph: "12/07/2004" },
-    { heading: "Guardian Relation", paragraph: "Female" },
-    { heading: "Guardian Whatsapp", paragraph: "January 2023 Intake" },
+    { heading: "Student Email", paragraph: "bdavis@gmail.com" },
+    { heading: "Student Phone", paragraph: "+123-456-7890" },
+    { heading: "Highest Educational Attainment", paragraph: "O-levels (as of 08/2023)" },
+    { heading: "Expected Graduation", paragraph: "May 2025" },
+    { heading: "Guardian Name", paragraph: "John Davis" },
+    { heading: "Guardian Email", paragraph: "johndavis@gmail.com" },
+    { heading: "Guardian Relation", paragraph: "Parent" },
+    { heading: "Guardian Whatsapp", paragraph: "+123-456-7890" },
   ];
 
   return (
@@ -44,7 +44,7 @@ const Tab1 = () => {
               >
                 <div>
                   <MdAutoGraph size={18} />
-                  <span style={{ paddingLeft: "10px" }}>bCareer Aspirations</span>
+                  <span style={{ paddingLeft: "10px" }}>Career Aspirations</span>
                 </div>
               </div>
             }
@@ -57,7 +57,7 @@ const Tab1 = () => {
                 fontWeight: 500,
               }}
             >
-              “I will get a 4.0 GPA this semester.”
+              “ Civil Engineer ”
             </p>
           </AccordionTab>
           <AccordionTab

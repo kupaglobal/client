@@ -1,10 +1,13 @@
+.kupa-logo{
+  margin-top: 10px;
+  margin-left: 5px;
+}
 .nav__container {
     display: flex;
     height: 100vh;
   }
   
   .sidebar {
-    margin: 0;
     display: flex;
     flex-direction: column;
     background-color: var(--primary-color);
@@ -30,14 +33,14 @@
     cursor: pointer;
   }
   .mid__section {
-    margin-top: 40px;
+    margin-top: 15px;
     display: block;
   }
   .link {
     display: flex;
     color: #fff;
     margin: 15px 10px;
-    padding: 5px 10px;
+    padding: 10px 10px;
     gap: 10px;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -47,7 +50,6 @@
   }
   .active {
     background-color: var(--chip-color);
-    color: #2b2b2b;
   }
   
   .icon {

@@ -28,8 +28,8 @@ const Tab4 = () => {
           "This document shows the students character assessment certificate",
       },
       {
-        title: "Character assessment",
-        category: "Interview",
+        title: "Personal Introduction",
+        category: "Video Introduction",
         date: "21st Aug 2023",
         description:
           "This document shows the students character assessment certificate",
@@ -37,14 +37,14 @@ const Tab4 = () => {
     ],
     Certificates: [
       {
-        title: "Character assessment",
+        title: "Coding V101 Champion",
         category: "",
         date: "21st Aug 2023",
         description:
           "This document shows the students character assessment certificate",
       },
       {
-        title: "Character assessment",
+        title: "Youth Leadership Award",
         category: "",
         date: "21st Aug 2023",
         description:
@@ -53,7 +53,7 @@ const Tab4 = () => {
     ],
     "Other portfolio Works": [
       {
-        title: "Character assessment",
+        title: "Program Refletion ",
         category: "Project",
         date: "21st Aug 2023",
         description:

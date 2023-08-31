@@ -9,8 +9,8 @@ const Studentdet = () => {
   const breadCrumbsLinkTo = "students";
 
   const options = [
-    'Upload new student data',
-    'Request for feedback',
+    { label: "Upload new student data", icon: "pi pi-upload"},
+    { label: "Request for feedback", icon: "pi pi-comments" },
   ];
   return (
     <div>
@@ -19,10 +19,10 @@ const Studentdet = () => {
         firstItem={breadCrumbs}
         linkTo={breadCrumbsLinkTo}
       />
-      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-      <MeatballMenu options={options}/>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <MeatballMenu options={options} />
       </div>
-      <div style={{display: 'flex', gap: '20px'}}>
+      <div style={{ display: "flex", gap: "20px" }}>
         <div>
           <Studentcontent />
         </div>

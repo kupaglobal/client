@@ -6,13 +6,13 @@ import {
   MdAssessment,
   MdLogout,
   MdOutlineLibraryBooks,
-  MdOutlineFeedback,
   MdChatBubbleOutline,
   MdOutlinePersonSearch,
 } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
+import Logo from '../../assests/Kupalogo.svg'
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -36,13 +36,8 @@ const Sidebar = ({ children }) => {
     },
     {
       path: "/reportings",
-      name: "Reportings",
+      name: "Reporting",
       icon: <MdOutlineLibraryBooks />,
-    },
-    {
-      path: "/feedbacks",
-      name: "Feedbacks",
-      icon: <MdOutlineFeedback />,
     },
     {
       path: "/inbox",
@@ -79,13 +74,13 @@ const Sidebar = ({ children }) => {
       >
         <div className="top_section">
           <div style={{ display: isOpen ? "block" : "none" }} className="logo">
-            <p style={{ marginTop : "20px", marginLeft: "10px", color: "#BF9DEC", fontFamily: "Georgia, 'Times New Roman', Times, serif"}}>KUPAGLOBAL</p>
+          <img src={Logo} alt="My Logo" className="kupa-logo" />
           </div>
           <div
             style={{
-              marginLeft: isOpen ? "30px" : "0px",
-              paddingTop: isOpen ? "" : "15px",
-              marginRight: isOpen ? "10px" : "0",
+              marginLeft: isOpen ? "20px" : "0px",
+              marginTop: isOpen ? "" : "15px",
+              marginRight: isOpen ? "" : "0",
               transition: "margin 0.3s ease",
               color: "#f2f2ff"
             }}
