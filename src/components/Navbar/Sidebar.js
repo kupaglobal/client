@@ -12,7 +12,7 @@ import {
 import { PiStudent } from "react-icons/pi";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
-import Logo from '../../assests/Kupalogo.svg'
+import Logo from '../../assets/Kupalogo.svg'
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);

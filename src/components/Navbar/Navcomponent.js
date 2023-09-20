@@ -18,7 +18,7 @@ const Navcomponent = () => {
       <Sidebar>
       <div className='page__container' >
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />}/>
+          <Route path="/*" element={<Dashboard />}/>
           <Route path="/students" element={<Students />}/>
           <Route path="/students/id" element={<Studentdet/>}/>
 
