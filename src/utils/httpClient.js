@@ -1,18 +1,19 @@
 import axios from "axios"
+import { getEnv } from "./env"
 
-const generateHeaders = () => {
+export const generateHeaders = () => {
     const jwtToken = localStorage.getItem('jwtToken') || null
     let headers = {
-        'accept': 'application/json'
+        'Accept': 'application/json'
     }
     if (jwtToken) {
-        headers['authorization'] = `Bearer ${jwtToken}`
+        headers['Authorization'] = `Bearer ${jwtToken}`
     }
+    return headers
 }
 
-const baseURL = process.env.BASE_URL ? process.env.BASE_URL : 'https://sapi.kupaglobal.com'
+const baseURL = getEnv('BASE_URL','https://sapi.kupaglobal.com')
 
 export default axios.create({
     baseURL,
-    headers: generateHeaders()
 })

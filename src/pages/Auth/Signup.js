@@ -1,24 +1,37 @@
 import React, {useState, useRef} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
+import { useContext } from 'react';
+import { authStore } from '../../store/auth';
+import { SET_LOGGED_IN_USER } from "../../store/actions";
+
 
 const Signup = () => {
+    const goTo = useNavigate()
+    const { state, dispatch } = useContext(authStore);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError()
 
         try {
-            const authResponse = await AuthService.signup(formData);
-            console.log(authResponse)
+            const {data: authResponse} = await AuthService.signup(formData);
+            if (authResponse && authResponse.access_token) { // successful
+                localStorage.setItem('jwtToken', authResponse.access_token);
+                dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
+                goTo('/auth/verify-email')
+            } else {
+                setError('We failed to create your account. Please try again.')
+            }
         } catch (e) {
             setError(e.response?.data?.error ? e.response?.data?.error : e.message)
         }
-
     }
 
     const [formData,setFormData]=useState({
+        fullName: '',
         email:'',
         password:'',
     })
@@ -31,17 +44,19 @@ const Signup = () => {
 
     return (
         <div className="w-full m-auto m-2">
-            <form  onSubmit={handleSubmit}>
-                <div className=" text-center text-900 text-5xl font-medium mb-3">Signup</div>
-                <label htmlFor="email" className="block text-900 font-medium mb-20">Email</label>
-                <InputText id="email" name="email" type="text" placeholder="Email address" className="w-full" aria-describedby="username-help" onChange={onChange} />
+            <form onSubmit={handleSubmit}>
+                <div className=" text-center text-900 text-2xl font-medium mb-6">Welcome, let's get you started!</div>
+
+
+                <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
+                <InputText id="email" name="email" type="text" placeholder="" className="w-full" aria-describedby="username-help" onChange={onChange} required />
                 {formData.email!='' && error=='' 
                     ? <small id="username-help" className="mb-3">We will send you an OTP on this email.</small> : null
                 }
 
 
-                <label htmlFor="password" className="block text-900 font-medium mt-4 mb-2">Password</label>
-                <InputText type="password" name="password" placeholder="Password" className="w-full mb-3" onChange={onChange} />
+                <label htmlFor="password" className="block text-900 font-medium mt-4">Password</label>
+                <InputText type="password" name="password" placeholder="" className="w-full mb-3" onChange={onChange} required />
                 {error!='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
 
                 {/* <div className="flex align-items-center justify-content-between mb-6">

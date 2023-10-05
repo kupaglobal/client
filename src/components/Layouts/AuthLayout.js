@@ -6,6 +6,9 @@ import Signup from "../../pages/Auth/Signup";
 import { Card } from "@mui/material";
 import Logo from "../../assets/Kupalogo.svg"
 import Login from "../../pages/Auth/Login";
+import EmailVerification from "../../pages/Auth/EmailVerification";
+import UpsertProfile from "../../pages/Auth/UpsertProfile";
+
 const AuthLayout = ({ children }) => {
   return (
     <div className="page__container">
@@ -19,6 +22,8 @@ const AuthLayout = ({ children }) => {
           <Routes>
             <Route path="/*" element={<Dashboard />}/>
             <Route path="/signup" element={<Signup />}/>
+            <Route path="/verify-email" element={<EmailVerification />}/>
+            <Route path="/profile" element={<UpsertProfile />}/>
             <Route path="/login" element={<Login />}/>
           </Routes>
         </main>

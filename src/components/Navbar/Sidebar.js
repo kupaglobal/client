@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./navbar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   MdOutlineDashboardCustomize,
   MdAssessment,
@@ -9,14 +9,19 @@ import {
   MdChatBubbleOutline,
   MdOutlinePersonSearch,
 } from "react-icons/md";
-import { PiStudent } from "react-icons/pi";
+import { PiStudent, PiBuildings } from "react-icons/pi";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useState } from "react";
 import Logo from '../../assets/Kupalogo.svg'
+import { authStore } from "../../store/auth";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const { state } = useContext(authStore);
+  const loggedInUser = state.loggedInUser
   const toggle = () => setIsOpen(!isOpen);
+
+  const goTo = useNavigate()
 
   const menuItem = [
     {
@@ -24,6 +29,11 @@ const Sidebar = ({ children }) => {
       name: "Dashboard",
       icon: <MdOutlineDashboardCustomize />,
     },
+    loggedInUser.role && loggedInUser.role == 'ORGANISATION_ADMIN' ? {
+      path: "/organisation",
+      name: "My Organisation",
+      icon: <PiBuildings />,
+    } : null,
     {
       path: "/students",
       name: "Students",
@@ -44,12 +54,12 @@ const Sidebar = ({ children }) => {
       name: "Inbox",
       icon: <MdChatBubbleOutline />,
     },
-  ];
+  ].filter(route => Boolean(route));
   const bottomitem = [
     {
       path: "/profile",
-      name: "Moyosore Weke",
-      email: "mweke@gmail.com",
+      name: loggedInUser.fullName,
+      email: loggedInUser.email,
       icon: <MdOutlinePersonSearch />,
     },
     {
@@ -61,6 +71,8 @@ const Sidebar = ({ children }) => {
 
   const handleLogout = (e) => {
     e.preventDefault();
+    window.localStorage.clear();
+    goTo('/auth/login')
   };
 
   return (
@@ -72,7 +84,7 @@ const Sidebar = ({ children }) => {
         }}
         className="sidebar"
       >
-        <div className="top_section">
+        <div className="top_section" style={{backgroundColor:  '#343a42'}}>
           <div style={{ display: isOpen ? "block" : "none" }} className="logo">
           <img src={Logo} alt="My Logo" className="kupa-logo" />
           </div>
@@ -145,7 +157,7 @@ const Sidebar = ({ children }) => {
           </NavLink>
         </div>
       </div>
-      <main style={{ width: "100%", marginLeft: isOpen ? "180px" : "60px" }}>
+      <main style={{ width: "100%", marginLeft: isOpen ? "210px" : "60px" }}>
         {children}
       </main>
     </div>

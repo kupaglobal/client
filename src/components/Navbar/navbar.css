@@ -12,10 +12,9 @@
     flex-direction: column;
     background-color: var(--primary-color);
     width: auto;
-    max-width: 180px;
+    max-width: auto;
     position: fixed; 
     height: 100%;
-    
   }
   main {
     flex: 1;
