@@ -31,14 +31,14 @@ const customStyles = {
 const Table = ({
   columns,
   data,
-  filter,
-  setFilter,
-  setFilteredGroups,
-  setFilteredSessions,
+  // filter,
+  // setFilter,
+  // setFilteredGroups,
+  // setFilteredSessions,
   tableRowItem,
 }) => {
   const navigate = useNavigate();
-  const [selectedRows, setSelectedRows] = useState([]); // Add this line
+  // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
   const handleRowClick = (row) => {
     navigate(`/${tableRowItem}/id`);
@@ -64,9 +64,9 @@ const Table = ({
 
     setSearchText(e.target.value);
   };
-  const handleRowSelected = (rows) => {
-    // Add this function
-  };
+  // const handleRowSelected = (rows) => {
+  //   // Add this function
+  // };
 
 
   return (

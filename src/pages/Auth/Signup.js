@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useNavigate, Link } from "react-router-dom";
@@ -10,7 +10,7 @@ import { SET_LOGGED_IN_USER } from "../../store/actions";
 
 const Signup = () => {
     const goTo = useNavigate()
-    const { state, dispatch } = useContext(authStore);
+    const { dispatch } = useContext(authStore);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,14 +50,14 @@ const Signup = () => {
 
                 <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
                 <InputText id="email" name="email" type="text" placeholder="" className="w-full" aria-describedby="username-help" onChange={onChange} required />
-                {formData.email!='' && error=='' 
+                {formData.email!=='' && error==='' 
                     ? <small id="username-help" className="mb-3">We will send you an OTP on this email.</small> : null
                 }
 
 
                 <label htmlFor="password" className="block text-900 font-medium mt-4">Password</label>
                 <InputText type="password" name="password" placeholder="" className="w-full mb-3" onChange={onChange} required />
-                {error!='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
+                {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
 
                 {/* <div className="flex align-items-center justify-content-between mb-6">
                     <div className="flex align-items-center">
@@ -72,7 +72,6 @@ const Signup = () => {
             <div className="mt-4">
                 <span className="text-900 font-medium line-height-3">Already have an account?</span>
                 <Link className="font-medium no-underline ml-2 text-blue-500 cursor-pointer" to="../login">Login here</Link>
-                <div><Link className="font-medium no-underline text-blue-500 text-right cursor-pointer" to="../forgot-password">Forgot your password?</Link></div>
             </div>
         </div>
     );

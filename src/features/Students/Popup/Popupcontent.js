@@ -27,15 +27,15 @@ export default function Popupcontent() {
       />
     </div>
   );
-  const [selectedOption, setSelectedOption] = useState("");
-  const [projectOptions, setProjectOptions] = useState([
+  // const [selectedOption, setSelectedOption] = useState("");
+  const [projectOptions] = useState([
     { name: "Via template", code: 'VT' },
     { name: "Manual Input",  code: 'MI' },
   ]);
 
-  const handleOptionSelect = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  // const handleOptionSelect = (event) => {
+  //   setSelectedOption(event.target.value);
+  // };
 
   return (
     <>

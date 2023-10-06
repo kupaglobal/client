@@ -1,25 +1,24 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
 import { useContext } from 'react';
 import { authStore } from '../../store/auth';
-import { SET_LOGGED_IN_USER } from "../../store/actions";
 
 const EmailVerification = () => {
     const goTo = useNavigate()
-    const { state, dispatch } = useContext(authStore);
+    const { state } = useContext(authStore);
     const { loggedInUser } = state
     const [ otpHelpText, setOtpHelpText ] = useState(`We sent you an email on ${loggedInUser.email }`)
 
     const [tokenFormData,setTokenFormData]=useState({
         token:'',
     })
-    const [profileFormData,setProfileFormData]=useState({
-        firstName:'',
-        lastName: ''
-    })
+    // const [profileFormData,setProfileFormData]=useState({
+    //     firstName:'',
+    //     lastName: ''
+    // })
 
     const verifyEmail = async (e) => {
         e.preventDefault();
@@ -36,7 +35,7 @@ const EmailVerification = () => {
                 setError('We failed to verify your email. Please try again.')
             }
         } catch (e) {
-            if (e.response?.data?.error == "Email already verified") {
+            if (e.response?.data?.error === "Email already verified") {
                 goTo('/dashboard?welcome')
             } else {
                 setError(e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -50,10 +49,10 @@ const EmailVerification = () => {
         setTokenFormData({...tokenFormData,[e.target.name]:e.target.value})
     }
 
-    const onProfileChange=(e)=>{
-        setError('')
-        setProfileFormData({...profileFormData,[e.target.name]:e.target.value})
-    }
+    // const onProfileChange=(e)=>{
+    //     setError('')
+    //     setProfileFormData({...profileFormData,[e.target.name]:e.target.value})
+    // }
 
     const resendEmailVerification = async () => {
         try {
@@ -64,8 +63,7 @@ const EmailVerification = () => {
                 setError('We failed to send you another email. Please try again.')
             }
         } catch (e) {
-            console.log(e)
-            if (e.response?.data?.error == "Email already verified") {
+            if (e.response?.data?.error === "Email already verified") {
                 goTo('/dashboard?welcome')
             } else {
                 setError('We failed to send you another email. Try again.')
@@ -103,7 +101,7 @@ const EmailVerification = () => {
                     <Link className="font-medium no-underline ml-2 text-blue-500 cursor-pointer" onClick={resendEmailVerification}>Resend OTP</Link>
                 </div>
             </div>
-            {error!='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
+            {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
         </div>
     );
 };

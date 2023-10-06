@@ -68,7 +68,7 @@ const Tab3 = () => {
   ];
   
 
-  const [products, setProducts] = useState(initialProductsStudentScores);
+  const [products] = useState(initialProductsStudentScores);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const onInputChange = (event) => {

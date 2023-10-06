@@ -29,7 +29,7 @@ const Sidebar = ({ children }) => {
       name: "Dashboard",
       icon: <MdOutlineDashboardCustomize />,
     },
-    loggedInUser.role && loggedInUser.role == 'ORGANISATION_ADMIN' ? {
+    loggedInUser.role && loggedInUser.role === 'ORGANISATION_ADMIN' ? {
       path: "/organisation",
       name: "My Organisation",
       icon: <PiBuildings />,

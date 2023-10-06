@@ -1,5 +1,4 @@
 import React from "react";
-import Students from "../../pages/Students";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "../../pages/Dashboard";
 import Signup from "../../pages/Auth/Signup";

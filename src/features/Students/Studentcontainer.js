@@ -1,13 +1,13 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Table from "../../components/Table/Table";
 import Studentgroup from "./Studentgroup";
 import "./student.css";
 import { TabView, TabPanel } from "primereact/tabview";
 
 
-const handleButtonClick = (row) => {
-  console.log("Button clicked for row:", row);
-};
+// const handleButtonClick = (row) => {
+//   console.log("Button clicked for row:", row);
+// };
 
 const columns = [
   {
@@ -82,10 +82,10 @@ const rows = [
 ];
 
 const Studentcontainer = () => {
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const [value, setValue] = useState(0);
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView>

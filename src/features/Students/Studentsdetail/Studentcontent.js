@@ -16,7 +16,7 @@ const Studentcontent = () => {
     { name: "Request for feedback", key: "RCE" },
   ];
 
-  const [selectedCategories, setSelectedCategories] = useState([categories[1]]);
+  const [selectedCategories] = useState([categories[1]]);
   const userDetails = [
     { heading: "Date of Birth", paragraph: "12/07/2004" },
     { heading: "Gender", paragraph: "Female" },

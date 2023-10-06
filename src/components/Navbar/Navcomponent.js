@@ -9,8 +9,6 @@ import Reports from "../../pages/Reports";
 import Feedback from "../../pages/Feedback";
 import Inbox from "../../pages/Inbox";
 import MyOrganisation from "../../pages/MyOrganisation";
-import Verticalcard from "../Cards/Verticalcard";
-import Templateroute1 from "../../features/Students/Popup/Templateroute1";
 import Studentdet from "../../features/Students/Studentsdetail/Studentdet";
 
 const Navcomponent = () => {

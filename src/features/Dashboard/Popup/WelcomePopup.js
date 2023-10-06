@@ -1,12 +1,12 @@
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { AiOutlinePlus } from "react-icons/ai";
+// import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from "react";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
         
 export default function WelcomePopup({ user }) {
     const [queryParams] = useSearchParams()
-    const isNewUser = queryParams.get('welcome')!=undefined || false
+    const isNewUser = queryParams.get('welcome') !== undefined || false
 
     const [visible, setVisible] = useState(isNewUser);
     const goTo = useNavigate()
@@ -28,7 +28,7 @@ export default function WelcomePopup({ user }) {
         /> */}
         <Button
             label="Create Organisation"
-            icon="pi pi-check"
+            icon="pi pi-plus"
             onClick={() => goToCreateOrganisationPage()}
             className="custom-button"
         />
@@ -46,7 +46,7 @@ export default function WelcomePopup({ user }) {
         footer={footerContent}
       > 
         <div>
-          Welcome to Kupa Global { user }. Before you start adding data, you need to create an organisation. This is how all your Cohorts, Groups and Students will be grouped. You will also be able to add other team members to this organisation.
+          Welcome to Kupa Global{ user }. Before you start adding data, you need to create an organisation. This is how all your Cohorts, Groups and Students will be grouped. You will also be able to add other team members to this organisation.
         </div>
       </Dialog>
   );

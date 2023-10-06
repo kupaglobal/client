@@ -25,16 +25,16 @@ const TsDetailsContainer = styled.div`
   padding: 10px;
 `;
 
-const DetailsTitle = styled.div`
-  background-color: #2c8997;
-  padding: 8px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-`;
+// const DetailsTitle = styled.div`
+//   background-color: #2c8997;
+//   padding: 8px;
+//   border-top-left-radius: 5px;
+//   border-top-right-radius: 5px;
+//   color: #fff;
+//   font-size: 14px;
+//   font-weight: 500;
+//   text-transform: uppercase;
+// `;
 
 const IconWrapper = styled(LiaCircleSolid)`
   color: #8f5fee;

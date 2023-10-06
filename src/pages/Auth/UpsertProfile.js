@@ -1,16 +1,15 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
-import { useContext } from 'react';
-import { authStore } from '../../store/auth';
-import { SET_LOGGED_IN_USER } from "../../store/actions";
+// import { useContext } from 'react';
+// import { authStore } from '../../store/auth';
 
 const EmailVerification = () => {
     const goTo = useNavigate()
-    const { state, dispatch } = useContext(authStore);
-    const { loggedInUser } = state
+    // const { state, dispatch } = useContext(authStore);
+    // const { loggedInUser } = state
 
     const [profileFormData,setProfileFormData]=useState({
         firstName:'',
@@ -29,7 +28,7 @@ const EmailVerification = () => {
                 setError('We failed to create your account. Please try again.')
             }
         } catch (e) {
-            if (e.response?.data?.error == "Email already verified") {
+            if (e.response?.data?.error === "Email already verified") {
                 goTo('/dashboard?welcome')
             } else {
                 setError(e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -63,7 +62,7 @@ const EmailVerification = () => {
                     <Button label="Save & Proceed" type="submit" icon="pi pi-user" className=" mt-6 m-auto bg-primary" />
                 </form>
             </div>
-            {error!='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
+            {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
         </div>
     );
 };
