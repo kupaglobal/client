@@ -1,9 +1,11 @@
 // import { useState } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
-
+import { useSearchParams } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-
+import NewOrganisationForm from '../features/Organisation/NewOrganisationForm'
+import OrganisationDetail from '../features/Organisation/OrganisationDetail'
+import TeamMembers from '../features/Organisation/TeamMembers'
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
@@ -105,26 +107,38 @@ const OrganisationContainer = () => {
   // const handleChange = (event, newValue) => {
   //   setValue(newValue);
   // };
+  const [queryParams] = useSearchParams()
+  const openNewOrgDialog = (queryParams.get('new') !== undefined && queryParams.get('new') !== null) || false
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <Dialog
         header="New organisation"
-        visible={true}
+        visible={openNewOrgDialog}
         style={{ width: "30vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
         onHide={() => {}}
         footer={footerContent}
       > 
         <div>
-          {/* <NewOrganisationForm/> */}
-          Put new organisation form here
+          <NewOrganisationForm/>
         </div>
       </Dialog>
       <TabView>
         <TabPanel header="My Organisation" leftIcon="" style={{ fontSize: "14px" }}>
+          <OrganisationDetail organisation={{
+  "name": "Example Organization",
+  "registrationNumber": "ZW1287",
+  "address": "28 Main Road",
+  "city": "Big City",
+  "country": "ZW",
+  "size": "1-10",
+  "numberOfStudents": "100-200",
+  "studentsAge": "13-19",
+  "type": "Organisation"
+}}/>
         </TabPanel>
         <TabPanel header="Team Members" rightIcon="" style={{ fontSize: "14px" }}>
-
+          <TeamMembers/>
         </TabPanel>
       </TabView>
     </div>

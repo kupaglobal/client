@@ -3,6 +3,7 @@ import Table from "../../components/Table/Table";
 import Studentgroup from "./Studentgroup";
 import "./student.css";
 import { TabView, TabPanel } from "primereact/tabview";
+import Popupcontent from "./Popup/Popupcontent";
 
 
 // const handleButtonClick = (row) => {
@@ -90,7 +91,7 @@ const Studentcontainer = () => {
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={rows} tableRowItem={tableRowItem} />
+          <Table columns={columns} data={rows} tableRowItem={tableRowItem} popupContent={<Popupcontent/>}/>
         </TabPanel>
         <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentgroup />

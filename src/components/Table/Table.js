@@ -3,7 +3,7 @@ import "./table.css";
 import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import Popupcontent from "../../features/Students/Popup/Popupcontent";
+
 const customStyles = {
   rows: {
     style: {
@@ -36,6 +36,7 @@ const Table = ({
   // setFilteredGroups,
   // setFilteredSessions,
   tableRowItem,
+  popupContent = null
 }) => {
   const navigate = useNavigate();
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
@@ -91,7 +92,7 @@ const Table = ({
         </div>
         <div style={{ alignSelf: "center"}}>
        
-          <Popupcontent />
+          {popupContent}
         </div>
       </div>
 

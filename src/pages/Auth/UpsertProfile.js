@@ -53,7 +53,7 @@ const EmailVerification = () => {
                 <form onSubmit={upsertProfile}>
                     <div className=" text-center text-900 text-2xl font-medium mb-6">One last thing...</div>
 
-                    <label htmlFor="firstName" className="block text-900 font-medium mb-2">Your First Name</label>
+                    <label htmlFor="firstName" className="block text-900 font-medium mb-2">First Name</label>
                     <InputText id="firstName" name="firstName" type="text" placeholder="" className="w-full" onChange={onProfileChange} />
 
                     <label htmlFor="lastName" className="block text-900 font-medium mb-2 mt-4">Last Name</label>

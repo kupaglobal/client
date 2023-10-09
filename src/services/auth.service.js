@@ -11,6 +11,12 @@ export class AuthService {
     static resendEmailVerification() {
         return httpClient.post('/auth/resend-email-verification', {}, { headers: generateHeaders() });
     }
+    static resetPassword(resetPasswordData) {
+        return httpClient.post('/auth/reset-password', resetPasswordData);
+    }
+    static changePassword(changePasswordData) {
+        return httpClient.post('/auth/change-password', changePasswordData);
+    }
     static verifyEmail(verifyEmailData) {
         return httpClient.post('/auth/verify-email', verifyEmailData, { headers: generateHeaders() });
     }

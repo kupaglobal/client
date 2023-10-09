@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
         
 export default function WelcomePopup({ user }) {
     const [queryParams] = useSearchParams()
-    const isNewUser = queryParams.get('welcome') !== undefined || false
+    const isNewUser = queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null  || false
 
     const [visible, setVisible] = useState(isNewUser);
     const goTo = useNavigate()
