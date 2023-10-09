@@ -16,7 +16,6 @@ const UpsertProfile = () => {
 
     const upsertProfile = async (e) => {
         e.preventDefault();
-        setError()
 
         try {
             const {data: authResponse} = await AuthService.upsertProfile(profileFormData);
@@ -33,8 +32,6 @@ const UpsertProfile = () => {
             }
         }
     }
-
-    const [error, setError] = useState()
 
     const onProfileChange=(e)=>{
         setProfileFormData({...profileFormData,[e.target.name]:e.target.value})
