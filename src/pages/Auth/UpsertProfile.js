@@ -1,15 +1,13 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
-// import { useContext } from 'react';
-// import { authStore } from '../../store/auth';
+import { toastStore } from "../../store/toast";
 
-const EmailVerification = () => {
+const UpsertProfile = () => {
     const goTo = useNavigate()
-    // const { state, dispatch } = useContext(authStore);
-    // const { loggedInUser } = state
+    const { toast } = useContext(toastStore)
 
     const [profileFormData,setProfileFormData]=useState({
         firstName:'',
@@ -25,13 +23,13 @@ const EmailVerification = () => {
             if (authResponse && authResponse.emailVerified === true) { // successful
                 goTo('/dashboard?welcome')
             } else {
-                setError('We failed to create your account. Please try again.')
+                toast('error','We failed to create your account. Please try again.')
             }
         } catch (e) {
             if (e.response?.data?.error === "Email already verified") {
                 goTo('/dashboard?welcome')
             } else {
-                setError(e.response?.data?.error ? e.response?.data?.error : e.message)
+                toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
             }
         }
     }
@@ -39,7 +37,6 @@ const EmailVerification = () => {
     const [error, setError] = useState()
 
     const onProfileChange=(e)=>{
-        setError('')
         setProfileFormData({...profileFormData,[e.target.name]:e.target.value})
     }
 
@@ -62,9 +59,8 @@ const EmailVerification = () => {
                     <Button label="Save & Proceed" type="submit" icon="pi pi-user" className=" mt-6 m-auto bg-primary" />
                 </form>
             </div>
-            {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
         </div>
     );
 };
 
-export default EmailVerification;
+export default UpsertProfile;
