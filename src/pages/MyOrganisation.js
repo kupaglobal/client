@@ -6,6 +6,7 @@ import { Dialog } from "primereact/dialog";
 import NewOrganisationForm from '../features/Organisation/NewOrganisationForm'
 import OrganisationDetail from '../features/Organisation/OrganisationDetail'
 import TeamMembers from '../features/Organisation/TeamMembers'
+import { useState } from "react";
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
@@ -108,15 +109,16 @@ const OrganisationContainer = () => {
   //   setValue(newValue);
   // };
   const [queryParams] = useSearchParams()
-  const openNewOrgDialog = (queryParams.get('new') !== undefined && queryParams.get('new') !== null) || false
+  const [visible, setVisible] = useState((queryParams.get('new') !== undefined && queryParams.get('new') !== null) || false)
+
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <Dialog
         header="New organisation"
-        visible={openNewOrgDialog}
+        visible={visible}
         style={{ width: "30vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => {}}
+        onHide={() => setVisible(false)}
         footer={footerContent}
       > 
         <div>
