@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import WelcomePopup from '../features/Dashboard/Popup/WelcomePopup'
 import { authStore } from '../store/auth'
 
