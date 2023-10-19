@@ -1,12 +1,17 @@
 // import { useState } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import NewOrganisationForm from '../features/Organisation/NewOrganisationForm'
 import OrganisationDetail from '../features/Organisation/OrganisationDetail'
 import TeamMembers from '../features/Organisation/TeamMembers'
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { authStore } from "../store/auth";
+import { AuthService } from "../services/auth.service";
+import { SET_LOGGED_IN_USER } from "../store/actions";
+import OrganisationService from "../services/organisation.service";
+import { toastStore } from "../store/toast";
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
@@ -83,33 +88,77 @@ import { useState } from "react";
 //   },
 // ];
 
-const saveNewOrganisation = () => {}
-const footerContent = (
-
-  <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
-  {/* <Button
-      label="Cancel"
-      icon="pi pi-times"
-      onClick={() => setVisible(false)}
-      className="custom-button"
-      outlined
-  /> */}
-  <Button
-      label="Save"
-      icon="pi pi-building"
-      onClick={() => saveNewOrganisation()}
-      className="custom-button"
-  />
-  </div>
-);
 
 const OrganisationContainer = () => {
-  // const [value, setValue] = useState(0);
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
+  const [newOrganisationFormData,setFormData]=useState({
+    "name": "",
+    "registrationNumber": "",
+    "address": "",
+    "city": "",
+    "country": "",
+    "size": "",
+    "numberOfStudents": "",
+    "studentsAge": "",
+    "type": ""
+  })
+
+  const [loading, setLoading] = useState(false)
+  const { toast } = useContext(toastStore);
+
+  const saveNewOrganisation = async () => {
+    try {
+      setLoading(true)
+      await OrganisationService.createOrganisation(newOrganisationFormData);
+      setLoading(false)
+      setVisible(false)
+      fetchProfile()
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+      setLoading(false)
+      console.log(e)
+    }
+  }
+  const footerContent = (
+  
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+    {/* <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setVisible(false)}
+        className="custom-button"
+        outlined
+    /> */}
+    <Button
+        label="Save"
+        icon="pi pi-building"
+        onClick={() => saveNewOrganisation()}
+        className="custom-button"
+        loading={loading}
+    />
+    </div>
+  );
+  
+  const goTo = useNavigate()
   const [queryParams] = useSearchParams()
-  const [visible, setVisible] = useState((queryParams.get('new') !== undefined && queryParams.get('new') !== null) || false)
+  const newUser = queryParams.get('new') !== undefined && queryParams.get('new') !== null
+  const [visible, setVisible] = useState((newUser) || false)
+
+  const [profile, setProfile] = useState(null)
+  const { dispatch } = useContext(authStore);
+
+  async function fetchProfile() {
+    const {data: profileRes} = await AuthService.getProfile()
+    if (!profileRes?.organisationId && !newUser) {
+      goTo('/dashboard?welcome')
+    } else if (profileRes?.organisation) {
+      setProfile(profileRes)
+      dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
+    }
+  }
+
+  useEffect(() => {
+    fetchProfile()
+  }, [dispatch])
 
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
@@ -122,22 +171,12 @@ const OrganisationContainer = () => {
         footer={footerContent}
       > 
         <div>
-          <NewOrganisationForm/>
+          <NewOrganisationForm formData={newOrganisationFormData} setFormData={setFormData}/>
         </div>
       </Dialog>
       <TabView>
         <TabPanel header="My Organisation" leftIcon="" style={{ fontSize: "14px" }}>
-          <OrganisationDetail organisation={{
-  "name": "Example Organization",
-  "registrationNumber": "ZW1287",
-  "address": "28 Main Road",
-  "city": "Big City",
-  "country": "ZW",
-  "size": "1-10",
-  "numberOfStudents": "100-200",
-  "studentsAge": "13-19",
-  "type": "Organisation"
-}}/>
+          {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation}/> : null} 
         </TabPanel>
         <TabPanel header="Team Members" rightIcon="" style={{ fontSize: "14px" }}>
           <TeamMembers/>

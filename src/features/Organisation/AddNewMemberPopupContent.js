@@ -2,6 +2,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useState } from "react";
+import InviteMemberForm from "./InviteMemberForm";
         
 export default function AddNewMemberPopupContent() {
   const [visible, setVisible] = useState(false);
@@ -37,16 +38,15 @@ export default function AddNewMemberPopupContent() {
       />
 
       <Dialog
-        header="Add a new member"
+        header="Invite new member"
         visible={visible}
         style={{ width: "30vw" }}
-        maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
         onHide={() => setVisible(false)}
         footer={footerContent}
       >
         <div>
-            {/* <InviteMemberForm/> */}
+            <InviteMemberForm/>
         </div>
       </Dialog>
     </>
