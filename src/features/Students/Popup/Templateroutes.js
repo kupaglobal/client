@@ -3,14 +3,19 @@ import { BreadCrumb } from 'primereact/breadcrumb';
 import Templateroute1 from "./Templateroute1";
 import Uploadcontainer from "../../../components/Uploadcontainer";
 
-
-const tabs = [
+const createTemplateTabs = [
   { label: "Select Fields" },
   { label: "Preview" },
   { label: "Upload" },
 ];
 
-export function BreadcrumbNav({ activeStep, handleStepClick }) {
+const savedTemplateTabs = [
+  { label: "Select Template" },
+  { label: "Preview" },
+  { label: "Upload" },
+];
+
+export function BreadcrumbNav({ activeStep, handleStepClick, tabs }) {
   return (
     <BreadCrumb
       model={tabs.map((tab, index) => ({
@@ -28,8 +33,10 @@ export function BreadcrumbNav({ activeStep, handleStepClick }) {
   );
 }
 
-function Templateroutes({ case1card: Case1Card }) {
+function Templateroutes({ case1card: Case1Card, section }) {
   const [activeStep, setActiveStep] = useState(0);
+  const [activeTemplate, setActiveTemplate] = useState(null)
+  const [tabs, setTabs] = useState(!section || section==='Create Template' ? createTemplateTabs : savedTemplateTabs)
 
   const handleStepClick = (stepIndex) => {
     setActiveStep(stepIndex);
@@ -38,10 +45,10 @@ function Templateroutes({ case1card: Case1Card }) {
   let contentComponent;
   switch (activeStep) {
     case 0:
-      contentComponent = <Case1Card />;
+      contentComponent = <Case1Card setActiveStep={setActiveStep} setActiveTemplate={setActiveTemplate}/>
       break;
     case 1:
-      contentComponent = <Templateroute1 />;
+      contentComponent = <Templateroute1 template={activeTemplate} />;
       break;
     case 2:
       contentComponent = <Uploadcontainer />;
@@ -53,6 +60,7 @@ function Templateroutes({ case1card: Case1Card }) {
   return (
     <>
       <BreadcrumbNav
+        tabs={tabs}
         activeStep={activeStep}
         handleStepClick={handleStepClick}
       />

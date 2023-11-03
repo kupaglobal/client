@@ -8,6 +8,7 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import { AuthProvider } from "./store/auth" 
 import { ToastProvider } from "./store/toast";
+import { StudentsProvider } from "./store/students";
 import ToastContainer from "./components/UI/Toast";
 
 function App() {
@@ -15,13 +16,15 @@ function App() {
       <StrictMode>
         <AuthProvider>
           <ToastProvider>
-            <div className="App">
-              <ToastContainer/>
-              <Routes>
-                <Route exact path="/*" element={<UserDashboardLayout />} />
-                <Route exact path="/auth/*" element={<AuthLayout />} />
-              </Routes>
-            </div>
+            <StudentsProvider>
+              <div className="App">
+                <ToastContainer/>
+                <Routes>
+                  <Route exact path="/*" element={<UserDashboardLayout />} />
+                  <Route exact path="/auth/*" element={<AuthLayout />} />
+                </Routes>
+              </div>
+            </StudentsProvider>
           </ToastProvider>
         </AuthProvider>
       </StrictMode>

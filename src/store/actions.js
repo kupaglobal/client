@@ -1,2 +1,7 @@
 export const SET_LOGGED_IN_USER = "SET_LOGGED_IN_USER"
 export const SET_TOAST = "SET_TOAST"
+
+export const SET_TEMPLATES = "SET_TEMPLATES"
+
+export const SET_STUDENTS = "SET_STUDENTS"
+export const SET_STUDENT_FIELDS = "SET_STUDENT_FIELDS"

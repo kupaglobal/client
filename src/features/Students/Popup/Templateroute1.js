@@ -3,21 +3,22 @@ import { Avatar, Typography, Box, IconButton, Button } from "@mui/material";
 import {MdFullscreenExit, MdFullscreen} from 'react-icons/md'
 
 
-const Templateroute1 = () => {
+const Templateroute1 = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
+  console.log('props.template',props.template)
   return (
     <>
       <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-        <Avatar
+        {/* <Avatar
           alt="Template"
           variant="rounded"
           src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
-        />
+        /> */}
         <Typography component="div" fontSize={15}>
-          Template 1
+          {props.template && props.template.name}
         </Typography>
       </div>
       <div>

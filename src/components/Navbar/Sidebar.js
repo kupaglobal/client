@@ -34,6 +34,11 @@ const Sidebar = ({ children }) => {
       name: "My Organisation",
       icon: <PiBuildings />,
     } : null,
+    // {
+    //   path: "/students",
+    //   name: "Kupa Recruit",
+    //   icon: <PiStudent />,
+    // },
     {
       path: "/students",
       name: "Students",

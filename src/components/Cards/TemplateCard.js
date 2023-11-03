@@ -2,32 +2,26 @@ import React, { useState } from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 
-const Verticalcard = ({id, title, category, date, description, hideImg, footer, selected, onEmit}) => {
-  const [isSelected, setIsSelected] = useState(selected)
+const TemplateCard = ({id, title, category, date, description, hideImg, onDownloadTemplate, onSelected, loading}) => {
   const header = (
       !hideImg ? <img
       alt="Card"
       src="https://primefaces.org/cdn/primereact/images/usercard.png"
     /> : ''
   );
-  const emit = (type) => {
-    onEmit({ type: type , payload: id })
-  }
-  if (!footer) {
-    footer = (
-      <div style={{display:'flex', justifyContent: 'flex-end' }}>
-        <Button size="small" icon="pi pi-download" />
-        <Button size="small" icon="pi pi-check" className="ml-1" onClick={emit('selected')} />
-      </div>
-    );
-  }
+  const footer = (
+    <div style={{display:'flex', justifyContent: 'flex-end' }}>
+      <Button size="small" icon="pi pi-download" loading={loading} onClick={() => onDownloadTemplate(id)} />
+      <Button size="small" icon="pi pi-check" className="ml-1" onClick={onSelected} />
+    </div>
+  );
 
   return (
     <>
       <Card
         title={title}
         pt={{
-          body: { className: `hover:bg-bluegray-100 cursor-pointer hover:inset-4 ${isSelected ? 'bg-bluegray-100' : ''}`, },
+          body: { className: 'hover:bg-bluegray-100 cursor-pointer hover:inset-4' },
         }}
         subTitle={
           <div>
@@ -47,4 +41,4 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
   );
 };
 
-export default Verticalcard;
+export default TemplateCard;

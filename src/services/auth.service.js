@@ -24,6 +24,6 @@ export class AuthService {
         return httpClient.post('/auth/profile', upsertProfileDto, { headers: generateHeaders() })
     }
     static getProfile() {
-        return httpClient.get('/auth/profile', { headers: generateHeaders() })
+        return httpClient.get('/auth/profile')
     }
 }

@@ -16,4 +16,5 @@ const baseURL = getEnv('BASE_URL','https://sapi.kupaglobal.com')
 
 export default axios.create({
     baseURL,
+    headers: generateHeaders()
 })
