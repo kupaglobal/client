@@ -149,13 +149,13 @@ const OrganisationContainer = () => {
 
   useEffect(() => {
     async function fetchProfile() {
+      setRefetchProfile(false)
       const {data: profileRes} = await AuthService.getProfile()
       if (!profileRes?.organisationId && !newUser) {
         goTo('/dashboard?welcome')
       } else if (profileRes?.organisation) {
         setProfile(profileRes)
         dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
-        setRefetchProfile(false)
       }
     }
     if (refetchProfile) {

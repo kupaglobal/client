@@ -56,11 +56,11 @@ const Studentcontainer = () => {
 
   useEffect(() => {
     async function fetchStudents() {
+      setReloadStudents(false)
       try {
         const {data: studentsRes} = await StudentsService.getStudents()
         const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
         setStudents(students)
-        setReloadStudents(false)
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
