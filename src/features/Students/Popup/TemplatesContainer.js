@@ -26,7 +26,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
       }
     }
     fetchTemplates()
-  })
+  }, [toast])
 
   const downloadTemplate = async (template) => {
     try {

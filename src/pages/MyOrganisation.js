@@ -104,7 +104,7 @@ const OrganisationContainer = () => {
 
   const [loading, setLoading] = useState(false)
   const { toast } = useContext(toastStore);
-  const [refetchProfile, setRefetchProfile] = useState(false)
+  const [refetchProfile, setRefetchProfile] = useState(true)
   const saveNewOrganisation = async () => {
     try {
       setLoading(true)
@@ -155,6 +155,7 @@ const OrganisationContainer = () => {
       } else if (profileRes?.organisation) {
         setProfile(profileRes)
         dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
+        setRefetchProfile(false)
       }
     }
     if (refetchProfile) {

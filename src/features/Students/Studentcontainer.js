@@ -52,7 +52,7 @@ const tableRowItem = "students";
 const Studentcontainer = () => {
   const [students, setStudents] = useState([])
   const { toast } = useContext(toastStore);
-  const [ reloadStudents, setReloadStudents ] = useState(false)
+  const [ reloadStudents, setReloadStudents ] = useState(true)
 
   useEffect(() => {
     async function fetchStudents() {
@@ -60,6 +60,7 @@ const Studentcontainer = () => {
         const {data: studentsRes} = await StudentsService.getStudents()
         const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
         setStudents(students)
+        setReloadStudents(false)
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
