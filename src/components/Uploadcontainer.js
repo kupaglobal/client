@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { FileUpload } from "primereact/fileupload";
 import styled from 'styled-components';
 import { templatesStore } from "../store/templates";

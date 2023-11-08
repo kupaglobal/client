@@ -13,6 +13,7 @@ import { StudentsService } from "../../services/students.service";
 //   console.log("Button clicked for row:", row);
 // };
 
+
 const columns = [
   {
     id: "avatar",
@@ -47,73 +48,33 @@ const columns = [
 ];
 const tableRowItem = "students";
 
-const rows = [
-  {
-    avatar: "1",
-    st_name: "Bisola Davis",
-    st_course: "English",
-    st_gender: "Female",
-    st_class: "Cohort 3",
-  },
-  {
-    avatar: "1",
-    st_name: "Peace Ishimwe",
-    st_course: "Mathematics",
-    st_gender: "Male",
-    st_class: "Cohort 4",
-  },
-  {
-    avatar: "1",
-    st_name: "Jhohn Ishimwe",
-    st_course: "Science",
-    st_gender: "Female",
-    st_class: "Cohort 3",
-  },
-  {
-    avatar: "1",
-    st_name: "Michael Ishimwe",
-    st_course: "Science",
-    st_gender: "Male",
-    st_class: "Cohort 4",
-  },
-  {
-    avatar: "1",
-    st_name: "Moyosore Weke",
-    st_course: "English",
-    st_gender: "Female",
-    st_class: "Cohort 2",
-  },
-];
 
 const Studentcontainer = () => {
-  // const [value, setValue] = useState(0);
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
-
-  const [isDownloading, setIsDownloading] = useState(false)
   const [students, setStudents] = useState([])
   const { toast } = useContext(toastStore);
+  const [ reloadStudents, setReloadStudents ] = useState(false)
 
-  async function fetchStudents() {
-    try {
-      const {data: studentsRes} = await StudentsService.getStudents()
-      const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
-      setStudents(students)
-    } catch (e) {
-      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
-      console.log(e)
-    }
-  }
   useEffect(() => {
-    fetchStudents()
-  }, [])
+    async function fetchStudents() {
+      try {
+        const {data: studentsRes} = await StudentsService.getStudents()
+        const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
+        setStudents(students)
+      } catch (e) {
+        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+        console.log(e)
+      }
+    }
+    if (reloadStudents) {
+      fetchStudents()
+    }
+  }, [reloadStudents, toast])
 
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={fetchStudents}/>}/>
+          <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>}/>
         </TabPanel>
         <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentgroup />

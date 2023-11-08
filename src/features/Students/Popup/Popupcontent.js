@@ -26,7 +26,7 @@ export default function Popupcontent({ onReload }) {
         payload: false
       })
     }
-  }, [reloadStudents])
+  }, [reloadStudents, dispatch, onReload])
   const footerContent = (
 
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
