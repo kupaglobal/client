@@ -104,14 +104,14 @@ const OrganisationContainer = () => {
 
   const [loading, setLoading] = useState(false)
   const { toast } = useContext(toastStore);
-
+  const [refetchProfile, setRefetchProfile] = useState(false)
   const saveNewOrganisation = async () => {
     try {
       setLoading(true)
       await OrganisationService.createOrganisation(newOrganisationFormData);
       setLoading(false)
       setVisible(false)
-      fetchProfile()
+      setRefetchProfile(true)
     } catch (e) {
       toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
       setLoading(false)
@@ -146,19 +146,21 @@ const OrganisationContainer = () => {
   const [profile, setProfile] = useState(null)
   const { dispatch } = useContext(authStore);
 
-  async function fetchProfile() {
-    const {data: profileRes} = await AuthService.getProfile()
-    if (!profileRes?.organisationId && !newUser) {
-      goTo('/dashboard?welcome')
-    } else if (profileRes?.organisation) {
-      setProfile(profileRes)
-      dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
-    }
-  }
 
   useEffect(() => {
-    fetchProfile()
-  }, [dispatch])
+    async function fetchProfile() {
+      const {data: profileRes} = await AuthService.getProfile()
+      if (!profileRes?.organisationId && !newUser) {
+        goTo('/dashboard?welcome')
+      } else if (profileRes?.organisation) {
+        setProfile(profileRes)
+        dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
+      }
+    }
+    if (refetchProfile) {
+      fetchProfile()
+    }
+  }, [refetchProfile, dispatch, goTo, newUser])
 
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>

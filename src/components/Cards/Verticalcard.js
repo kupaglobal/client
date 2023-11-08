@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 
 const Verticalcard = ({id, title, category, date, description, hideImg, footer, selected, onEmit}) => {
-  const [isSelected, setIsSelected] = useState(selected)
   const header = (
       !hideImg ? <img
       alt="Card"
@@ -27,7 +26,7 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
       <Card
         title={title}
         pt={{
-          body: { className: `hover:bg-bluegray-100 cursor-pointer hover:inset-4 ${isSelected ? 'bg-bluegray-100' : ''}`, },
+          body: { className: `hover:bg-bluegray-100 cursor-pointer hover:inset-4 ${selected ? 'bg-bluegray-100' : ''}`, },
         }}
         subTitle={
           <div>

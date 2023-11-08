@@ -36,7 +36,7 @@ export function BreadcrumbNav({ activeStep, handleStepClick, tabs }) {
 function Templateroutes({ case1card: Case1Card, section }) {
   const [activeStep, setActiveStep] = useState(0);
   const [activeTemplate, setActiveTemplate] = useState(null)
-  const [tabs, setTabs] = useState(!section || section==='Create Template' ? createTemplateTabs : savedTemplateTabs)
+  const [tabs] = useState(!section || section==='Create Template' ? createTemplateTabs : savedTemplateTabs)
 
   const handleStepClick = (stepIndex) => {
     setActiveStep(stepIndex);

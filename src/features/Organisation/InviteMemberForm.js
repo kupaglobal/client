@@ -8,7 +8,7 @@ const InviteMemberForm = () => {
         email: ""
     })
 
-    const [error, setError] = useState()
+    const [setError] = useState()
     const onChange=(e)=>{
         setError('')
         setFormData({...formData,[e.target.name]:e.target.value})

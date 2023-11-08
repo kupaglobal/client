@@ -13,20 +13,20 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
   const { toast } = useContext(toastStore);
   const { dispatch } = useContext(templatesStore)
 
-  async function fetchTemplates() {
-    try {
-      const {data: templatesRes} = await TemplatesService.getTemplates()
-      const templates = templatesRes.templates.map(template => ({ ...template, isSelected: false }))
-      setTemplates(templates)
-    } catch (e) {
-      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
-      console.log(e)
-    }
-  }
 
   useEffect(() => {
+    async function fetchTemplates() {
+      try {
+        const {data: templatesRes} = await TemplatesService.getTemplates()
+        const templates = templatesRes.templates.map(template => ({ ...template, isSelected: false }))
+        setTemplates(templates)
+      } catch (e) {
+        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+        console.log(e)
+      }
+    }
     fetchTemplates()
-  }, [])
+  })
 
   const downloadTemplate = async (template) => {
     try {
