@@ -31,7 +31,11 @@ const Login = () => {
             if (authResponse && authResponse.access_token) { // successful
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
-                window.location.href = '/dashboard'
+                if (authResponse.organisationId) {
+                    window.location.href = '/students'
+                } else {
+                    window.location.href = '/organisation'
+                }
             } else {
                 toast('error', 'We failed to create your account. Please try again.')
             }
