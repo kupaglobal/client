@@ -31,7 +31,7 @@ const Login = () => {
             if (authResponse && authResponse.access_token) { // successful
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
-                goTo('/dashboard')
+                window.location.href = '/dashboard'
             } else {
                 toast('error', 'We failed to create your account. Please try again.')
             }

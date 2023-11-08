@@ -5,9 +5,11 @@ const cleanUser = (user) => {
     return user
 }
 const loggedInUser = localStorage.getItem('loggedInUser') ? cleanUser(JSON.parse(localStorage.getItem('loggedInUser'))) : null
-
+const token = localStorage.getItem('jwtToken') ? localStorage.getItem('jwtToken') : null
+console.log('token', token)
 const initialState = {
-  loggedInUser
+  loggedInUser,
+  token
 };
 
 const authStore = createContext(initialState);

@@ -5,7 +5,7 @@ import { styled } from "@mui/system";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 
-const CustomLink = styled(Link)(({ theme }) => ({
+const CustomLink = styled(Link)(({ theme, model }) => ({
   textDecoration: "none",
   color: "inherit",
   fontFamily: 'Montserrat',
@@ -13,7 +13,7 @@ const CustomLink = styled(Link)(({ theme }) => ({
   "&:hover": {
     color: "#25245D",
     fontWeight: "600",
-  },
+  }
 }));
 
 const Breadcrumb = ({ name, firstItem, linkTo }) => {

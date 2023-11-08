@@ -6,6 +6,8 @@ import { TemplatesService } from "../../../services/templates.service";
 import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { toastStore } from "../../../store/toast";
+import { templatesStore } from "../../../store/templates";
+import { SET_ACTIVE_TEMPLATE } from "../../../store/actions";
 
 
 const Createroute1 = (props) => {
@@ -13,6 +15,7 @@ const Createroute1 = (props) => {
   const [selectedFields, setSelectedFields] = useState([]);
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false)
   const { toast } = useContext(toastStore);
+  const { dispatch } = useContext(templatesStore);
 
   async function fetchStudentFields() {
     const { data: studentFieldsRes} = await StudentsService.getStudentFields();
@@ -46,11 +49,16 @@ const Createroute1 = (props) => {
         name: newTemplateName,
         studentFieldIds: selectedFields.map(selectedField => selectedField.id)
       })
+      const {data: template}= await TemplatesService.getTemplateById(newTemplate.id) 
+      dispatch({
+        type: SET_ACTIVE_TEMPLATE,
+        payload: template
+      })
       if (props.setActiveStep) {
         props.setActiveStep(1)
       }
       if (props.setActiveTemplate) {
-        props.setActiveTemplate(newTemplate)
+        props.setActiveTemplate(template)
       }
       clearForm()
     } catch (e) {

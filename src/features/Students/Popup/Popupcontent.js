@@ -3,28 +3,47 @@ import { Dialog } from "primereact/dialog";
 import { AiOutlinePlus } from "react-icons/ai";
 import Dropdowncomp from "../../../components/Dropdown";
 import Templatetab from "./Templatetab";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
+import { studentsStore } from "../../../store/students";
         
-export default function Popupcontent() {
-  const [visible, setVisible] = useState(false);
+export default function Popupcontent({ onReload }) {
+  const { state, dispatch } = useContext(studentsStore)
+  const {showAddStudentsPopup: visible, reloadStudents} = state
 
+  const setVisibility = (visibility) => {
+    dispatch({
+      type: SHOW_ADD_STUDENTS_POPUP,
+      payload: visibility
+    })
+  } 
+
+  useEffect(() => {
+    if (reloadStudents) {
+      onReload()
+      dispatch({
+        type: RELOAD,
+        payload: false
+      })
+    }
+  }, [reloadStudents])
   const footerContent = (
 
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
         label="Cancel"
         icon="pi pi-times"
-        onClick={() => setVisible(false)}
+        onClick={() => setVisibility(false)}
         className="custom-button"
         outlined
       />
-      <Button
+      {/* <Button
         label="Submit"
         icon="pi pi-check"
         onClick={() => setVisible(false)}
         className="custom-button"
-
-      />
+        disabled
+      /> */}
     </div>
   );
   // const [selectedOption, setSelectedOption] = useState("");
@@ -44,7 +63,7 @@ export default function Popupcontent() {
         icon={<AiOutlinePlus />}
         label="Add new student"
         className="custom-button"
-        onClick={() => setVisible(true)}
+        onClick={() => setVisibility(true)}
       />
 
       <Dialog
@@ -53,7 +72,7 @@ export default function Popupcontent() {
         style={{ width: "60vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => setVisible(false)}
+        onHide={() => setVisibility(false)}
         footer={footerContent}
       >
 

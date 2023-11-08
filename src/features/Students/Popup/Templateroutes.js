@@ -21,7 +21,7 @@ export function BreadcrumbNav({ activeStep, handleStepClick, tabs }) {
       model={tabs.map((tab, index) => ({
         label: tab.label,
         url: null,
-        styleClass: activeStep === index ? "active  my-breadcrumb" : "my-breadcrumb",
+        styleClass: activeStep === index ? "active font-bold my-breadcrumb" : "my-breadcrumb",
         command: () => handleStepClick(index),
       }))}
       home={{
@@ -48,7 +48,7 @@ function Templateroutes({ case1card: Case1Card, section }) {
       contentComponent = <Case1Card setActiveStep={setActiveStep} setActiveTemplate={setActiveTemplate}/>
       break;
     case 1:
-      contentComponent = <Templateroute1 template={activeTemplate} />;
+      contentComponent = <Templateroute1 template={activeTemplate} setActiveStep={setActiveStep} />;
       break;
     case 2:
       contentComponent = <Uploadcontainer />;

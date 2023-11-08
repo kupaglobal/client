@@ -36,7 +36,8 @@ const Table = ({
   // setFilteredGroups,
   // setFilteredSessions,
   tableRowItem,
-  popupContent = null
+  popupContent = null,
+  hideSearch = false
 }) => {
   const navigate = useNavigate();
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
@@ -80,15 +81,19 @@ const Table = ({
         }}
       >
         <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchText}
-            onChange={handleSearch}
-          />
-          <span className="search-icon">
-            <MdOutlineSearch />
-          </span>
+          {!hideSearch ?
+          <>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchText}
+              onChange={handleSearch}
+            />
+            <span className="search-icon">
+              <MdOutlineSearch />
+            </span>
+          </>
+          : ''}
         </div>
         <div style={{ alignSelf: "center"}}>
        

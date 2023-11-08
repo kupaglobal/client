@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import TemplateCard from "../../../components/Cards/TemplateCard";
 import { TemplatesService } from "../../../services/templates.service";
+import { SET_ACTIVE_TEMPLATE } from "../../../store/actions";
+import { templatesStore } from "../../../store/templates";
 import { toastStore } from "../../../store/toast";
 import { cleanedDateStr } from "../../../utils/moment";
 
@@ -9,6 +11,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
   const [isDownloading, setIsDownloading] = useState(false)
   const [templates, setTemplates] = useState([])
   const { toast } = useContext(toastStore);
+  const { dispatch } = useContext(templatesStore)
 
   async function fetchTemplates() {
     try {
@@ -25,8 +28,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
     fetchTemplates()
   }, [])
 
-  const downloadizoTemplate = async (template) => {
-    console.log('download', template)
+  const downloadTemplate = async (template) => {
     try {
       setIsDownloading(template.id)
       await TemplatesService.downloadTemplate(template);
@@ -41,6 +43,10 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
   const onSelected = (template) => {
     setActiveStep(1)
     setActiveTemplate(template)
+    dispatch({
+      type: SET_ACTIVE_TEMPLATE,
+      payload: template
+    })
   }
 
   return (
@@ -49,6 +55,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
         template => 
           <TemplateCard 
             id={template.id}
+            key={template.id}
             title={template.name}
             date={cleanedDateStr(template.dateCreated)}
             hideImg={true}
@@ -56,7 +63,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
             description={template.fields.map(field => field.displayName).join(", ")}
             selected={template.isSelected}
             loading={isDownloading === template.id}
-            onDownloadTemplate={() => downloadizoTemplate(template)}
+            onDownloadTemplate={() => downloadTemplate(template)}
             onSelected={() => onSelected(template)}
           />)}
     </div >

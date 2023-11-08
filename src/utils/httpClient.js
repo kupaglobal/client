@@ -2,12 +2,12 @@ import axios from "axios"
 import { getEnv } from "./env"
 
 export const generateHeaders = () => {
-    const jwtToken = localStorage.getItem('jwtToken') || null
+    const jwtToken = () => localStorage.getItem('jwtToken') || null
     let headers = {
         'Accept': 'application/json'
     }
-    if (jwtToken) {
-        headers['Authorization'] = `Bearer ${jwtToken}`
+    if (jwtToken()) {
+        headers['Authorization'] = `Bearer ${jwtToken()}`
     }
     return headers
 }
