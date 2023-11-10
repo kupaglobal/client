@@ -18,7 +18,7 @@ const NewOrganisationForm = ({ formData, setFormData }) => {
     const studentsAgeOptions = ['13-19', '19+']
     const [studentsAge, setStudentsAge] = useState(studentsAgeOptions[0]);
 
-    const organisationTypes = ['Organisation'];
+    const organisationTypes = ['University', 'High School', 'Secondary School', 'Primary School', 'Grant or Scholarship Provider', 'Other - Private Teaching Institution (bootcamp, courses, etc)','Other - NGO'];
     const [selectedOrganisationType, setSelectedOrganisationType] = useState("")
 
     const selectedCountryTemplate = (option, props) => {
@@ -141,8 +141,8 @@ const NewOrganisationForm = ({ formData, setFormData }) => {
             </div>
 
             <label htmlFor="type" className="block text-900 font-medium mb-20">Organisation Type</label>
-            <Dropdown value={selectedOrganisationType} onChange={handleOrganisationTypeChange} options={organisationTypes}
-                placeholder="Select an organisation Type" className="w-full md:w-14rem" />
+            <Dropdown scrollHeight="260px" value={selectedOrganisationType} onChange={handleOrganisationTypeChange} options={organisationTypes}
+                placeholder="Select an organisation Type" className="w-full  h-max md:w-14rem" />
          
             {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
         </form>
