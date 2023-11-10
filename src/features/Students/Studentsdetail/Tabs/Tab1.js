@@ -1,10 +1,9 @@
 import React from "react";
 import { MdAutoGraph } from "react-icons/md";
-import { HiOutlineBriefcase, HiOutlineHeart } from "react-icons/hi";
+import { HiOutlineHeart } from "react-icons/hi";
 import { Tag } from "primereact/tag";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import DetailsContent from "../../../../components/DetailsContent";
-import { Splitter, SplitterPanel } from "primereact/splitter";
 
 const Tab1 = ({ student }) => {
   const userDetails = [
