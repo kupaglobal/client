@@ -43,7 +43,7 @@ const Table = ({
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
   const handleRowClick = (row) => {
-    navigate(`/${tableRowItem}/id`);
+    navigate(`/${tableRowItem}/${row.id}`);
   };
  
   const [searchText, setSearchText] = useState("");

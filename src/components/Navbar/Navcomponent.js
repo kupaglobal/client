@@ -20,7 +20,7 @@ const Navcomponent = () => {
             <Route path="/*" element={<Dashboard />}/>
             <Route path="/organisation" element={<MyOrganisation />}/> 
             <Route path="/students" element={<Students />}/>
-            <Route path="/students/id" element={<Studentdet/>}/>
+            <Route path="/students/:id" element={<Studentdet/>}/>
 
             <Route path="/assessments" element={<Assessments/>}/>
             <Route path="/reportings" element={<Reports />}/>

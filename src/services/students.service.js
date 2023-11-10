@@ -7,6 +7,9 @@ export class StudentsService {
 
     static getStudents() {
         return httpClient.get('/students')
+    }
 
+    static getSingleStudent(studentId) {
+        return httpClient.get(`/students/${studentId}`)
     }
 }

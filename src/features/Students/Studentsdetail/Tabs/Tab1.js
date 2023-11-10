@@ -6,16 +6,16 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import DetailsContent from "../../../../components/DetailsContent";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 
-const Tab1 = () => {
+const Tab1 = ({ student }) => {
   const userDetails = [
-    { heading: "Student Email", paragraph: "bdavis@gmail.com" },
-    { heading: "Student Phone", paragraph: "+123-456-7890" },
-    { heading: "Highest Educational Attainment", paragraph: "O-levels (as of 08/2023)" },
-    { heading: "Expected Graduation", paragraph: "May 2025" },
-    { heading: "Guardian Name", paragraph: "John Davis" },
-    { heading: "Guardian Email", paragraph: "johndavis@gmail.com" },
-    { heading: "Guardian Relation", paragraph: "Parent" },
-    { heading: "Guardian Whatsapp", paragraph: "+123-456-7890" },
+    { heading: "Student Email", paragraph: student.email },
+    { heading: "Student Phone", paragraph: student.phone },
+    { heading: "Highest Qualification Level", paragraph: student.highestQualificationLevel },
+    { heading: "Expected Graduation", paragraph: "N/A" },
+    { heading: "Guardian Name", paragraph: student.guardianName },
+    { heading: "Guardian Email", paragraph: student.guardianEmail },
+    { heading: "Guardian Relation", paragraph: student.guardianRelationship },
+    { heading: "Guardian Whatsapp", paragraph: student.guardianWhatsapp },
   ];
 
   return (
@@ -44,7 +44,7 @@ const Tab1 = () => {
               >
                 <div>
                   <MdAutoGraph size={18} />
-                  <span style={{ paddingLeft: "10px" }}>Career Aspirations</span>
+                  <span style={{ paddingLeft: "10px" }}>Career Aspirations ({student.careerAmbition.length})</span>
                 </div>
               </div>
             }
@@ -57,10 +57,10 @@ const Tab1 = () => {
                 fontWeight: 500,
               }}
             >
-              “ Civil Engineer ”
             </p>
+            {student.careerAmbition.map(ambition => <Tag rounded className="custom-accordion-content" severity="success">{ambition}</Tag> )}
           </AccordionTab>
-          <AccordionTab
+          {/* <AccordionTab
             headerClassName="custom-accordion-header"
             header={
               <div>
@@ -106,26 +106,18 @@ const Tab1 = () => {
                 </div>
               </SplitterPanel>
             </Splitter>
-          </AccordionTab>
+          </AccordionTab> */}
           <AccordionTab
             headerClassName="custom-accordion-header"
             header={
               <div>
                 <HiOutlineHeart size={18} />
 
-                <span style={{ paddingLeft: "10px" }}>Interests</span>
+                <span style={{ paddingLeft: "10px" }}>Interests ({student.interests.length})</span>
               </div>
             }
           >
-            <Tag rounded className="custom-accordion-content">
-              Travelling
-            </Tag>
-            <Tag rounded className="custom-accordion-content">
-              Biking
-            </Tag>
-            <Tag rounded className="custom-accordion-content">
-              Photography
-            </Tag>
+            {student.interests.map(interest => <Tag rounded className="custom-accordion-content">{interest}</Tag>)}
           </AccordionTab>
         </Accordion>
       </div>

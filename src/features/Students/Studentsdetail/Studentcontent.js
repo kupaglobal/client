@@ -7,8 +7,9 @@ import { BiLogoWhatsapp } from "react-icons/bi";
 import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
 import { Checkbox } from "primereact/checkbox";
+import { Link } from "react-router-dom";
 
-const Studentcontent = () => {
+const Studentcontent = ({ student }) => {
   const handleClickOpen = () => {};
   const categories = [
     { name: "Review assessment", key: "RA" },
@@ -18,10 +19,10 @@ const Studentcontent = () => {
 
   const [selectedCategories] = useState([categories[1]]);
   const userDetails = [
-    { heading: "Date of Birth", paragraph: "12/07/2004" },
-    { heading: "Gender", paragraph: "Female" },
-    { heading: "Cohort", paragraph: "Cohort #2" },
-    { heading: "City, Country", paragraph: "Kigali, Rwanda" },
+    { heading: "Date of Birth", paragraph: student.dob },
+    { heading: "Gender", paragraph: student.gender },
+    { heading: "Cohort", paragraph: "N/A" },
+    { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
   ];
   return (
     <>
@@ -53,15 +54,22 @@ const Studentcontent = () => {
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p style={{ fontSize: 20, fontWeight: 800, marginBottom: "8px" }}>
-              Bisola Davis
+              {student.firstName} {student.lastName}
             </p>
 
-            <Button
-              icon={<BiLogoWhatsapp size={22} />}
-              aria-label="Message"
-              text
-              style={{ alignItems: "flex-start", padding: 0 }}
-            />
+            {student.phone && student.phone!=='N/a' ? 
+              <Link 
+                to={`https://wa.me/${student.phone}?text=HI%20${student.firstName},%20`}
+                target="_blank"
+              >
+                <Button
+                  icon={<BiLogoWhatsapp size={22} />}
+                  aria-label="Message"
+                  text
+                  style={{ alignItems: "flex-start", padding: 0 }}
+                />
+              </Link> 
+              : ''}
           </div>
           <div>
             {userDetails.map((detail, index) => (

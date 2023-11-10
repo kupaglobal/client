@@ -6,7 +6,7 @@ import Tab2 from "./Tabs/Tab2";
 import Tab4 from "./Tabs/Tab4";
 import Tab3 from "./Tabs/Tab3";
 
-const Studenttabs1 = () => {
+const Studenttabs1 = ({ student }) => {
   return (
     <Card style={{ width: "60vw" }}>
       <TabView>
@@ -15,7 +15,7 @@ const Studenttabs1 = () => {
           leftIcon=""
           style={{ fontSize: "14px" }}
         >
-          <Tab1 />
+          <Tab1 student={student}/>
         </TabPanel>
         <TabPanel
           header="Achievements"
