@@ -1,45 +1,110 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Avatar } from "primereact/avatar";
 import { BsTrophyFill } from "react-icons/bs";
 import { Divider } from "primereact/divider";
-import { BsPlus, BsPencil } from "react-icons/bs";
+import { BsPlus } from "react-icons/bs";
 import { Button } from "primereact/button";
+import { StudentsService } from "../../../../services/students.service";
+import { Dialog } from "primereact/dialog";
+import NewProgramAchievementForm from "../Tabs/NewProgramAchievementForm"
+import { useNavigate } from "react-router-dom";
+import { toastStore } from "../../../../store/toast";
 
-const Tab2 = () => {
-  const programAchievements = [
-    {
-      name: "Science Fair Winner",
-      date: "Sept 2022",
-      description: "First Place in the Regional Science Fair for the project ,Renewable Energy Sources.",
-      skills: ["Communication", "Javascript", "Problem Solving"],
-    },
-    {
-      name: "Community Service Recognition",
-      date: "June 2022",
-      description: "Received recognition for her outstanding volunteer work in the local community.",
-      skills: ["Volunteering", "Teamwork", "Communication"],
-    },
-  ];
+const Tab2 = ({ student }) => {
+  const [ programAchievements, setProgramAchievements ] = useState([]);
 
-  const otherAchievements = [
-    {
-      name: "Youth Leadership Award",
-      date: "May 2021",
-      description: "Received the Youth Leadership Award for her dedication to community service and leadership skills.",
-      skills: ["Leadership", "Public Speaking", "Data Analysis"],
-    },
-    {
-      name: "Environmental Activism Recognition",
-      date: "Sept 2020",
-      description: "Recognised for her efforts to promote environmental awareness and sustainability",
-      skills: ["Microsoft", "Time Management", "Data Analysis"],
-    },
-  ];
+  const [ otherAchievements, setOtherAchievements ] = useState([])
+
+  const [isLoading, setIsLoading] = useState(false)
+  const goTo = useNavigate()
+  const { toast } = useContext(toastStore);
+  const [refetchAchievements, setRefetchAchievements] = useState(true)
+
+  useEffect(() => {
+    async function getStudentAchievements() {
+      const { data: studentAchievementsRes } = await StudentsService.getStudentAchievements(student.id)
+      setProgramAchievements(studentAchievementsRes.achievements.filter(achievement => achievement.type === "Program")) 
+      setOtherAchievements(studentAchievementsRes.achievements.filter(achievement => achievement.type === "Other"))
+      setRefetchAchievements(false)
+    }
+    if (refetchAchievements) {
+      getStudentAchievements()
+    }
+  }, [refetchAchievements, setProgramAchievements, setOtherAchievements, student])
+
+  const [showNewProgramAchievement, setShowNewProgramAchievement] = useState(false)
+  const [newProgramAchievementFormData,setFormData]=useState({
+    "name": "",
+    "date": "",
+    "description": "",
+    "skillGained": "",
+    "skillsGained": [],
+    "type": "Program"
+  })
+
+  async function saveNewAchievement() {
+    setIsLoading(true)
+
+    newProgramAchievementFormData.type = "Program";
+    newProgramAchievementFormData.skillsGained = newProgramAchievementFormData.skillGained.split(",").map(skill => skill.trim())
+
+    try {
+      await StudentsService.addStudentAchievement(student.id, newProgramAchievementFormData)
+      goTo(`/students/${student.id}?selectedTab=achievements`)
+      setShowNewProgramAchievement(false)
+      setRefetchAchievements(true)
+      setIsLoading(false)
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+      setIsLoading(false)
+    }
+
+    try {
+
+    } catch (e) {
+      setIsLoading(false)
+    }
+  }
+
+  const footerContent = (
+  
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+    {/* <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setVisible(false)}
+        className="custom-button"
+        outlined
+    /> */}
+    <Button
+        label="Save"
+        icon="pi pi-flag-fill"
+        onClick={() => saveNewAchievement("Program")}
+        className="custom-button"
+        loading={isLoading}
+    />
+    </div>
+  );
 
   return (
     <>
       <div>
-        <Tab2headings Name={'Program Achievements'} />
+
+      <Dialog
+        header={`New Program Achievement for ${student.firstName} ${student.lastName}`}
+        visible={showNewProgramAchievement}
+        style={{ width: "30vw" }}
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setShowNewProgramAchievement(false)}
+        footer={footerContent}
+      > 
+        <div>
+          <NewProgramAchievementForm formData={newProgramAchievementFormData} setFormData={setFormData}/>
+        </div>
+      </Dialog>
+
+
+        <Tab2headings Name={'Program Achievements'} setShowNewProgramAchievement={setShowNewProgramAchievement}/>  
 
         {programAchievements.map((achievement, index) => (
           <Tab2containers key={index} achievement={achievement} />
@@ -59,6 +124,7 @@ const Tab2 = () => {
 export default Tab2;
 
 export const Tab2containers = ({ achievement }) => {
+  //console.log('in container', achievement)
   return (
     <div style={{ marginBottom: '2rem' }}>
       <div className="achieve__container">
@@ -100,7 +166,7 @@ export const Tab2containers = ({ achievement }) => {
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          {achievement.skills.map((skill, index) => (
+          {achievement.skillsGained.map((skill, index) => (
             <p key={index} className="bottom-text">{skill}</p>
           ))}
         </div>
@@ -109,7 +175,8 @@ export const Tab2containers = ({ achievement }) => {
   );
 };
 
-export const Tab2headings = ({ Name }) => {
+export const Tab2headings = ({ Name, setShowNewProgramAchievement }) => {
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -117,8 +184,8 @@ export const Tab2headings = ({ Name }) => {
           {Name}
         </p>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Button icon={<BsPlus size={24} />} outlined className="p-button-rounded" />
-          <Button  icon={<BsPencil />} outlined className="p-button-rounded" />
+          <Button icon={<BsPlus size={24} />} onClick={() => setShowNewProgramAchievement(true)} outlined className="p-button-rounded" />
+          {/* <Button  icon={<BsPencil />} outlined className="p-button-rounded" /> */}
         </div>
       </div>
       <Divider />
