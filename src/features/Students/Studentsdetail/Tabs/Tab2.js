@@ -7,8 +7,12 @@ import { Button } from "primereact/button";
 import { StudentsService } from "../../../../services/students.service";
 import { Dialog } from "primereact/dialog";
 import NewProgramAchievementForm from "../Tabs/NewProgramAchievementForm"
+import NewOtherAchievementForm from "../Tabs/NewOtherAchievementForm"
 import { useNavigate } from "react-router-dom";
 import { toastStore } from "../../../../store/toast";
+
+const PROGRAM_ACHIEVEMENTS = 'Program Achievements'
+const OTHER_ACHIEVEMENTS = 'Other Achievements'
 
 const Tab2 = ({ student }) => {
   const [ programAchievements, setProgramAchievements ] = useState([]);
@@ -32,36 +36,47 @@ const Tab2 = ({ student }) => {
     }
   }, [refetchAchievements, setProgramAchievements, setOtherAchievements, student])
 
+  function showNewAchievement(name) {
+    if (name === PROGRAM_ACHIEVEMENTS) {
+      setShowNewProgramAchievement(true)
+    } else if (name === OTHER_ACHIEVEMENTS) {
+      setShowNewOtherAchievement(true)
+    }
+  }
+
   const [showNewProgramAchievement, setShowNewProgramAchievement] = useState(false)
-  const [newProgramAchievementFormData,setFormData]=useState({
+  const [showNewOtherAchievement, setShowNewOtherAchievement] = useState(false)
+  const [formData,setFormData]=useState({
     "name": "",
     "date": "",
     "description": "",
     "skillGained": "",
     "skillsGained": [],
-    "type": "Program"
+    "type": ""
   })
 
   async function saveNewAchievement() {
     setIsLoading(true)
 
-    newProgramAchievementFormData.type = "Program";
-    newProgramAchievementFormData.skillsGained = newProgramAchievementFormData.skillGained.split(",").map(skill => skill.trim())
+    formData.skillsGained = formData.skillGained.split(",").map(skill => skill.trim())
 
     try {
-      await StudentsService.addStudentAchievement(student.id, newProgramAchievementFormData)
+      await StudentsService.addStudentAchievement(student.id, formData)
       goTo(`/students/${student.id}?selectedTab=achievements`)
       setShowNewProgramAchievement(false)
+      setShowNewOtherAchievement(false)
       setRefetchAchievements(true)
       setIsLoading(false)
+      setFormData({
+        "name": "",
+        "date": "",
+        "description": "",
+        "skillGained": "",
+        "skillsGained": [],
+        "type": ""
+      })
     } catch (e) {
       toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
-      setIsLoading(false)
-    }
-
-    try {
-
-    } catch (e) {
       setIsLoading(false)
     }
   }
@@ -91,27 +106,28 @@ const Tab2 = ({ student }) => {
       <div>
 
       <Dialog
-        header={`New Program Achievement for ${student.firstName} ${student.lastName}`}
-        visible={showNewProgramAchievement}
+        header={`New Achievement for ${student.firstName} ${student.lastName}`}
+        visible={showNewProgramAchievement || showNewOtherAchievement}
         style={{ width: "30vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => setShowNewProgramAchievement(false)}
+        onHide={() => { setShowNewProgramAchievement(false); setShowNewOtherAchievement(false) }}
         footer={footerContent}
       > 
-        <div>
-          <NewProgramAchievementForm formData={newProgramAchievementFormData} setFormData={setFormData}/>
+        <div> 
+        {showNewProgramAchievement ? <NewProgramAchievementForm formData={formData} setFormData={setFormData}/> :
+          <NewOtherAchievementForm formData={formData} setFormData={setFormData}/> }
         </div>
       </Dialog>
 
 
-        <Tab2headings Name={'Program Achievements'} setShowNewProgramAchievement={setShowNewProgramAchievement}/>  
+        <Tab2headings Name={PROGRAM_ACHIEVEMENTS} showNewAchievement={showNewAchievement}/>  
 
         {programAchievements.map((achievement, index) => (
           <Tab2containers key={index} achievement={achievement} />
         ))}
       </div>
       <div>
-        <Tab2headings Name={'Other Achievements'} />
+        <Tab2headings Name={OTHER_ACHIEVEMENTS} showNewAchievement={showNewAchievement} />
 
         {otherAchievements.map((achievement, index) => (
           <Tab2containers key={index} achievement={achievement} />
@@ -175,7 +191,7 @@ export const Tab2containers = ({ achievement }) => {
   );
 };
 
-export const Tab2headings = ({ Name, setShowNewProgramAchievement }) => {
+export const Tab2headings = ({ Name, showNewAchievement }) => {
 
   return (
     <>
@@ -184,7 +200,7 @@ export const Tab2headings = ({ Name, setShowNewProgramAchievement }) => {
           {Name}
         </p>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Button icon={<BsPlus size={24} />} onClick={() => setShowNewProgramAchievement(true)} outlined className="p-button-rounded" />
+        <Button icon={<BsPlus size={24} />} onClick={() => showNewAchievement(Name)} outlined className="p-button-rounded" />
           {/* <Button  icon={<BsPencil />} outlined className="p-button-rounded" /> */}
         </div>
       </div>

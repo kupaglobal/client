@@ -3,12 +3,12 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Tag } from "primereact/tag";
 
-const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
+const NewOrganisationForm = ({ formData, setFormData, student }) => {
     const [error, setError] = useState()
     const [skillGained, setSkillGained] = useState('')
     const onChange=(e)=>{
         setError('')
-        setFormData({...formData,[e.target.name]:e.target.value, type: 'Program'})
+        setFormData({...formData,[e.target.name]:e.target.value, type: 'Other'})
         if (e.target.name === 'skillGained') {
             setSkillGained(e.target.value)
         }
@@ -20,7 +20,7 @@ const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
         e.target.preventDefault()
         setSelectedSkillsGained([...new Set([...selectedSkillsGained, skillGained])])
         setError('')
-        setFormData({...formData, skillGained: '', skillsGained: selectedSkillsGained, type: 'Program' })
+        setFormData({...formData, skillGained: '', skillsGained: selectedSkillsGained, type: 'Other' })
     }
 
     const handleEnterKey = async (event) => {
@@ -62,4 +62,4 @@ const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
     );
 };
 
-export default NewProgramAchievementForm;
+export default NewOrganisationForm;
