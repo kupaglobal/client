@@ -20,4 +20,12 @@ export class StudentsService {
     static addStudentAchievement(studentId, studentAchievementDto) {
         return httpClient.post(`/students/${studentId}/achievements`, studentAchievementDto)
     }
+
+    static getStudentPortfolio(studentId) {
+        return httpClient.get(`/students/${studentId}/portfolio`)
+    }
+
+    static addStudentPortfolioItem(studentId, studentPortfolioItemDto) {
+        return httpClient.post(`/students/${studentId}/portfolio`, studentPortfolioItemDto)
+    }
 }

@@ -32,7 +32,7 @@ const Studenttabs1 = ({ student }) => {
           <Tab3 />
         </TabPanel> */}
         <TabPanel header="Portfolio" rightIcon="" style={{ fontSize: "14px" }}>
-          <Tab4 />
+          <Tab4 student={student} />
         </TabPanel>
       </TabView>
     </Card>

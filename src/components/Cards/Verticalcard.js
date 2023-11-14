@@ -10,7 +10,7 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
     /> : ''
   );
   const emit = (type) => {
-    onEmit({ type: type , payload: id })
+//    onEmit({ type: type , payload: id })
   }
   if (!footer) {
     footer = (

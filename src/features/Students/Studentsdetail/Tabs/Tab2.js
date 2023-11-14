@@ -94,7 +94,7 @@ const Tab2 = ({ student }) => {
     <Button
         label="Save"
         icon="pi pi-flag-fill"
-        onClick={() => saveNewAchievement("Program")}
+        onClick={() => saveNewAchievement()}
         className="custom-button"
         loading={isLoading}
     />
@@ -208,3 +208,4 @@ export const Tab2headings = ({ Name, showNewAchievement }) => {
     </>
   );
 };
+

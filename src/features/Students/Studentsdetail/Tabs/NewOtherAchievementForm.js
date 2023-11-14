@@ -3,7 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Tag } from "primereact/tag";
 
-const NewOrganisationForm = ({ formData, setFormData, student }) => {
+const NewOtherAchievementForm = ({ formData, setFormData, student }) => {
     const [error, setError] = useState()
     const [skillGained, setSkillGained] = useState('')
     const onChange=(e)=>{
@@ -62,4 +62,4 @@ const NewOrganisationForm = ({ formData, setFormData, student }) => {
     );
 };
 
-export default NewOrganisationForm;
+export default NewOtherAchievementForm;
