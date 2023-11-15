@@ -61,7 +61,7 @@ export default function Popupcontent({ onReload }) {
       <Button
         outlined
         icon={<AiOutlinePlus />}
-        label="Add new student"
+        label="Add Students"
         className="custom-button"
         onClick={() => setVisibility(true)}
       />
