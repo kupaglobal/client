@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
-import { Typography, Box, IconButton } from "@mui/material";
-import {MdFullscreenExit, MdFullscreen} from 'react-icons/md'
-import { toastStore } from "../../../store/toast";
+import { Typography, IconButton } from "@mui/material";
+import { MdFullscreenExit, MdFullscreen} from 'react-icons/md'
 import { templatesStore } from "../../../store/templates";
 import { studentsStore } from "../../../store/students";
 import Table from "../../../components/Table/Table";
