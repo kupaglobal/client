@@ -12,7 +12,7 @@ const TemplateCard = ({id, title, category, date, description, hideImg, onDownlo
   const footer = (
     <div style={{display:'flex', justifyContent: 'flex-end' }}>
       <Button size="small" icon="pi pi-download" loading={loading} onClick={() => onDownloadTemplate(id)} />
-      <Button size="small" icon="pi pi-upload" className="ml-1" onClick={onSelected} />
+      <Button size="small" icon="pi pi-check" className="ml-1" onClick={onSelected} />
     </div>
   );
 

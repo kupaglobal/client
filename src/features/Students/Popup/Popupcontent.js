@@ -3,17 +3,22 @@ import { Dialog } from "primereact/dialog";
 import { AiOutlinePlus } from "react-icons/ai";
 import Dropdowncomp from "../../../components/Dropdown";
 import Templatetab from "./Templatetab";
+import ErroredStudents from "./ErroredStudents";
 import { useContext, useEffect, useState } from "react";
-import { RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
+import { HIDE_ERRORED_STUDENTS_POPUP, RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
 import { studentsStore } from "../../../store/students";
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
-  const {showAddStudentsPopup: visible, reloadStudents} = state
+  const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents} = state
 
   const setVisibility = (visibility) => {
     dispatch({
       type: SHOW_ADD_STUDENTS_POPUP,
+      payload: visibility
+    })
+    dispatch({
+      type: HIDE_ERRORED_STUDENTS_POPUP,
       payload: visibility
     })
   } 
@@ -61,14 +66,14 @@ export default function Popupcontent({ onReload }) {
       <Button
         outlined
         icon={<AiOutlinePlus />}
-        label="Add Students"
+        label="Add Student"
         className="custom-button"
         onClick={() => setVisibility(true)}
       />
 
       <Dialog
         header="New student data"
-        visible={visible}
+        visible={showAddStudentsPopup}
         style={{ width: "60vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
@@ -89,6 +94,22 @@ export default function Popupcontent({ onReload }) {
           <Templatetab />
         </div>
       </Dialog>
+
+      <Dialog
+        header="Errored student data"
+        visible={showErroredStudentsPopup}
+        style={{ width: "60vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setVisibility(false)}
+        footer={footerContent}
+      >
+        <div>
+          <ErroredStudents />
+        </div>
+      </Dialog>
+
+
     </>
   );
 }

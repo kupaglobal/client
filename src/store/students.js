@@ -1,11 +1,14 @@
 import { createContext, useReducer } from "react";
-import { RELOAD, SET_STUDENTS, SET_STUDENT_FIELDS, SHOW_ADD_STUDENTS_POPUP } from "./actions";
+import { RELOAD, SET_STUDENTS, SET_STUDENT_FIELDS, SHOW_ADD_STUDENTS_POPUP, SHOW_ERRORED_STUDENTS_POPUP, HIDE_ERRORED_STUDENTS_POPUP } from "./actions";
 
 const initialState = {
   students: [],
   studentFields: [],
+  erroredStudents: [],
   showAddStudentsPopup: false,
-  reloadStudents: false
+  showErroredStudentsPopup: false,
+  reloadStudents: false,
+  erroredStudentsMessage: ''
 };
 
 const studentsStore = createContext(initialState);
@@ -20,6 +23,10 @@ const StudentsProvider = ({ children }) => {
         return { ...state, studentFields: action.payload };
       case SHOW_ADD_STUDENTS_POPUP:
         return { ...state, showAddStudentsPopup: action.payload };
+      case SHOW_ERRORED_STUDENTS_POPUP:
+        return { ...state, erroredStudents: action.payload.erroredStudents, erroredStudentsMessage: action.payload.message, showErroredStudentsPopup: true };
+      case HIDE_ERRORED_STUDENTS_POPUP:
+        return { ...state, erroredStudents: [], showErroredStudentsPopup: false };
       case RELOAD: 
         return { ...state, reloadStudents: action.payload }
       default:

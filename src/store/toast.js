@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const toastStore = createContext(initialState);
-console.log(toastStore)
+
 const { Provider } = toastStore;
 const ToastProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
@@ -18,11 +18,11 @@ const ToastProvider = ({ children }) => {
     }
   }, initialState);
     const toast = (severity, message) => {
-        if (!severity) {
-            dispatch({ type: SET_TOAST, payload: { severity: null, message: null }})
-        } else {
-            dispatch({ type: SET_TOAST, payload: { severity, message }})
-        }
+      if (!severity) {
+        dispatch({ type: SET_TOAST, payload: { severity: null, message: null }})
+      } else {
+        dispatch({ type: SET_TOAST, payload: { severity, message }})
+      }
     }
   return <Provider value={{ state, dispatch, toast }}>{children}</Provider>;
 };

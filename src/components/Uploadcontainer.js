@@ -5,7 +5,7 @@ import { templatesStore } from "../store/templates";
 import { authStore } from "../store/auth";
 import { getEnv } from "../utils/env";
 import { toastStore } from "../store/toast";
-import { RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../store/actions";
+import { RELOAD, SHOW_ADD_STUDENTS_POPUP, SHOW_ERRORED_STUDENTS_POPUP } from "../store/actions";
 import { studentsStore } from "../store/students";
 
 const StyledFileUpload = styled(FileUpload)`
@@ -31,14 +31,46 @@ const Uploadcontainer = () => {
     event.xhr.setRequestHeader('Authorization', `Bearer ${authState.token}`);
   }
   const onUpload = (event) => {
-    toast('success', 'Students uploaded successfully')
+    let toastMessage = "";
+    let toastType = "success"
+    const res = event.xhr;
+    const response = JSON.parse(res.response);
+    const { created, errored: erroredStudents } = response;
+
+    if (response && response.errored && response.errored.length === 0) {
+      toastMessage = 'Students uploaded successfully';
+      studentsDispatch({
+        type: RELOAD,
+        payload: true
+      })
+    } else if (response && response.errored && response.errored.length > 0) {
+      if (created.length > 0) {
+        toastType = "warning"
+        toastMessage = `${created.length} ${created.length !== 1 ? 'Students were created' : 'Student was created'}. However ${erroredStudents.length} ${erroredStudents.length !== 1 ? 'were not' : 'was not'} saved due to validation issues.`
+      } else {
+        toastType = "error"
+        toastMessage = `${erroredStudents.length} Student(s) were not saved due to validation issues.`
+      }
+    }
+
+    toast(toastType, toastMessage)
+
     studentsDispatch({
       type: SHOW_ADD_STUDENTS_POPUP,
       payload: false
     })
+
     studentsDispatch({
       type: RELOAD,
       payload: true
+    })
+
+    studentsDispatch({
+      type: SHOW_ERRORED_STUDENTS_POPUP,
+      payload: {
+        erroredStudents: erroredStudents,
+        message: toastMessage
+      }
     })
   }
 

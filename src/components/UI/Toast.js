@@ -10,7 +10,7 @@ export default function ToastContainer() {
         if (state.severity === 'error') {
            toast.current.show({severity:'error', summary: 'Ooops...', detail: state.message, life: 3000});
         }
-        if (state.severity === 'warn') {
+        if (state.severity === 'warning') {
             toast.current.show({severity:'warn', summary: 'Warning', detail: state.message, life: 3000});
         }
         if (state.severity === 'info') {
