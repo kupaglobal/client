@@ -2,12 +2,16 @@ import {useState} from 'react'
 import { Dropdown } from 'primereact/dropdown';
         
 
-const Dropdowncomp = ({projectoption}) => {
+const Dropdowncomp = ({projectoption, onSelected}) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
+  const handleSelectedOption = (e) => {
+    setSelectedOption(e.value)
+    onSelected(e.value)
+  }
   return (
     <div style={{paddingTop: '10px'}}>
-      <Dropdown value={selectedOption} onChange={(e) => setSelectedOption(e.value)} options={projectoption} optionLabel="name" 
+      <Dropdown value={selectedOption} onChange={(e) => handleSelectedOption(e)} options={projectoption} optionLabel="name" 
                 placeholder="Select an option"/>
     </div>
   )

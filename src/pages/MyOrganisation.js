@@ -146,7 +146,6 @@ const OrganisationContainer = () => {
   const [profile, setProfile] = useState(null)
   const { dispatch } = useContext(authStore);
 
-
   useEffect(() => {
     async function fetchProfile() {
       setRefetchProfile(false)

@@ -1,12 +1,15 @@
 // import { useState } from "react";
 import Table from "../../components/Table/Table";
-import Studentgroup from "./Studentgroup";
+import Studentgroup from "../Groups/Studentgroup";
 import "./student.css";
 import { TabView, TabPanel } from "primereact/tabview";
 import Popupcontent from "./Popup/Popupcontent";
 import { toastStore } from "../../store/toast";
 import { useContext, useEffect, useState } from "react";
 import { StudentsService } from "../../services/students.service";
+import { studentsStore } from "../../store/students";
+import { SET_SELECTED_STUDENTS } from "../../store/actions";
+import { useSearchParams } from "react-router-dom";
 
 
 // const handleButtonClick = (row) => {
@@ -50,9 +53,16 @@ const tableRowItem = "students";
 
 
 const Studentcontainer = () => {
+  const tabs = ['Students', 'Groups']
+  const [queryParams] = useSearchParams()
+  const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
+  const [ selectedTab, setSelectedTab ] = useState(index >= 0 ? index : 0)
+
   const [students, setStudents] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadStudents, setReloadStudents ] = useState(true)
+  const { state, dispatch } = useContext(studentsStore)
+  const { selectedStudents} = state
 
   useEffect(() => {
     async function fetchStudents() {
@@ -71,11 +81,19 @@ const Studentcontainer = () => {
     }
   }, [reloadStudents, toast])
 
+  const handleSelectedRowsChanged = ({selectedRows}) => {
+    dispatch({ 
+      type: SET_SELECTED_STUDENTS,
+      payload: selectedRows
+    })
+    console.log(selectedStudents)
+  }
+
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
-      <TabView>
+      <TabView activeIndex={selectedTab}>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>}/>
+          <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
         </TabPanel>
         <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentgroup />

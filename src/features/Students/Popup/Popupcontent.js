@@ -7,10 +7,22 @@ import ErroredStudents from "./ErroredStudents";
 import { useContext, useEffect, useState } from "react";
 import { HIDE_ERRORED_STUDENTS_POPUP, RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
 import { studentsStore } from "../../../store/students";
+import { GroupsService } from "../../../services/groups.service";
+import { toastStore } from "../../../store/toast";
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
-  const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents} = state
+  const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
+  const [addToGroupVisibility, setAddToGroupVisibility] = useState(false)
+  const { toast } = useContext(toastStore);
+  const [groups, setGroups] = useState([])
+  const [selectedGroup, setSelectedGroup] = useState('')
+
+  const addSelectedStudentsToGroup = async () => {
+    await GroupsService.addStudentsToGroup(selectedStudents.map(selectedStudent => selectedStudent.id), selectedGroup.id)
+    setAddToGroupVisibility(false)
+    toast('success', `${selectedStudents.length} Students were added to the group: ${selectedGroup.name}`)
+  } 
 
   const setVisibility = (visibility) => {
     dispatch({
@@ -22,6 +34,20 @@ export default function Popupcontent({ onReload }) {
       payload: visibility
     })
   } 
+
+  useEffect(() => {
+    async function fetchGroups() {
+      try {
+        const {data: groupsRes} = await GroupsService.getGroups()
+        const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
+        setGroups(groups)
+      } catch (e) {
+        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+        console.log(e)
+      }
+    }
+    fetchGroups()
+  }, [toast])
 
   useEffect(() => {
     if (reloadStudents) {
@@ -51,6 +77,25 @@ export default function Popupcontent({ onReload }) {
       /> */}
     </div>
   );
+  const addToGroupFooterContent = (
+
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setAddToGroupVisibility(false)}
+        className="custom-button"
+        outlined
+      />
+      <Button
+        label="Add to group"
+        icon="pi pi-user-plus"
+        onClick={() => addSelectedStudentsToGroup()}
+        className="custom-button"
+        disabled={!selectedGroup}
+      />
+    </div>
+  );
   // const [selectedOption, setSelectedOption] = useState("");
   const [projectOptions] = useState([
     { name: "Via template", code: 'VT' },
@@ -63,6 +108,14 @@ export default function Popupcontent({ onReload }) {
 
   return (
     <>
+      {selectedStudents.length > 0 ? <Button
+        outlined
+        icon={<AiOutlinePlus />}
+        label="Add Students To Group"
+        className="custom-button mx-2"
+        onClick={() => setAddToGroupVisibility(true)}
+      /> : selectedStudents}
+       
       <Button
         outlined
         icon={<AiOutlinePlus />}
@@ -70,6 +123,26 @@ export default function Popupcontent({ onReload }) {
         className="custom-button"
         onClick={() => setVisibility(true)}
       />
+      <Dialog
+        header="Add Students to Group"
+        visible={addToGroupVisibility}
+        style={{ width: "60vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setAddToGroupVisibility(false)}
+        footer={addToGroupFooterContent}
+      >
+        <div>
+          <p style={{ fontSize: "13px" }}>
+            Select a group to add the students to
+          </p>
+          <Dropdowncomp
+            projectoption={groups}
+            onSelected={setSelectedGroup}
+          />
+        </div>
+
+      </Dialog>
 
       <Dialog
         header="New student data"

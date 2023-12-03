@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { RELOAD, SET_STUDENTS, SET_STUDENT_FIELDS, SHOW_ADD_STUDENTS_POPUP, SHOW_ERRORED_STUDENTS_POPUP, HIDE_ERRORED_STUDENTS_POPUP } from "./actions";
+import { RELOAD, SET_STUDENTS, SET_STUDENT_FIELDS, SHOW_ADD_STUDENTS_POPUP, SHOW_ERRORED_STUDENTS_POPUP, HIDE_ERRORED_STUDENTS_POPUP, SET_SELECTED_STUDENTS } from "./actions";
 
 const initialState = {
   students: [],
@@ -8,7 +8,8 @@ const initialState = {
   showAddStudentsPopup: false,
   showErroredStudentsPopup: false,
   reloadStudents: false,
-  erroredStudentsMessage: ''
+  erroredStudentsMessage: '',
+  selectedStudents: []
 };
 
 const studentsStore = createContext(initialState);
@@ -27,6 +28,8 @@ const StudentsProvider = ({ children }) => {
         return { ...state, erroredStudents: action.payload.erroredStudents, erroredStudentsMessage: action.payload.message, showErroredStudentsPopup: true };
       case HIDE_ERRORED_STUDENTS_POPUP:
         return { ...state, erroredStudents: [], showErroredStudentsPopup: false };
+      case SET_SELECTED_STUDENTS:
+        return { ...state, selectedStudents: action.payload };
       case RELOAD: 
         return { ...state, reloadStudents: action.payload }
       default:

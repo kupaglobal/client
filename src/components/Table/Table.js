@@ -3,6 +3,7 @@ import "./table.css";
 import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { Button } from "primereact/button";
 
 const customStyles = {
   rows: {
@@ -37,8 +38,10 @@ const Table = ({
   // setFilteredSessions,
   tableRowItem,
   popupContent = null,
-  hideSearch = false
+  hideSearch = false,
+  handleSelectedRowsChanged = () => {}
 }) => {
+  console.log(handleSelectedRowsChanged)
   const navigate = useNavigate();
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
@@ -69,6 +72,17 @@ const Table = ({
   // const handleRowSelected = (rows) => {
   //   // Add this function
   // };
+
+  const contextActions = React.useMemo(() => {
+		const handleDelete = () => {
+		};
+
+		return (
+			<Button key="delete" onClick={handleDelete} style={{ backgroundColor: 'red' }} icon>
+				Delete
+			</Button>
+		);
+	}, []);
 
 
   return (
@@ -107,9 +121,9 @@ const Table = ({
         onRowClicked={handleRowClick}
         pagination
         highlightOnHover
+        contextActions={contextActions}
         selectableRows // Enable selection
-        selectableRowsHighlight
-        selectableRowsVisibleOnly
+        onSelectedRowsChange={handleSelectedRowsChanged}
         customStyles={customStyles}
       />
     </div>

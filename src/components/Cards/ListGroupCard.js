@@ -4,7 +4,7 @@ import MeatballMenu from "../MeatballMenu";
 
 
 
-const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, options}) => {
+const ListGroupCard = ({group, options}) => {
     const handleClick = () =>{
         console.log("new")
     }
@@ -12,14 +12,12 @@ const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, opt
     <>
       <div className="horizontal-card" onClick={handleClick}   >
         <div className="frame">
-          <div className="div">{groupname}</div>
+          <div className="div">{group.name}</div>
         </div>
         <div className="frame-2">
           <div className="frame-3">
-            <div className="text-wrapper-2">{studentname1}</div>
-            <div className="text-wrapper-2">{studentname2}</div>
-            <div className="text-wrapper-2">{studentname3}</div>            <div className="text-wrapper-2">{studentname3}</div>
-
+            {group.students.map(student => <div className="text-wrapper-2">{student.firstName} {student.lastName}</div>)}
+            
           </div>
 
         </div>
@@ -30,7 +28,7 @@ const Horiontalcard = ({studentname1, studentname2, studentname3, groupname, opt
     </>
   );
 };
-Horiontalcard.defaultProps = {
+ListGroupCard.defaultProps = {
     studentname1: "Default Student 1",
     studentname2: "Default Student 2",
     studentname3: "Default Student 3",
@@ -39,4 +37,4 @@ Horiontalcard.defaultProps = {
   };
 
 
-export default Horiontalcard;
+export default ListGroupCard;
