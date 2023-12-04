@@ -1,0 +1,67 @@
+.custom-accordion-header {
+  font-size: 14px;
+}
+
+.custom-accordion-content {
+  margin-right: 20px;
+  padding: 5px 12px;
+  font-weight: 500;
+}
+.flex__container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);;
+  margin-bottom: 3rem;
+}
+.achieve__container{
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+.achieve__section-bottom{
+  display: flex;
+  gap: 2rem;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.splitter{
+  padding: 2rem;
+}
+.splitter__heading{
+  font-size: 14px;
+  font-weight: 600;
+  color: #8a92a6;
+}
+
+.splitter__content{
+margin-top: 1rem;
+display: flex;
+flex-direction: column;
+gap: 20px;
+font-size: 13px;
+}
+.text__icon{
+  padding-right: 8px;
+  color: var(--secondary-color);
+}
+
+/* Custom styles for Breadcrumb */
+.p-breadcrumb {
+  padding: 0;
+border: none;
+margin-bottom: 20px;
+}
+.p-menuitem	{
+  padding: 10px;
+  font-size: 12px;
+}
+
+.p-menuitem-text:hover{
+  color: var(--primary-color);
+font-weight: 600;
+}
+.first-breadcrumb .p-breadcrumb-home .p-breadcrumb-chevron {
+  display: none;
+}
+

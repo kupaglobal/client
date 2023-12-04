@@ -11,7 +11,7 @@ const MeatballMenu = ({ options }) => {
     <>
       <Toast ref={toast}></Toast>
 
-      <Menu model={options} popup  popupAlignment="right"  ref={menuRight}/>
+      <Menu model={options} popup popupAlignment="right"  ref={menuRight}/>
       <Button
         icon="pi pi-ellipsis-v"
         onClick={(event) => menuRight.current.toggle(event)}

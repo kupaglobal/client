@@ -74,6 +74,7 @@ const Studentgroup = () => {
         onClick={() => createGroup()}
         className="custom-button"
         disabled={!formData.name}
+        loading={isLoading}
       />
     </div>
   );

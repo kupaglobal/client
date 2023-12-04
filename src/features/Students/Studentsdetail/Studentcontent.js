@@ -37,7 +37,7 @@ const Studentcontent = ({ student }) => {
           }}
         >
           <Avatar
-            name="BD"
+            name={`${student.firstName} ${student.lastName}`}
             size="100"
             textSizeRatio={1.75}
             round={true}

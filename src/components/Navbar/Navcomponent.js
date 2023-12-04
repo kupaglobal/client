@@ -10,6 +10,7 @@ import Feedback from "../../pages/Feedback";
 import Inbox from "../../pages/Inbox";
 import MyOrganisation from "../../pages/MyOrganisation";
 import Studentdet from "../../features/Students/Studentsdetail/Studentdet";
+import Assessmentdet from "../../features/Assessments/Assessmentsdetail/Assessmentdet";
 
 const Navcomponent = () => {
   return (
@@ -23,6 +24,7 @@ const Navcomponent = () => {
             <Route path="/students/:id" element={<Studentdet/>}/>
 
             <Route path="/assessments" element={<Assessments/>}/>
+            <Route path="/assessments/:id" element={<Assessmentdet/>}/>
             <Route path="/reportings" element={<Reports />}/>
             <Route path="/feedbacks" element={<Feedback />}/>
             <Route path="/inbox" element={<Inbox />}/>

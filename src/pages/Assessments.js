@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import AssessmentsContainer from "../features/Assessments/AssessmentsContainer";
 
 const Assessments = () => {
   return (
     <div>
-      <h1 className='module__heading'>Assessments Page</h1>
+      <AssessmentsContainer />
     </div>
-  )
-}
+  );
+};
 
 export default Assessments;
