@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdAutoGraph } from "react-icons/md";
 import { HiOutlineHeart } from "react-icons/hi";
 import { Tag } from "primereact/tag";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import DetailsContent from "../../../../components/DetailsContent";
+import AssessmentGraph from "../AssessmentGraph";
 
 const AssessmentDashboard = ({ assessment }) => {
+    console.log('ass', assessment)
   const userDetails = [
-    { heading: `Highest ${assessment.type}`, paragraph: 70 },
-    { heading: `Lowest ${assessment.type}`, paragraph: 10 },
-    { heading: `Average ${assessment.type}`, paragraph: 35 },
-    { heading: "Highest Student", paragraph: "Bukayo Saka" },
-    { heading: "Lowest Student", paragraph: "David De Gea" },
+    { heading: `Highest ${assessment.type}`, paragraph: assessment.stats.highest },
+    { heading: `Lowest ${assessment.type}`, paragraph: assessment.stats.lowest },
+    { heading: `Average ${assessment.type}`, paragraph: assessment.stats.average },
+    { heading: "Highest Student", paragraph: `${assessment.highestStudent.firstName} ${assessment.highestStudent.lastName}` },
+    { heading: "Lowest Student", paragraph: `${assessment.lowestStudent.firstName} ${assessment.lowestStudent.lastName}` },
   ];
+
+  const sortScoreResults = (assessmentResults) => {
+    const zeroToHalf = assessmentResults.filter(result => result.score < 50).length;
+    const halfToThreeQuarter = assessmentResults.filter(result => result.score >= 50 && result.score < 75).length;
+    const threeQuarterToHundred = assessmentResults.filter(result => result.score >=75 && result.score <= 100).length;
+
+    return {
+        '0-50%': zeroToHalf,
+        '50-75%': halfToThreeQuarter,
+        '75-100%': threeQuarterToHundred
+    }
+  }
+
+  const sortGradeResults = (assessmentResults) => {
+    const labels = [new Set(...assessmentResults.map(result => result.grade))]
+    const results = {}
+    labels.forEach(label => {
+        results[label] = assessmentResults.filter(result => result.grade === label).length
+    })
+
+    return results
+  }
+  const [results, setResults] = useState(assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results))
 
   return (
     <div>
@@ -45,7 +70,7 @@ const AssessmentDashboard = ({ assessment }) => {
               </div>
             }
           >
-            {/* {graphHere} */}
+            <AssessmentGraph results={Object.values(results)} labels={Object.keys(results)} />
           </AccordionTab>
           <AccordionTab
             headerClassName="custom-accordion-header"
