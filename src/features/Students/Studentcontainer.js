@@ -56,7 +56,7 @@ const Studentcontainer = () => {
   const tabs = ['Students', 'Groups']
   const [queryParams] = useSearchParams()
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
-  const [ selectedTab, setSelectedTab ] = useState(index >= 0 ? index : 0)
+  const [ selectedTab ] = useState(index >= 0 ? index : 0)
 
   const [students, setStudents] = useState([])
   const { toast } = useContext(toastStore);

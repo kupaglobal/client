@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
-import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
-import { Checkbox } from "primereact/checkbox";
 import { ucFirst } from "../../../utils";
 import { toastStore } from "../../../store/toast";
 import { GroupsService } from "../../../services/groups.service";
@@ -12,18 +10,6 @@ import Dropdowncomp from "../../../components/Dropdown";
 import { AssessmentsService } from "../../../services/assessments.service";
 
 const Assessmentcontent = ({ assessment }) => {
-  const handleClickOpen = () => {};
-  const categories = [
-    // { name: "Review assessment", key: "RA" },
-    // { name: "Submit portfolio files", key: "SPF" },
-    // { name: "Request for feedback", key: "RCE" },
-  ];
-
-  const [selectedCategories] = useState([categories[1]]);
-  const userDetails = [
-    { heading: "Type", paragraph: assessment.type },
-  ];
-
   const { toast } = useContext(toastStore)
 
 

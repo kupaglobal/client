@@ -4,7 +4,6 @@ import Assessmentcontent from "./Assessmentcontent";
 // import Studenttabs1 from "./Studenttabs1";
 import MeatballMenu from "../../../components/MeatballMenu";
 import { useParams } from "react-router-dom";
-import { StudentsService } from "../../../services/students.service";
 import { AssessmentsService } from "../../../services/assessments.service";
 import { toastStore } from "../../../store/toast";
 import AssessmentTabs from "./AssessmentTabs";
@@ -36,7 +35,7 @@ const Assessmentdet = () => {
         }
     } 
     fetchAssessment()
-  }, [assessmentId])
+  }, [assessmentId, toast])
 
   return (
     <div>

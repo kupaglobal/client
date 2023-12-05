@@ -5,7 +5,7 @@ import { toastStore } from "../../store/toast";
 
 const NewGroupForm = ({ formData, setFormData }) => {
     const { toast } = useContext(toastStore)
-    const [error, setError] = useState('')
+    const [error] = useState('')
     const onChange=(e)=>{
         setFormData({ ...formData, [e.target.name]:e.target.value })
     }

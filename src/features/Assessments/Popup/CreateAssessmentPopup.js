@@ -2,34 +2,20 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { AiOutlinePlus } from "react-icons/ai";
 import Dropdowncomp from "../../../components/Dropdown";
-import Templatetab from "./Templatetab";
-import ErroredStudents from "./ErroredStudents";
 import { useContext, useEffect, useState } from "react";
-import { HIDE_ERRORED_STUDENTS_POPUP, RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
+import { RELOAD } from "../../../store/actions";
 import { studentsStore } from "../../../store/students";
-import { GroupsService } from "../../../services/groups.service";
 import { toastStore } from "../../../store/toast";
 import { InputText } from "primereact/inputtext";
 import { AssessmentsService } from "../../../services/assessments.service";
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
-  const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
+  const { reloadStudents} = state
   const [createAssessmentVisibility, setCreateAssessmentVisibility] = useState(false)
   const { toast } = useContext(toastStore);
   const [selectedType, setSelectedType] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
-  const setVisibility = (visibility) => {
-    dispatch({
-      type: SHOW_ADD_STUDENTS_POPUP,
-      payload: visibility
-    })
-    dispatch({
-      type: HIDE_ERRORED_STUDENTS_POPUP,
-      payload: visibility
-    })
-  } 
 
   useEffect(() => {
     if (reloadStudents) {

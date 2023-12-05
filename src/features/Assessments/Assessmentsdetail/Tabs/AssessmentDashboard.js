@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { MdAutoGraph } from "react-icons/md";
 import { HiOutlineHeart } from "react-icons/hi";
-import { Tag } from "primereact/tag";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import DetailsContent from "../../../../components/DetailsContent";
 import AssessmentGraph from "../AssessmentGraph";
 
 const AssessmentDashboard = ({ assessment }) => {
-    console.log('ass', assessment)
   const userDetails = [
     { heading: `Highest ${assessment.type}`, paragraph: assessment.stats.highest },
     { heading: `Lowest ${assessment.type}`, paragraph: assessment.stats.lowest },
@@ -37,7 +35,7 @@ const AssessmentDashboard = ({ assessment }) => {
 
     return results
   }
-  const [results, setResults] = useState(assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results))
+  const [results] = useState(assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results))
 
   return (
     <div>

@@ -5,7 +5,6 @@ import { TabView, TabPanel } from "primereact/tabview";
 import Popupcontent from "./Popup/CreateAssessmentPopup";
 import { toastStore } from "../../store/toast";
 import { useContext, useEffect, useState } from "react";
-import { studentsStore } from "../../store/students";
 import { useSearchParams } from "react-router-dom";
 import { AssessmentsService } from "../../services/assessments.service";
 import { ucFirst } from "../../utils"
@@ -41,13 +40,11 @@ const Assessmentscontainer = () => {
   const tabs = ['Assessments']
   const [queryParams] = useSearchParams()
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
-  const [ selectedTab, setSelectedTab ] = useState(index >= 0 ? index : 0)
+  const [ selectedTab] = useState(index >= 0 ? index : 0)
 
   const [assessments, setAssessments] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadAssessments, setReloadAssessments ] = useState(true)
-  const { state, dispatch } = useContext(studentsStore)
-  const { selectedStudents} = state
 
   useEffect(() => {
     async function fetchAssessments() {

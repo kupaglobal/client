@@ -7,7 +7,7 @@ export default function AssessmentGraph({ labels, results = [], colors = ['blue'
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        const documentStyle = getComputedStyle(document.documentElement);
+        // const documentStyle = getComputedStyle(document.documentElement);
         const data = {
             labels,
             datasets: [
@@ -40,7 +40,7 @@ export default function AssessmentGraph({ labels, results = [], colors = ['blue'
 
         setChartData(data);
         setChartOptions(options);
-    }, []);
+    }, [labels, results]);
 
     return (
         <div className="card flex justify-content-center">
