@@ -111,7 +111,7 @@ const Table = ({
         </div>
         <div style={{ alignSelf: "center"}}>
        
-          {popupContent}
+          {popupContent ? popupContent : null}
         </div>
       </div>
 

@@ -8,14 +8,23 @@ import { GroupsService } from "../../../services/groups.service";
 import { Dialog } from "primereact/dialog";
 import Dropdowncomp from "../../../components/Dropdown";
 import { AssessmentsService } from "../../../services/assessments.service";
+import DetailsContent from "../../../components/DetailsContent";
+import Avatar from "react-avatar";
+import { cleanedDateStr } from "../../../utils/moment";
+import { Tag } from "primereact/tag";
+import AssessmentResultsUploadContainer from "../AssessmentResultsUploadContainer";
 
-const Assessmentcontent = ({ assessment }) => {
+const Assessmentcontent = ({ assessment, onReload }) => {
   const { toast } = useContext(toastStore)
 
-
+  const [uploadTemplateVisibility, setUploadTemplateVisibility] = useState(false);
   const [downloadTemplateVisibility, setDownloadTemplateVisibility] = useState(false);
   const [groups, setGroups] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const assessmentDetails = [
+    { heading: "Date Conducted", paragraph: cleanedDateStr(assessment.dateConducted) },
+    { heading: "Description", paragraph: assessment.description },
+  ];
 
   useEffect(() => {
     async function fetchGroups() {
@@ -27,7 +36,7 @@ const Assessmentcontent = ({ assessment }) => {
         toast('error',e.response?.data?.message ? e.response?.data?.message : e.message)
         console.log(e)
       }
-    }
+  }
     fetchGroups()
   }, [toast])
   const [selectedGroup, setSelectedGroup] = useState('')
@@ -44,8 +53,12 @@ const Assessmentcontent = ({ assessment }) => {
     }
   }
 
-  const downloadTemplateFooterContent = (
+  const hideUploadContainer = () => {
+    setUploadTemplateVisibility(false)
+    onReload()
+  }
 
+  const downloadTemplateFooterContent = (
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
         label="Cancel"
@@ -64,6 +77,17 @@ const Assessmentcontent = ({ assessment }) => {
       />
     </div>
   );
+  const uploadTemplateFooterContent = (
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setUploadTemplateVisibility(false)}
+        className="custom-button"
+        outlined
+      />
+    </div>
+  );
 
   return (
     <>
@@ -77,7 +101,15 @@ const Assessmentcontent = ({ assessment }) => {
             alignItems: "center",
           }}
         >
+            <Avatar
+              name={null}
+              size="100"
+              textSizeRatio={1.75}
+              round={true}
+              color="var(--primary-color)"
+            />
         </div>
+        
 
         <div
           style={{
@@ -107,9 +139,18 @@ const Assessmentcontent = ({ assessment }) => {
           </div>
           <div>
           <p style={{ fontSize: 14, fontWeight: 800, marginBottom: "8px" }}>
-              {ucFirst(assessment.type)}
-            </p>
+          <Tag value={`${ucFirst(assessment.type)} based`} className="mr-1" />
+          </p>
 
+          </div>
+          <div>
+            {assessmentDetails.map((detail, index) => (
+              <DetailsContent
+                key={index}
+                heading={detail.heading}
+                paragraph={detail.paragraph}
+              />
+            ))}
           </div>
         </div>
 
@@ -121,9 +162,15 @@ const Assessmentcontent = ({ assessment }) => {
         >
           <Button
             label="Download Template"
-            icon="pi pi-user-edit"
+            icon="pi pi-download"
             className="p-button-outlined p-button-sm"
             onClick={() => setDownloadTemplateVisibility(true)}
+          />
+          <Button
+            label="Upload Results"
+            icon="pi pi-upload"
+            className="p-button-sm ml-2"
+            onClick={() => setUploadTemplateVisibility(true)}
           />
 
           {/* <Button
@@ -152,6 +199,18 @@ const Assessmentcontent = ({ assessment }) => {
           />
         </div>
 
+      </Dialog>
+
+      <Dialog
+        header="Upload Assessment Results"
+        visible={uploadTemplateVisibility}
+        style={{ width: "60vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setUploadTemplateVisibility(false)}
+        footer={uploadTemplateFooterContent}
+      >
+        <AssessmentResultsUploadContainer assessment={assessment} hide={() => hideUploadContainer()} />
       </Dialog>
 
     </>

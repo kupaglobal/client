@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Card } from "primereact/card";
 import AssessmentDashboard from "./Tabs/AssessmentDashboard";
+import AssessmentResultsContainer from "./Tabs/AssessmentResultsContainer";
+import { assessmentsStore } from "../../../store/assessments";
 
-const AssessmentTabs = ({ assessment }) => {
+const AssessmentTabs = () => {
+    const { state } = useContext(assessmentsStore)
+    const assessment = state.currentAssessment
   return (
     <Card style={{ width: "60vw" }}>
       <TabView>
-        <TabPanel
-          header="Student Details"
+      <TabPanel
+          header="Dashboard"
           leftIcon=""
           style={{ fontSize: "14px" }}
         >
           <AssessmentDashboard assessment={assessment}/>
+        </TabPanel>
+        <TabPanel
+          header="Student Results"
+          leftIcon=""
+          style={{ fontSize: "14px" }}
+        >
+          <AssessmentResultsContainer assessment={assessment}/>
         </TabPanel>
         {/* <TabPanel
           header="Achievements"

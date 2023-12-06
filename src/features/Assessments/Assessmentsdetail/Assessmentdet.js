@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 import { AssessmentsService } from "../../../services/assessments.service";
 import { toastStore } from "../../../store/toast";
 import AssessmentTabs from "./AssessmentTabs";
+import { SET_CURRENT_ASSESSMENT } from "../../../store/actions";
+import { assessmentsStore } from "../../../store/assessments";
 
 const Assessmentdet = () => {
   const breadCrumbs = "Assessments";
@@ -20,22 +22,33 @@ const Assessmentdet = () => {
     { label: "Request for feedback", icon: "pi pi-comments" },
   ];
 
+  const [reload, setReload] = useState(true)
+  const { dispatch } = useContext(assessmentsStore)
+
   useEffect(() => {
     async function fetchAssessment() {
-        try {
-            const {data: assessment} = await AssessmentsService.getAssessmentById(assessmentId)
-            Object.keys(assessment).forEach(key => {
-              if (assessment[key] === null) {
-                assessment[key] = 'N/a'
-              }
-            })
-            setAssessment(assessment)
-        } catch (e) {
-            toast('error', e.response?.data?.message ? e.response.data.message : e.message)
+        if (reload) {
+            try {
+                const {data: assessment} = await AssessmentsService.getAssessmentById(assessmentId)
+                Object.keys(assessment).forEach(key => {
+                  if (assessment[key] === null) {
+                    assessment[key] = 'N/a'
+                  }
+                })
+                setAssessment(assessment)
+                setReload(false)
+                dispatch({
+                    type: SET_CURRENT_ASSESSMENT,
+                    payload: assessment
+                })
+            } catch (e) {
+                toast('error', e.response?.data?.message ? e.response.data.message : e.message)
+                setReload(false)
+            }
         }
     } 
     fetchAssessment()
-  }, [assessmentId, toast])
+  }, [assessmentId, toast, reload, dispatch])
 
   return (
     <div>
@@ -49,7 +62,7 @@ const Assessmentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {assessment ? <Assessmentcontent assessment={assessment} /> : ''}
+          {assessment ? <Assessmentcontent assessment={assessment} onReload={() => setReload(true)}  /> : ''}
         </div>
         <div>
           {assessment ? <AssessmentTabs assessment={assessment} /> : ''}

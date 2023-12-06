@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { MdAutoGraph } from "react-icons/md";
 import { HiOutlineHeart } from "react-icons/hi";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import DetailsContent from "../../../../components/DetailsContent";
 import AssessmentGraph from "../AssessmentGraph";
+import { assessmentsStore } from "../../../../store/assessments";
 
-const AssessmentDashboard = ({ assessment }) => {
+const AssessmentDashboard = () => {
+  const { state } = useContext(assessmentsStore)
+  const assessment = state.currentAssessment
   const userDetails = [
     { heading: `Highest ${assessment.type}`, paragraph: assessment.stats.highest },
     { heading: `Lowest ${assessment.type}`, paragraph: assessment.stats.lowest },
     { heading: `Average ${assessment.type}`, paragraph: assessment.stats.average },
-    { heading: "Highest Student", paragraph: `${assessment.highestStudent.firstName} ${assessment.highestStudent.lastName}` },
-    { heading: "Lowest Student", paragraph: `${assessment.lowestStudent.firstName} ${assessment.lowestStudent.lastName}` },
+    { heading: "Highest Student", paragraph: assessment.highestStudent && assessment.highestStudent.firstName ? `${assessment.highestStudent.firstName} ${assessment.highestStudent.lastName}` : 'n/a' },
+    { heading: "Lowest Student", paragraph: assessment.lowestStudent && assessment.lowestStudent.firstName ? `${assessment.lowestStudent.firstName} ${assessment.lowestStudent.lastName}` : 'n/a' },
   ];
 
   const sortScoreResults = (assessmentResults) => {
@@ -35,8 +38,7 @@ const AssessmentDashboard = ({ assessment }) => {
 
     return results
   }
-  const [results] = useState(assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results))
-
+  const results = assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results)
   return (
     <div>
       <div className="flex__container">

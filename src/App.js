@@ -10,6 +10,7 @@ import { AuthProvider } from "./store/auth"
 import { ToastProvider } from "./store/toast";
 import { StudentsProvider } from "./store/students";
 import { TemplatesProvider } from "./store/templates";
+import { AssessmentsProvider } from "./store/assessments";
 import ToastContainer from "./components/UI/Toast";
 
 function App() {
@@ -18,15 +19,17 @@ function App() {
         <AuthProvider>
           <ToastProvider>
             <StudentsProvider>
-              <TemplatesProvider>
-                <div className="App">
-                  <ToastContainer/>
-                  <Routes>
-                    <Route exact path="/*" element={<UserDashboardLayout />} />
-                    <Route exact path="/auth/*" element={<AuthLayout />} />
-                  </Routes>
-                </div>
-              </TemplatesProvider>
+              <AssessmentsProvider>
+                <TemplatesProvider>
+                  <div className="App">
+                    <ToastContainer/>
+                    <Routes>
+                      <Route exact path="/*" element={<UserDashboardLayout />} />
+                      <Route exact path="/auth/*" element={<AuthLayout />} />
+                    </Routes>
+                  </div>
+                </TemplatesProvider>
+              </AssessmentsProvider>
             </StudentsProvider>
           </ToastProvider>
         </AuthProvider>

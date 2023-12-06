@@ -8,6 +8,8 @@ import { studentsStore } from "../../../store/students";
 import { toastStore } from "../../../store/toast";
 import { InputText } from "primereact/inputtext";
 import { AssessmentsService } from "../../../services/assessments.service";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Calendar } from 'primereact/calendar';
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
@@ -41,7 +43,6 @@ export default function Popupcontent({ onReload }) {
         icon="pi pi-book"
         onClick={() => createAssessment(false)}
         className="custom-button"
-        outlined
         loading={isLoading}
       />
     </div>
@@ -73,12 +74,18 @@ export default function Popupcontent({ onReload }) {
   }
   const [formData,setFormData]=useState({
     "name": "",
-    "type": ""
+    "type": "",
+    "dateConducted": "",
+    "description": ""
   })
 
 
   const onChange=(e)=>{
     setFormData({...formData,[e.target.name]:e.target.value})
+  }
+
+  const setDateConducted = (e) => {
+    setFormData({ ...formData, dateConducted: e.value })
   }
 
   return (
@@ -103,6 +110,12 @@ export default function Popupcontent({ onReload }) {
         <form>
             <label htmlFor="name" className="block text-900 font-medium mb-20">Name</label>
             <InputText name="name" id="name" type="text" placeholder="" className="w-full mb-3" onChange={onChange} required/>
+
+            <label htmlFor="dateConduncted" className="block text-900 font-medium mb-20">Date Conducted</label>
+            <Calendar value={formData.dateConducted} showIcon name="dateConducted" id="dateConducted" className="mb-3" onChange={setDateConducted} dateFormat="dd/mm/yy" />
+         
+            <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
+            <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
             <p style={{ fontSize: "13px" }}>
               Select the type for this assessment

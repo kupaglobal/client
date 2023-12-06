@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AssessmentsService } from "../../services/assessments.service";
 import { ucFirst } from "../../utils"
+import { cleanedDateStr } from "../../utils/moment";
 
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
@@ -30,6 +31,18 @@ const columns = [
     id: "ass_type",
     name: "Assessment Type",
     selector: (row) => ucFirst(row.type),
+    sortable: true,
+  },
+  {
+    id: "ass_dateConducted",
+    name: "Date Conducted",
+    selector: (row) => cleanedDateStr(row.dateConducted),
+    sortable: true,
+  },
+  {
+    id: "ass_description",
+    name: "Description",
+    selector: (row) => ucFirst(row.description),
     sortable: true,
   },
 ];
