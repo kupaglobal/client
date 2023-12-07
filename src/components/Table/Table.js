@@ -41,7 +41,6 @@ const Table = ({
   hideSearch = false,
   handleSelectedRowsChanged = () => {}
 }) => {
-  console.log(handleSelectedRowsChanged)
   const navigate = useNavigate();
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
@@ -110,7 +109,6 @@ const Table = ({
           : ''}
         </div>
         <div style={{ alignSelf: "center"}}>
-       
           {popupContent ? popupContent : null}
         </div>
       </div>

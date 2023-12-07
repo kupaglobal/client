@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { assessmentsStore } from "../../../../store/assessments";
 import Table from "../../../../components/Table/Table";
-import { ucFirst } from "../../../../utils";
 
 const AssessmentDashboard = () => {
   const { state } = useContext(assessmentsStore)
@@ -43,6 +42,7 @@ const AssessmentDashboard = () => {
   const results = assessment.results.filter(assessment => assessment.student).map(result => ({ ...result, id: result.student.id }))
   return (
     <div>
+        {/* <Table columns={columns} data={results} tableRowItem={tableRowItem} popupContent={<FilterOptions resource="assessment" />} /> */}
         <Table columns={columns} data={results} tableRowItem={tableRowItem} />
     </div>
   );
