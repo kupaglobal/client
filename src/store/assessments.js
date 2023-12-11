@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { RELOAD, SET_CURRENT_ASSESSMENT } from "./actions";
+import { RELOAD, SET_ASSESSMENT_FILTER_OPTIONS, SET_CURRENT_ASSESSMENT, SET_CURRENT_ASSESSMENT_RESULTS } from "./actions";
 
 const initialState = {
   assessments: [],
@@ -11,6 +11,15 @@ const initialState = {
   erroredResultsMessage: '',
   selectedResults: [],
   currentAssessment: null,
+  selectedFilterOptions: [],
+  currentAssessmentResults: {
+    results: [],
+    pagination: {
+      page: 1, 
+      limit: 10
+    },
+    filterOptions: []
+  },
 };
 
 const assessmentsStore = createContext(initialState);
@@ -21,7 +30,11 @@ const AssessmentsProvider = ({ children }) => {
     switch (action.type) {
       case SET_CURRENT_ASSESSMENT:
         return { ...state, currentAssessment: action.payload };
-      case RELOAD:
+      case SET_CURRENT_ASSESSMENT_RESULTS:
+        return { ...state, currentAssessmentResults: action.payload };
+      case SET_ASSESSMENT_FILTER_OPTIONS:
+        return { ...state, selectedFilterOptions: action.payload };
+        case RELOAD:
         return { ...state, reloadAssessments: action.payload }
       default:
         throw new Error();

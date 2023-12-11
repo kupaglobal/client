@@ -9,6 +9,22 @@ export class AssessmentsService {
         return httpClient.get(`/assessments/${assessmentId}`)
     }
 
+    static getAssessmentResultsById(assessmentId, filterOptions = {}) {
+        let params = {
+            assessmentId,
+            ...filterOptions
+        }
+        Object.keys(params).forEach(key => {
+            if (params[key]=="") {
+                delete params[key]
+            }
+        })
+        console.log('params', params)
+        return httpClient.get('/assessment-results', {
+            params
+        })
+    }
+
     static createAssessments(newAssessment) {
         return httpClient.post('/assessments', newAssessment)
     }

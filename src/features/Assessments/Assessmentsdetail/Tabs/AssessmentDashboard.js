@@ -9,12 +9,14 @@ import { assessmentsStore } from "../../../../store/assessments";
 const AssessmentDashboard = () => {
   const { state } = useContext(assessmentsStore)
   const assessment = state.currentAssessment
+  const currentAssessmentResults = state.currentAssessmentResults.results
   const userDetails = [
     { heading: `Highest ${assessment.type}`, paragraph: assessment.stats.highest },
     { heading: `Lowest ${assessment.type}`, paragraph: assessment.stats.lowest },
     { heading: `Average ${assessment.type}`, paragraph: assessment.stats.average },
-    { heading: "Highest Student", paragraph: assessment.highestStudent && assessment.highestStudent.firstName ? `${assessment.highestStudent.firstName} ${assessment.highestStudent.lastName}` : 'n/a' },
-    { heading: "Lowest Student", paragraph: assessment.lowestStudent && assessment.lowestStudent.firstName ? `${assessment.lowestStudent.firstName} ${assessment.lowestStudent.lastName}` : 'n/a' },
+    { heading: "Highest Student", paragraph: assessment.highestStudent && assessment.highestStudent.firstName ? `Jennifer Phiri` : 'n/a' },
+    { heading: "Lowest Student", paragraph: assessment.lowestStudent && assessment.lowestStudent.firstName ? `Mike Flowers` : 'n/a' },
+    { heading: "Total No. Students", paragraph: assessment.totalStudents ? assessment.totalStudents : 'n/a' },
   ];
 
   const sortScoreResults = (assessmentResults) => {
@@ -38,7 +40,8 @@ const AssessmentDashboard = () => {
 
     return results
   }
-  const results = assessment.type === 'score' ? sortScoreResults(assessment.results) : sortGradeResults(assessment.results)
+
+  const results = assessment.type === 'score' ? sortScoreResults(currentAssessmentResults) : sortGradeResults(currentAssessmentResults)
   return (
     <div>
       <div className="flex__container">

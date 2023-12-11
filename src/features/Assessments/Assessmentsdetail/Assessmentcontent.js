@@ -22,8 +22,8 @@ const Assessmentcontent = ({ assessment, onReload }) => {
   const [groups, setGroups] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const assessmentDetails = [
-    { heading: "Date Conducted", paragraph: cleanedDateStr(assessment.dateConducted) },
-    { heading: "Description", paragraph: assessment.description },
+    { heading: "Date Created", paragraph: cleanedDateStr(assessment.dateCreated) },
+    { heading: "Description", paragraph: 'This is the best description of this test', },
   ];
 
   useEffect(() => {
@@ -120,7 +120,8 @@ const Assessmentcontent = ({ assessment, onReload }) => {
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p style={{ fontSize: 20, fontWeight: 800, marginBottom: "8px" }}>
-              {assessment.name}
+              {/* {assessment.name} */}
+              Soft Skills Test
             </p>
 
             {/* {student.phone && student.phone!=='N/a' ? 

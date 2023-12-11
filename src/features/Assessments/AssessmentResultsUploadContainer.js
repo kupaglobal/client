@@ -12,23 +12,22 @@ const StyledFileUpload = styled(FileUpload)`
   }
 `;
 
-
-
 const AssessmentResultsUploadContainer = ({ assessment, hide }) => {
   const { toast } = useContext(toastStore)
   const { state: authState } = useContext(authStore)
 
-  const uploadUrl = (assessmentId) => (`${getEnv('BASE_URL','https://sapi.kupaglobal.com')}/assessment-results/${assessmentId}/results`)
+  const uploadUrl = (assessmentId) => (`${getEnv('BASE_URL','https://sapi.kupaglobal.com')}/assessment-results/${assessmentId}`)
 
   const beforeUpload = (event) => {
     event.xhr.open('POST', uploadUrl(assessment.id));
     event.xhr.setRequestHeader('Authorization', `Bearer ${authState.token}`);
   }
+
   const onUpload = (event) => {
     let toastMessage = "";
     let toastType = "success"
     const res = event.xhr;
-    const response = JSON.parse(res.response);
+    const response = JSON.parse(res.response) ?? null;
     const { created, errored: erroredResults } = response;
 
     if (response && response.errored && response.errored.length === 0) {
@@ -43,7 +42,7 @@ const AssessmentResultsUploadContainer = ({ assessment, hide }) => {
         toastMessage = `${created.length} ${created.length !== 1 ? 'Students were created' : 'Student was created'}. However ${erroredResults.length} ${erroredResults.length !== 1 ? 'were not' : 'was not'} saved due to validation issues.`
       } else {
         toastType = "error"
-        toastMessage = `${erroredResults.length} Student(s) were not saved due to validation issues.`
+        toastMessage = `${erroredResults.length} Student Result(s) were not saved due to validation issues.`
       }
     }
 

@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import { MdOutlineSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
+import FilterOptions from "./FilterOptions";
 
 const customStyles = {
   rows: {
@@ -39,6 +40,9 @@ const Table = ({
   tableRowItem,
   popupContent = null,
   hideSearch = false,
+  filterOptions = [],
+  onFilter,
+  isLoading = false,
   handleSelectedRowsChanged = () => {}
 }) => {
   const navigate = useNavigate();
@@ -113,6 +117,12 @@ const Table = ({
         </div>
       </div>
 
+      <div>
+        {
+          filterOptions !== null ?
+          <FilterOptions filterOptions={filterOptions} onFilter={onFilter} isLoading={isLoading} /> : null
+        }
+      </div>
       <DataTable
         columns={columns}
         data={searchText.length > 0 ? filteredData : data}

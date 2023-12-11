@@ -35,8 +35,8 @@ const columns = [
   },
   {
     id: "ass_dateConducted",
-    name: "Date Conducted",
-    selector: (row) => cleanedDateStr(row.dateConducted),
+    name: "Date Created",
+    selector: (row) => cleanedDateStr(row.dateCreated),
     sortable: true,
   },
   {

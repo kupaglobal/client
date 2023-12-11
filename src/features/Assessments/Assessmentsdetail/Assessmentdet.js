@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { AssessmentsService } from "../../../services/assessments.service";
 import { toastStore } from "../../../store/toast";
 import AssessmentTabs from "./AssessmentTabs";
-import { SET_CURRENT_ASSESSMENT } from "../../../store/actions";
+import { SET_CURRENT_ASSESSMENT, SET_CURRENT_ASSESSMENT_RESULTS } from "../../../store/actions";
 import { assessmentsStore } from "../../../store/assessments";
 
 const Assessmentdet = () => {
@@ -23,7 +23,8 @@ const Assessmentdet = () => {
   ];
 
   const [reload, setReload] = useState(true)
-  const { dispatch } = useContext(assessmentsStore)
+  const [reloadResults, setReloadResults] = useState(true)
+  const { dispatch, state } = useContext(assessmentsStore)
 
   useEffect(() => {
     async function fetchAssessment() {
@@ -48,7 +49,32 @@ const Assessmentdet = () => {
         }
     } 
     fetchAssessment()
-  }, [assessmentId, toast, reload, dispatch])
+  }, [assessmentId, toast, reload, reloadResults, dispatch])
+
+  useEffect(() => {
+    async function fetchAssessmentResults() {
+        if (reloadResults) {
+          try {
+                const {data} = await AssessmentsService.getAssessmentResultsById(assessmentId, state.selectedFilterOptions)
+
+                setReloadResults(false)
+                dispatch({
+                  type: SET_CURRENT_ASSESSMENT_RESULTS,
+                  payload: data
+                })
+            } catch (e) {
+                toast('error', e.response?.data?.message ? e.response.data.message : e.message)
+                setReloadResults(false)
+            }
+        }
+    }
+    fetchAssessmentResults()
+  }, [assessmentId, toast, reloadResults, dispatch, state.selectedFilterOptions])
+
+  const onReload = () => {
+    setReload(true);
+    setReloadResults(true)
+  }
 
   return (
     <div>
@@ -62,10 +88,10 @@ const Assessmentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {assessment ? <Assessmentcontent assessment={assessment} onReload={() => setReload(true)}  /> : ''}
+          {assessment ? <Assessmentcontent assessment={assessment} onReload={onReload}  /> : ''}
         </div>
         <div>
-          {assessment ? <AssessmentTabs assessment={assessment} /> : ''}
+          {assessment ? <AssessmentTabs assessment={assessment} onReload={onReload} isLoading={reload} /> : ''}
         </div>
       </div>
     </div>
