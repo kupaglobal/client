@@ -15,7 +15,7 @@ export class AssessmentsService {
             ...filterOptions
         }
         Object.keys(params).forEach(key => {
-            if (params[key]=="") {
+            if (params[key]==="") {
                 delete params[key]
             }
         })
