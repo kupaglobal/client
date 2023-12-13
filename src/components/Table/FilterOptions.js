@@ -24,26 +24,26 @@ const FilterOptions = ({ filterOptions = [], onFilter, isLoading }) => {
     }
   const [currentFilterOption, setCurrentFilterOption] = useState('')  
      
-  const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+  // const [searchText, setSearchText] = useState("");
+  // const [filteredData, setFilteredData] = useState([]);
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
+  // const handleSearch = (e) => {
+  //   const value = e.target.value;
 
-    // const filteredItems = data.filter((item) => {
-    //   return columns.some((column) => {
-    //     const field = item[column.id];
-    //     if (field === null || field === undefined) {
-    //       return false;
-    //     }
-    //     return field.toString().toLowerCase().includes(value.toLowerCase());
-    //   });
-    // });
+  //   // const filteredItems = data.filter((item) => {
+  //   //   return columns.some((column) => {
+  //   //     const field = item[column.id];
+  //   //     if (field === null || field === undefined) {
+  //   //       return false;
+  //   //     }
+  //   //     return field.toString().toLowerCase().includes(value.toLowerCase());
+  //   //   });
+  //   // });
 
-    setFilteredData([]);
+  //   setFilteredData([]);
 
-    setSearchText(e.target.value);
-  };
+  //   setSearchText(e.target.value);
+  // };
 
   const handleSubmit = (selectedFilters) => {
     selectedFilters = selectedFilters.map(option => ({

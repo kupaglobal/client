@@ -2,27 +2,27 @@ import React, { useState } from "react";
 import { Calendar } from 'primereact/calendar';
 import { InputText } from "primereact/inputtext";
 
-const FilterOption = ({ filterOption, formData, setFormData, addFilterTemplate }) => {
-  const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+const FilterOption = ({ filterOption, formData, setFormData }) => {
+  // const [searchText, setSearchText] = useState("");
+  // const [filteredData, setFilteredData] = useState([]);
   const [dates, setDates] = useState(null);
-  const handleSearch = (e) => {
-    const value = e.target.value;
+  // const handleSearch = (e) => {
+  //   const value = e.target.value;
 
-    // const filteredItems = data.filter((item) => {
-    //   return columns.some((column) => {
-    //     const field = item[column.id];
-    //     if (field === null || field === undefined) {
-    //       return false;
-    //     }
-    //     return field.toString().toLowerCase().includes(value.toLowerCase());
-    //   });
-    // });
+  //   // const filteredItems = data.filter((item) => {
+  //   //   return columns.some((column) => {
+  //   //     const field = item[column.id];
+  //   //     if (field === null || field === undefined) {
+  //   //       return false;
+  //   //     }
+  //   //     return field.toString().toLowerCase().includes(value.toLowerCase());
+  //   //   });
+  //   // });
 
-    setFilteredData([]);
+  //   // setFilteredData([]);
 
-    setSearchText(e.target.value);
-  };
+  //   // setSearchText(e.target.value);
+  // };
   const setDateConducted = (e) => {
     setDates(e.value)
     if (e.value) {
