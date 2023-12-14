@@ -120,8 +120,7 @@ const Assessmentcontent = ({ assessment, onReload }) => {
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p style={{ fontSize: 20, fontWeight: 800, marginBottom: "8px" }}>
-              {/* {assessment.name} */}
-              Soft Skills Test
+              {assessment.name}
             </p>
 
             {/* {student.phone && student.phone!=='N/a' ? 

@@ -105,6 +105,7 @@ const Uploadcontainer = () => {
             }
           }
         }}
+        removeIcon="pi pi-trash"
         emptyTemplate={
           <p className="m-0">Drag and drop the populated template: <b>{template.name}</b> here to upload.</p>
         }
