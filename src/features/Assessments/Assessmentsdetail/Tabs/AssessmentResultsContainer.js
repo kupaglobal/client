@@ -35,7 +35,7 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
     },
     {
         id: "result_dateConducted",
-        name: "Gender",
+        name: "Date Conducted",
         selector: (row) => cleanedDateStr(row.dateConducted),
         sortable: true,
     },
