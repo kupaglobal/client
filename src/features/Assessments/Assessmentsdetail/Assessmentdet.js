@@ -55,13 +55,26 @@ const Assessmentdet = () => {
     async function fetchAssessmentResults() {
         if (reloadResults) {
           try {
-                const {data} = await AssessmentsService.getAssessmentResultsById(assessmentId, state.selectedFilterOptions)
+                let {data} = await AssessmentsService.getAssessmentResultsById(assessmentId, state.selectedFilterOptions)
 
-                setReloadResults(false)
                 dispatch({
                   type: SET_CURRENT_ASSESSMENT_RESULTS,
-                  payload: data
+                  payload: {
+                    results: [],
+                    pagination: {
+                      page: 1, 
+                      limit: 10
+                    },
+                    filterOptions: []
+                  }
                 })
+                setReloadResults(false)
+                setTimeout(() => {
+                  dispatch({
+                    type: SET_CURRENT_ASSESSMENT_RESULTS,
+                    payload: data
+                  })
+                }, 0);
             } catch (e) {
                 toast('error', e.response?.data?.message ? e.response.data.message : e.message)
                 setReloadResults(false)

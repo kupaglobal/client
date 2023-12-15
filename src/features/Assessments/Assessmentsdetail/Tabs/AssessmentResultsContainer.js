@@ -8,6 +8,7 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
   const { state, dispatch } = useContext(assessmentsStore)
   const assessment = state.currentAssessment
   const {results: assessmentResults, filterOptions} = state.currentAssessmentResults
+  console.log('these are the results', assessmentResults)
 
   const columns = [
     {
@@ -48,7 +49,7 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
   ];
   const tableRowItem = "students";
   
-  const results = assessmentResults.filter(assessment => assessment.student).map(result => ({ ...result, id: result.student.id }))
+  const results = Object.assign([], assessmentResults.filter(assessment => assessment.student).map(result => ({ ...result, id: result.student.id })))
 
   const handleOnFilter = (selectedFilterOptions) => {
     dispatch({
