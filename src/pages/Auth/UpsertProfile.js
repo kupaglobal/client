@@ -22,7 +22,7 @@ const UpsertProfile = () => {
             if (authResponse && authResponse.emailVerified === true) { // successful
                 goTo('/dashboard?welcome')
             } else {
-                toast('error','We failed to create your account. Please try again.')
+                toast('error','We failed to update your profile. Please try again.')
             }
         } catch (e) {
             if (e.response?.data?.error === "Email already verified") {

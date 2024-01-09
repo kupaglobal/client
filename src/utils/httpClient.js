@@ -14,7 +14,22 @@ export const generateHeaders = () => {
 
 const baseURL = getEnv('BASE_URL','https://sapi.kupaglobal.com')
 
-export default axios.create({
+const instance = axios.create({
     baseURL,
-    headers: generateHeaders()
 })
+
+instance.interceptors.request.use(function(request) {
+    console.log('requesting')
+    request.headers = generateHeaders()
+    return request
+})
+
+instance.interceptors.response.use((response) => (response), (error) => {
+    if (error.response.status === 403) {
+        window.localStorage.clear();
+        return window.location.href = '/auth/login'
+    }
+    return error;
+})
+
+export default instance;

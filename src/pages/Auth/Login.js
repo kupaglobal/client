@@ -36,7 +36,7 @@ const Login = () => {
                     window.location.href = '/organisation'
                 }
             } else {
-                toast('error', 'We failed to create your account. Please try again.')
+                toast('error', 'Your email/password is incorrect. Please try again.')
             }
         } catch (e) {
             let error = e.response?.data?.error ? e.response?.data?.error : e.message
