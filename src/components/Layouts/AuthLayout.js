@@ -9,6 +9,7 @@ import ForgotPassword from "../../pages/Auth/ForgotPassword";
 import ChangePassword from "../../pages/Auth/ChangePassword";
 import EmailVerification from "../../pages/Auth/EmailVerification";
 import UpsertProfile from "../../pages/Auth/UpsertProfile";
+import AcceptInvitation from "../../pages/AcceptInvitation";
 
 const AuthLayout = ({ children }) => {
     return (
@@ -22,6 +23,7 @@ const AuthLayout = ({ children }) => {
         <main className="p-4">
           <Routes>
             <Route path="/*" element={<Dashboard />}/>
+            <Route path="/accept-invitation/:invitationId" element={<AcceptInvitation />}/> 
             <Route path="/signup" element={<Signup />}/>
             <Route path="/verify-email" element={<EmailVerification />}/>
             <Route path="/forgot-password" element={<ForgotPassword />}/>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,17 +14,21 @@ const Signup = () => {
     const { dispatch } = useContext(authStore);
     const { toast } = useContext(toastStore);
 
+    useEffect(() => {
+        
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const {data: authResponse} = await AuthService.signup(formData);
+            const {data: authResponse, response: error} = await AuthService.signup(formData);
             if (authResponse && authResponse.access_token) { // successful
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
                 goTo('/auth/verify-email')
             } else {
-                toast('error','We failed to create your account. Please try again.')
+                toast('error', error.data?.message || 'We failed to create your account. Please try again.')
             }
         } catch (e) {
             toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)

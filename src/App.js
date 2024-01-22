@@ -12,6 +12,7 @@ import { StudentsProvider } from "./store/students";
 import { TemplatesProvider } from "./store/templates";
 import { AssessmentsProvider } from "./store/assessments";
 import ToastContainer from "./components/UI/Toast";
+import { OrganisationProvider } from "./store/organisation";
 
 function App() {
   return (
@@ -21,13 +22,15 @@ function App() {
             <StudentsProvider>
               <AssessmentsProvider>
                 <TemplatesProvider>
-                  <div className="App">
-                    <ToastContainer/>
-                    <Routes>
-                      <Route exact path="/*" element={<UserDashboardLayout />} />
-                      <Route exact path="/auth/*" element={<AuthLayout />} />
-                    </Routes>
-                  </div>
+                  <OrganisationProvider>
+                    <div className="App">
+                      <ToastContainer/>
+                      <Routes>
+                        <Route exact path="/*" element={<UserDashboardLayout />} />
+                        <Route exact path="/auth/*" element={<AuthLayout />} />
+                      </Routes>
+                    </div>
+                    </OrganisationProvider>
                 </TemplatesProvider>
               </AssessmentsProvider>
             </StudentsProvider>

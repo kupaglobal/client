@@ -102,6 +102,11 @@ const OrganisationContainer = () => {
     "type": ""
   })
 
+  const tabs = ['my-organisation', 'team-members']
+
+  const [queryParams] = useSearchParams()
+  const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
+
   const [loading, setLoading] = useState(false)
   const { toast } = useContext(toastStore);
   const [refetchProfile, setRefetchProfile] = useState(true)
@@ -139,7 +144,6 @@ const OrganisationContainer = () => {
   );
   
   const goTo = useNavigate()
-  const [queryParams] = useSearchParams()
   const newUser = queryParams.get('new') !== undefined && queryParams.get('new') !== null
   const [visible, setVisible] = useState((newUser) || false)
 
@@ -176,7 +180,7 @@ const OrganisationContainer = () => {
           <NewOrganisationForm formData={newOrganisationFormData} setFormData={setFormData}/>
         </div>
       </Dialog>
-      <TabView>
+      <TabView activeIndex={index}>
         <TabPanel header="My Organisation" leftIcon="" style={{ fontSize: "14px" }}>
           {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation}/> : null} 
         </TabPanel>
