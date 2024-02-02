@@ -44,7 +44,7 @@ const Assessmentcontent = ({ assessment, onReload }) => {
   const downloadTemplate = async () => {
     try {
       setIsLoading(true)
-      await AssessmentsService.downloadAssessmentTemplate(assessment, null, selectedGroup.id) 
+      await AssessmentsService.downloadAssessmentTemplate(assessment, null, selectedGroup.id)
       setIsLoading(false)
       setDownloadTemplateVisibility(false)
     } catch (e) {
@@ -109,7 +109,7 @@ const Assessmentcontent = ({ assessment, onReload }) => {
               color="var(--primary-color)"
             />
         </div>
-        
+
 
         <div
           style={{
@@ -123,7 +123,8 @@ const Assessmentcontent = ({ assessment, onReload }) => {
               {assessment.name}
             </p>
 
-            {/* {student.phone && student.phone!=='N/a' ? 
+
+            {/* {student.phone && student.phone!=='N/a' ?
               <Link 
                 to={`https://wa.me/${student.phone}?text=HI%20${student.firstName},%20`}
                 target="_blank"
@@ -137,7 +138,10 @@ const Assessmentcontent = ({ assessment, onReload }) => {
               </Link> 
               : ''} */}
           </div>
-          <div>
+
+            {assessment.referenceLink && <a className="inline-block mb-2" href={assessment.referenceLink} target="_blank" rel="noreferrer">Reference Link</a>}
+
+            <div>
           <p style={{ fontSize: 14, fontWeight: 800, marginBottom: "8px" }}>
           <Tag value={`${ucFirst(assessment.type)} based`} className="mr-1" />
           </p>

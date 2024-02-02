@@ -49,9 +49,11 @@ const NewOtherAchievementForm = ({ formData, setFormData, student }) => {
             <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
             <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
+            <label htmlFor="referenceLink" className="block text-900 font-medium mb-20">Reference Link (Optional)</label>
+            <InputText name="referenceLink" id="referenceLink" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
             <label htmlFor="skillGained" className="block text-900 font-medium mb-20">Skills Gained</label>
-            <InputText name="skillGained" id="skillGained" type="text" placeholder="" className="w-full mb-3" onChange={onChange} onKeyUp={handleEnterKey}/>
+            <InputText name="skillGained" id="skillGained" type="text" placeholder="Separate multiple skills with commas" className="w-full mb-3" onChange={onChange} onKeyUp={handleEnterKey}/>
             <div className="flex flex-row">
                 {skillGained.split(",").map((skill) => <Tag value={skill} icon="pi pi-times" className="mr-1" key={skill} onClick={() => removeSkillGained(skill)}></Tag>)}
             </div>

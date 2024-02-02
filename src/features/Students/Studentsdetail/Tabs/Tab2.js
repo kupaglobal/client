@@ -168,6 +168,7 @@ export const Tab2containers = ({ achievement }) => {
           <p>
             {achievement.description}
           </p>
+          {achievement.referenceLink && <a className="inline-block mb-2" href={achievement.referenceLink} target="_blank" rel="noreferrer">Reference Link</a>}
         </div>
       </div>
 
