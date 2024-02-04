@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 
-const Verticalcard = ({id, title, category, date, description, hideImg, footer, selected, onEmit}) => {
+const Verticalcard = ({id, title, category, date, description, hideImg, footer, selected, referenceLink}) => {
   const header = (
       !hideImg ? <img
       alt="Card"
@@ -33,7 +33,7 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
             <div className="">{category}</div>
             <div className="subtitle">{date}</div>
           </div>
-        }        
+        }
         header={header}
         className="vertical__card mx-1 bg-sky-700 border-b b-3"
         footer={footer}
@@ -41,6 +41,9 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
         <p className="m-0">
         {description}
         </p>
+
+        {referenceLink && <a className="inline-block my-2" href={referenceLink} target="_blank" rel="noreferrer">Reference Link</a>}
+
       </Card>
     </>
   );

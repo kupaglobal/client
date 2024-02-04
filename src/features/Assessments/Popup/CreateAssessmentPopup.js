@@ -10,7 +10,7 @@ import { InputText } from "primereact/inputtext";
 import { AssessmentsService } from "../../../services/assessments.service";
 import { InputTextarea } from "primereact/inputtextarea";
 // import { Calendar } from 'primereact/calendar';
-        
+
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
   const { reloadStudents} = state
@@ -113,9 +113,12 @@ export default function Popupcontent({ onReload }) {
 
             {/* <label htmlFor="dateConduncted" className="block text-900 font-medium mb-20">Date Conducted</label>
             <Calendar value={formData.dateConducted} showIcon name="dateConducted" id="dateConducted" className="mb-3" onChange={setDateConducted} dateFormat="dd/mm/yy" /> */}
-         
+
             <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
             <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
+
+            <label htmlFor="referenceLink" className="block text-900 font-medium mb-20">Reference Link (Optional)</label>
+            <InputText name="referenceLink" id="referenceLink" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
             <p style={{ fontSize: "13px" }}>
               Select the type for this assessment

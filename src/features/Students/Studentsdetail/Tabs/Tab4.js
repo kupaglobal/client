@@ -204,6 +204,7 @@ const Tab4 = ({ student }) => {
                   category={item.category}
                   date={item.date}
                   description={item.description}
+                  referenceLink={item.referenceLink}
                 />
               ))}
             </div>
