@@ -43,14 +43,18 @@ const Templateroute1 = ({ setActiveStep }) => {
     firstName: 'John',
     lastName: 'Doe',
     gender: 'MALE',
+    email: 'johndoe@email.com',
     dateOfBirth: '14/06/2004',
     courseEnrollment: 'Big Data',
     guardianName: 'Jane Doe',
-    guardianContactInfo: 'jane@family.com',
+    guardianEmail: 'janedoe@email.com',
+    guardianContactInfo: '+263 773454381',
     ambitions: ['Top of the Class'],
     skills: ['Big Data Analytics'],
     interests: ['AI in Big Data'],
-    educationalBackground: 'John has been an exceptional student from a very young age.'
+    educationalBackground: 'John has been an exceptional student from a very young age.',
+    mediaPublicationConsent: 'yes',
+    dataStorageConsent: 'yes'
   }
 
   return (
