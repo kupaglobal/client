@@ -26,7 +26,7 @@ const Signup = () => {
             if (authResponse && authResponse.access_token) { // successful
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
-                goTo('/auth/verify-email')
+                window.location.href = '/auth/verify-email'
             } else {
                 toast('error', error.data?.message || 'We failed to create your account. Please try again.')
             }

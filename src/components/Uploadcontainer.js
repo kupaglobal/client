@@ -28,7 +28,7 @@ const Uploadcontainer = () => {
 
   const beforeUpload = (event) => {
     event.xhr.open('POST', uploadUrl(template.id));
-    event.xhr.setRequestHeader('Authorization', `Bearer ${authState.token}`);
+    event.xhr.setRequestHeader('Authorization', `Bearer ${authState.getToken()}`);
   }
   const onUpload = (event) => {
     let toastMessage = "";
