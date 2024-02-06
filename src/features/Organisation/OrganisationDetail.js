@@ -4,7 +4,7 @@ import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
 import DetailsContent from "../../components/DetailsContent";
 
-const Studentcontent = ({ organisation }) => {
+const OrganisationDetail = ({ organisation }) => {
   const userDetails = [
     { heading: "Registration Number", paragraph: organisation.registrationNumber },
     { heading: "Address", paragraph: organisation.address },
@@ -75,4 +75,4 @@ const Studentcontent = ({ organisation }) => {
   );
 };
 
-export default Studentcontent;
+export default OrganisationDetail;
