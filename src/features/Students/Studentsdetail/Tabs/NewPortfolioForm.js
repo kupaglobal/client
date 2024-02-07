@@ -27,6 +27,9 @@ const NewPortfolioForm = ({ formData, setFormData, type }) => {
             <label htmlFor="date" className="block text-900 font-medium mb-20">Date</label>
             <InputText name="date" id="date" type="text" placeholder="e.g Sept, 2022" className="w-full mb-3" onChange={onChange}/>
 
+            <label htmlFor="referenceLink" className="block text-900 font-medium mb-20">Reference Link</label>
+            <InputText name="referenceLink" id="referenceLink" type="url" placeholder="" className="w-full mb-3" onChange={onChange} required/>
+
             <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
             <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
          

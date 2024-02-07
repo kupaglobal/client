@@ -2,8 +2,9 @@ import React, {useState} from "react";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Tag } from "primereact/tag";
+import { Button } from "primereact/button";
 
-const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
+const NewProgramAchievementForm = ({ formData, setFormData, saveNewAchievement, isLoading }) => {
     const [error, setError] = useState()
     const [skillGained, setSkillGained] = useState('')
     const onChange=(e)=>{
@@ -17,10 +18,11 @@ const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
     const [selectedSkillsGained, setSelectedSkillsGained] = useState([])
 
     const handleSubmit = async (e) => {
-        e.target.preventDefault()
+        e.preventDefault()
         setSelectedSkillsGained([...new Set([...selectedSkillsGained, skillGained])])
         setError('')
         setFormData({...formData, skillGained: '', skillsGained: selectedSkillsGained, type: 'Program' })
+        await saveNewAchievement()
     }
 
     const handleEnterKey = async (event) => {
@@ -49,6 +51,8 @@ const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
             <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
             <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
+            <label htmlFor="referenceLink" className="block text-900 font-medium mb-20">Reference Link</label>
+            <InputText name="referenceLink" id="referenceLink" type="url" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
             <label htmlFor="skillGained" className="block text-900 font-medium mb-20">Skills Gained</label>
             <InputText name="skillGained" id="skillGained" type="text" placeholder="" className="w-full mb-3" onChange={onChange} onKeyUp={handleEnterKey}/>
@@ -57,6 +61,15 @@ const NewProgramAchievementForm = ({ formData, setFormData, student }) => {
             </div>
          
             {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
+            <div className="mt-2">
+                <Button
+                    label="Save"
+                    icon="pi pi-flag-fill"
+                    type="submit"
+                    className="custom-button"
+                    loading={isLoading}
+                />
+            </div>
         </form>
     </div>
     );

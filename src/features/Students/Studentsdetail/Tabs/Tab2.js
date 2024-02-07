@@ -8,7 +8,7 @@ import { StudentsService } from "../../../../services/students.service";
 import { Dialog } from "primereact/dialog";
 import NewProgramAchievementForm from "../Tabs/NewProgramAchievementForm"
 import NewOtherAchievementForm from "../Tabs/NewOtherAchievementForm"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toastStore } from "../../../../store/toast";
 
 const PROGRAM_ACHIEVEMENTS = 'Program Achievements'
@@ -52,6 +52,7 @@ const Tab2 = ({ student }) => {
     "description": "",
     "skillGained": "",
     "skillsGained": [],
+    "referenceLink": "",
     "type": ""
   })
 
@@ -73,6 +74,7 @@ const Tab2 = ({ student }) => {
         "description": "",
         "skillGained": "",
         "skillsGained": [],
+        "referenceLink": "",
         "type": ""
       })
     } catch (e) {
@@ -91,13 +93,6 @@ const Tab2 = ({ student }) => {
         className="custom-button"
         outlined
     /> */}
-    <Button
-        label="Save"
-        icon="pi pi-flag-fill"
-        onClick={() => saveNewAchievement()}
-        className="custom-button"
-        loading={isLoading}
-    />
     </div>
   );
 
@@ -114,8 +109,21 @@ const Tab2 = ({ student }) => {
         footer={footerContent}
       > 
         <div> 
-        {showNewProgramAchievement ? <NewProgramAchievementForm formData={formData} setFormData={setFormData}/> :
-          <NewOtherAchievementForm formData={formData} setFormData={setFormData}/> }
+        {showNewProgramAchievement ? 
+          <NewProgramAchievementForm
+            formData={formData}
+            setFormData={setFormData}
+            saveNewAchievement={saveNewAchievement}
+            isLoading={isLoading}
+          /> 
+          :
+          <NewOtherAchievementForm
+            formData={formData}
+            setFormData={setFormData}
+            saveNewAchievement={saveNewAchievement}
+            isLoading={isLoading}
+          /> 
+        }
         </div>
       </Dialog>
 
@@ -160,7 +168,14 @@ export const Tab2containers = ({ achievement }) => {
               marginBottom: 5,
             }}
           >
-            {achievement.name}
+            {achievement.name} {achievement.referenceLink ? 
+                      <Link
+                      icon
+                      className="p-button-outlined p-button-sm"
+                      to={achievement.referenceLink}
+                    >(Link)</Link>
+          
+             : null}
           </p>
           <p style={{ marginBottom: "1rem", fontSize: 13, color: "#cccccc" }}>
             {achievement.date}
