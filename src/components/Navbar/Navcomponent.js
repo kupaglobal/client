@@ -9,7 +9,7 @@ import Reports from "../../pages/Reports";
 import Feedback from "../../pages/Feedback";
 import Inbox from "../../pages/Inbox";
 import MyOrganisation from "../../pages/MyOrganisation";
-import Studentdet from "../../features/Students/Studentsdetail/Studentdet";
+import Studentdet from "../../features/Students/StudentsDetail/Studentdet";
 import Assessmentdet from "../../features/Assessments/Assessmentsdetail/Assessmentdet";
 
 const Navcomponent = () => {

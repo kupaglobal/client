@@ -8,8 +8,12 @@ import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
 import { Checkbox } from "primereact/checkbox";
 import { Link } from "react-router-dom";
+import { Dialog } from "primereact/dialog";
+import EditProfileForm from "./EditProfile";
 
-const Studentcontent = ({ student }) => {
+const StudentContent = ({ student }) => {
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+
   const handleClickOpen = () => {};
   const categories = [
     { name: "Review assessment", key: "RA" },
@@ -22,8 +26,15 @@ const Studentcontent = ({ student }) => {
     { heading: "Date of Birth", paragraph: student.dob },
     { heading: "Gender", paragraph: student.gender },
     { heading: "Cohort", paragraph: "N/A" },
-    { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
+    {
+      heading: "City, Country",
+      paragraph: `${student.city} ${student.country}`,
+    },
   ];
+
+  const handleShowEditProfileModal = (value) => () =>
+    setShowEditProfileModal(value);
+
   return (
     <>
       <Card style={{ width: "300px" }}>
@@ -57,8 +68,8 @@ const Studentcontent = ({ student }) => {
               {student.firstName} {student.lastName}
             </p>
 
-            {student.phone && student.phone!=='N/a' ? 
-              <Link 
+            {student.phone && student.phone !== "N/a" ? (
+              <Link
                 to={`https://wa.me/${student.phone}?text=HI%20${student.firstName},%20`}
                 target="_blank"
               >
@@ -68,8 +79,10 @@ const Studentcontent = ({ student }) => {
                   text
                   style={{ alignItems: "flex-start", padding: 0 }}
                 />
-              </Link> 
-              : ''}
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
           <div>
             {userDetails.map((detail, index) => (
@@ -115,7 +128,7 @@ const Studentcontent = ({ student }) => {
                     name="category"
                     value={category}
                     checked={selectedCategories.some(
-                      (item) => item.key === category.key
+                      (item) => item.key === category.key,
                     )}
                     style={{ marginRight: 10 }}
                   />
@@ -138,6 +151,7 @@ const Studentcontent = ({ student }) => {
             label="Edit Profile"
             icon="pi pi-user-edit"
             className="p-button-outlined p-button-sm"
+            onClick={handleShowEditProfileModal(true)}
           />
 
           <Button
@@ -147,8 +161,20 @@ const Studentcontent = ({ student }) => {
           />
         </div>
       </Card>
+
+      <Dialog
+        header="Edit Student Profile"
+        visible={showEditProfileModal}
+        style={{ width: "80vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={handleShowEditProfileModal(false)}
+        // footer={footerContent}
+      >
+        <EditProfileForm student={student} />
+      </Dialog>
     </>
   );
 };
 
-export default Studentcontent;
+export default StudentContent;

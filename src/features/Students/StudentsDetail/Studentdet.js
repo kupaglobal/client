@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs";
-import Studentcontent from "./Studentcontent";
+import StudentContent from "./StudentContent";
 import Studenttabs1 from "./Studenttabs1";
 import MeatballMenu from "../../../components/MeatballMenu";
 import { useParams } from "react-router-dom";
@@ -42,7 +42,7 @@ const Studentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {student ? <Studentcontent student={student} /> : ''}
+          {student ? <StudentContent student={student} /> : ''}
         </div>
         <div>
           {student ? <Studenttabs1 student={student} /> : ''}
