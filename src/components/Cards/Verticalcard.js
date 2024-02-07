@@ -1,8 +1,10 @@
 import React from "react";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 
-const Verticalcard = ({id, title, category, date, description, hideImg, footer, selected, onEmit}) => {
+const Verticalcard = (data) => {
+  let {title, category, date, description, hideImg, footer, selected, onEmit, referenceLink} = data;
   const header = (
       !hideImg ? <img
       alt="Card"
@@ -10,13 +12,13 @@ const Verticalcard = ({id, title, category, date, description, hideImg, footer, 
     /> : ''
   );
   const emit = (type) => {
-//    onEmit({ type: type , payload: id })
+    onEmit({ type: type , payload: data })
   }
   if (!footer) {
     footer = (
       <div style={{display:'flex', justifyContent: 'flex-end' }}>
-        <Button size="small" icon="pi pi-download" />
-        <Button size="small" icon="pi pi-check" className="ml-1" onClick={emit('selected')} />
+        {referenceLink ? <Link to={referenceLink} target="_blank"><Button size="small" icon="pi pi-globe" /></Link> : null}
+        <Button size="small" icon="pi pi-pencil" className="ml-1" onClick={() => emit('edit')} />
       </div>
     );
   }
