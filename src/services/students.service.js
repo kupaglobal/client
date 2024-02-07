@@ -28,4 +28,14 @@ export class StudentsService {
     static addStudentPortfolioItem(studentId, studentPortfolioItemDto) {
         return httpClient.post(`/students/${studentId}/portfolio`, studentPortfolioItemDto)
     }
+
+    static editStudentPortfolioItem(studentId, portfolioId, studentPortfolioItemDto) {
+        delete studentPortfolioItemDto.id
+        return httpClient.post(`/students/${studentId}/portfolio/${portfolioId}`, studentPortfolioItemDto)
+    }
+
+    static editStudentAchievementItem(studentId, achievementId, studentAchievementItemDto) {
+        delete studentAchievementItemDto.id
+        return httpClient.post(`/students/${studentId}/achievements/${achievementId}`, studentAchievementItemDto)
+    }
 }

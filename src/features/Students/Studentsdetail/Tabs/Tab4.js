@@ -8,6 +8,7 @@ import Verticalcard from "../../../../components/Cards/Verticalcard";
 import { StudentsService } from "../../../../services/students.service";
 import { toastStore } from "../../../../store/toast";
 import NewPortfolioForm from "./NewPortfolioForm";
+import EditPortfolioForm from "./EditPortfolioForm";
 
 const MEDIA = "Media"
 const CERTIFICATES = "Certificate"
@@ -18,7 +19,8 @@ const defaultFormData = {
   "category": "",
   "date": "",
   "description": "",
-  "type": ""
+  "type": "",
+  "referenceLink": ""
 }
 
 const Tab4 = ({ student }) => {
@@ -124,11 +126,26 @@ const Tab4 = ({ student }) => {
     }
   }
 
+  function showEditPortfolio(name) {
+    if (name === MEDIA) {
+      setShowEditMediaPortfolio(true)
+    } else if (name === CERTIFICATES) {
+      setShowEditCertificatesPortfolio(true)
+    } else if (name === OTHER_PORTFOLIO_WORKS) {
+      setShowEditOtherPortfolio(true)
+    }
+  }
+
   const [showNewMediaPortfolio, setShowNewMediaPortfolio] = useState(false)
   const [showNewCertificatesPortfolio, setShowNewCertificatesPortfolio] = useState(false)
   const [showNewOtherPortfolio, setShowNewOtherPortfolio] = useState(false)
 
+  const [showEditMediaPortfolio, setShowEditMediaPortfolio] = useState(false)
+  const [showEditCertificatesPortfolio, setShowEditCertificatesPortfolio] = useState(false)
+  const [showEditOtherPortfolio, setShowEditOtherPortfolio] = useState(false)
+
   const [formData,setFormData]=useState(defaultFormData)
+  const [currentPortfolioId, setCurrentPortfolioId] = useState("")
 
   const goTo = useNavigate()
   const toast = useContext(toastStore)
@@ -150,10 +167,42 @@ const Tab4 = ({ student }) => {
     }
   }
 
+  async function savePortfolio() {
+    setIsLoading(true)
+
+    try {
+      await StudentsService.editStudentPortfolioItem(student.id, currentPortfolioId, formData)
+      goTo(`/students/${student.id}?selectedTab=portfolio`)
+      setShowEditMediaPortfolio(false)
+      setShowEditCertificatesPortfolio(false)
+      setShowEditOtherPortfolio(false)
+      setRefetchPortfolio(true)
+      setIsLoading(false)
+      setFormData(defaultFormData)
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+      setIsLoading(false)
+    }
+  }
+
   function dialogOnHide() {
     setShowNewMediaPortfolio(false)
     setShowNewCertificatesPortfolio(false)
     setShowNewOtherPortfolio(false)
+
+    setShowEditMediaPortfolio(false)
+    setShowEditCertificatesPortfolio(false)
+    setShowEditOtherPortfolio(false)
+  }
+
+  function handleEmit({ type, payload }) {
+    if (type === 'edit') {
+      setCurrentPortfolioId(payload.id)
+      setFormData({
+        ...payload      
+      })
+      showEditPortfolio(payload.type)
+    }
   }
 
   const footerContent = (
@@ -165,17 +214,11 @@ const Tab4 = ({ student }) => {
         className="custom-button"
         outlined
       /> */}
-      <Button
-        label="Save"
-        icon="pi pi-image"
-        onClick={() => saveNewPortfolio()}
-        className="custom-button"
-        loading={isLoading}
-      />
     </div>
   );
 
-  const type = showNewMediaPortfolio ? MEDIA : (showNewCertificatesPortfolio ? CERTIFICATES : OTHER_PORTFOLIO_WORKS)
+  const showType = showNewMediaPortfolio ? MEDIA : (showNewCertificatesPortfolio ? CERTIFICATES : OTHER_PORTFOLIO_WORKS)
+  const editType = showEditMediaPortfolio ? MEDIA : (showEditCertificatesPortfolio ? CERTIFICATES : OTHER_PORTFOLIO_WORKS)
   return (
     <>
       <Dialog
@@ -187,23 +230,51 @@ const Tab4 = ({ student }) => {
         footer={footerContent}
       > 
         <div> 
-          <NewPortfolioForm formData={formData} setFormData={setFormData} type={type}/> 
+          <NewPortfolioForm
+            formData={formData}
+            setFormData={setFormData}
+            type={showType}
+            saveNewPortfolio={saveNewPortfolio}
+            isLoading={isLoading}
+          />
         </div>
       </Dialog>
 
+      <Dialog
+        header={`Edit ${editType} Portfolio for ${student.firstName} ${student.lastName}`}
+        visible={showEditMediaPortfolio || showEditCertificatesPortfolio || showEditOtherPortfolio}
+        style={{ width: "30vw" }}
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={dialogOnHide}
+        footer={footerContent}
+      > 
+        <div> 
+          <EditPortfolioForm
+            formData={formData}
+            setFormData={setFormData}
+            type={editType}
+            savePortfolio={savePortfolio}
+            isLoading={isLoading}
+          />
+        </div>
+      </Dialog>
 
       <div className="uploadelements">
         {headingsList.map((heading, index) => (
           <div key={index} style={{ marginBottom: "2rem" }}>
-            <Tab4headings Name={heading.Name} showNewPortfolio={showNewPortfolio}/>
+            <Tab4headings Name={heading.Name} showNewPortfolio={showNewPortfolio} />
             <div style={{ display: "flex", gap: "20px" }}>
               {verticalCardData[heading.Name].map((item, itemIndex) => (
                 <Verticalcard
+                  id={item.id}
                   key={itemIndex} 
                   title={item.title}
                   category={item.category}
                   date={item.date}
-                  description={item.description}
+                  description={item.description || '-'}
+                  referenceLink={item.referenceLink}
+                  type={item.type}
+                  onEmit={handleEmit}
                 />
               ))}
             </div>

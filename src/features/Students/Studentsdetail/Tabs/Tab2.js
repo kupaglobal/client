@@ -171,6 +171,7 @@ export const Tab2containers = ({ achievement }) => {
             {achievement.name} {achievement.referenceLink ? 
                       <Link
                       icon
+                      target="_blank"
                       className="p-button-outlined p-button-sm"
                       to={achievement.referenceLink}
                     >(Link)</Link>
