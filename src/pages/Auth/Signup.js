@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
 import { useContext } from 'react';
 import { authStore } from '../../store/auth';
@@ -10,7 +10,6 @@ import { toastStore } from "../../store/toast";
 
 
 const Signup = () => {
-    const goTo = useNavigate()
     const { dispatch } = useContext(authStore);
     const { toast } = useContext(toastStore);
 
