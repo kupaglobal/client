@@ -38,4 +38,8 @@ export class StudentsService {
         delete studentAchievementItemDto.id
         return httpClient.post(`/students/${studentId}/achievements/${achievementId}`, studentAchievementItemDto)
     }
+
+    static updateStudentDetails(studentId, updateStudentDetailsDto) {
+        return httpClient.post(`/students/${studentId}`, updateStudentDetailsDto)
+    }
 }

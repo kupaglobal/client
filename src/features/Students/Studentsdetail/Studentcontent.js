@@ -8,6 +8,8 @@ import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
 import { Checkbox } from "primereact/checkbox";
 import { Link } from "react-router-dom";
+import EditStudentDetailsForm from "./EditStudentDetailsForm";
+import { Dialog } from "primereact/dialog";
 
 const Studentcontent = ({ student }) => {
   const handleClickOpen = () => {};
@@ -24,6 +26,25 @@ const Studentcontent = ({ student }) => {
     { heading: "Cohort", paragraph: "N/A" },
     { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
   ];
+  let updateStudentDto = {}
+  Object.keys(student).forEach(key => {
+    if (student[key] === 'N/a') {
+      student[key] = ''
+    }
+  })
+
+  const [updateStudentDetailsFormData, setUpdateStudentDetailsFormData] = useState(student)
+  const [showEditStudentDetailsForm, setShowEditStudentDetailsForm] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const updateStudentDetails = async () => {
+    setTimeout(() => {
+      setIsLoading(true)
+      setShowEditStudentDetailsForm(false)
+      setIsLoading(false)
+    }, 2000)
+    // 
+  }
   return (
     <>
       <Card style={{ width: "300px" }}>
@@ -138,6 +159,7 @@ const Studentcontent = ({ student }) => {
             label="Edit Profile"
             icon="pi pi-user-edit"
             className="p-button-outlined p-button-sm"
+            onClick={() => setShowEditStudentDetailsForm(true)}
           />
 
           <Button
@@ -146,6 +168,22 @@ const Studentcontent = ({ student }) => {
             className="p-button-outlined p-button-sm"
           />
         </div>
+        <Dialog
+          header={`Edit Student Details`}
+          style={{ width: "40vw" }}
+          visible={showEditStudentDetailsForm}
+          breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        > 
+          <div> 
+            <EditStudentDetailsForm
+              formData={updateStudentDetailsFormData}
+              setFormData={setUpdateStudentDetailsFormData}
+              updateStudentDetails={updateStudentDetails}
+              isLoading={isLoading}
+            />
+          </div>
+        </Dialog>
+
       </Card>
     </>
   );
