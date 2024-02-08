@@ -5,6 +5,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import NewOrganisationForm from '../features/Organisation/NewOrganisationForm'
 import OrganisationDetail from '../features/Organisation/OrganisationDetail'
+import OrganisationTabsContainer from '../features/Organisation/OrganisationTabsContainer'
 import TeamMembers from '../features/Organisation/TeamMembers'
 import { useContext, useEffect, useState } from "react";
 import { authStore } from "../store/auth";
@@ -182,7 +183,11 @@ const OrganisationContainer = () => {
       </Dialog>
       <TabView activeIndex={index}>
         <TabPanel header="My Organisation" leftIcon="" style={{ fontSize: "14px" }}>
-          {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation}/> : null} 
+          <div className="flex gap-4">
+            {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation}/> : ''} 
+            {profile?.role === "ORGANISATION_ADMIN" ? <OrganisationTabsContainer organisation={profile.organisation}/> : ''}
+          </div>
+
         </TabPanel>
         <TabPanel header="Team Members" rightIcon="" style={{ fontSize: "14px" }}>
           <TeamMembers/>

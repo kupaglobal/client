@@ -1,50 +1,95 @@
 import React, {useEffect, useState} from "react";
 import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { StudentsService } from "../../../services/students.service";
 import { SelectButton } from "primereact/selectbutton";
+import { TabView, TabPanel } from "primereact/tabview";
+import { Tag } from "primereact/tag";
 
 const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, isLoading }) => {
     const [error, setError] = useState()
     const onChange=(e)=>{
+
         setError('')
         setFormData({...formData,[e.target.name]:e.target.value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setError('')
-        setFormData({...formData, skillGained: '' })
-        await updateStudentDetails()
+        // setError('')
+        // setFormData({...formData, skillGained: '' })
+        // await updateStudentDetails()
     }
 
     const [studentFields, setStudentFields] = useState([])
     async function fetchStudentFields() {
         const { data: studentFieldsRes} = await StudentsService.getStudentFields();
-        setStudentFields(studentFieldsRes)
+        setStudentFields(studentFieldsRes.map(studentField => {
+            studentField.selected = studentField.isArray ? [] : null;
+            return studentField;
+        }))
     }
     
     useEffect(() => {
         fetchStudentFields()
     }, [setStudentFields])
 
+    const handleEnterKey = async (event, studentField) => {
+        const field = studentField.columnName;
+        if (event.key === "Enter" && studentField.isArray) {
+            setStudentFields(
+                studentFields.map(studentField => {
+                    if (studentField.columnName === field) {
+                        studentField.selected = [...new Set([...studentField.selected, formData[field]])]
+                    }
+                    return studentField;
+                })
+            )
+
+            setFormData({ ...formData, [field]: ''})
+        }
+    }
+
+    const removeItem = async (removedItem, fieldColumnName) => {
+        const studentField = studentFields.filter(studentField => studentField.columnName === fieldColumnName)[0] ?? null;
+        if (studentField) {
+            const remainingItems = studentField.selected.filter(item => item !== removedItem)
+
+            setStudentFields(studentFields.map(field => {
+                if (field.columnName === fieldColumnName) {
+                    studentField.selected = remainingItems
+                }
+                return studentField
+            }))
+        }
+    }
+
     const createStudentField = (studentField) => {
         switch(studentField.type) {
-            case 'radio': 
+            case 'radio':
                 return <>
-                    <SelectButton
-                        key={studentField.id}
-                        value={formData[studentField.columnName]} 
-                        onChange={onChange}
-                        optionLabel={studentField.displayName}
-                        options={studentField.values ?? []}
-                        required={studentField.isRequired}
-                    />
+                    <div className="card justify-content-center mb-4" key={studentField.id}>
+                        <label htmlFor={studentField.columnName} className="block text-900 font-medium mb-20">{studentField.displayName}</label>
+                        <SelectButton
+                            name={studentField.columnName}
+                            value={formData[studentField.columnName]}
+                            onChange={onChange}
+                            options={studentField.values ? studentField.values : ['Yes', 'No']}
+                            required={studentField.isRequired}
+                        />
+                        {/* <SelectButton
+                            key={studentField.id}
+                            value={formData[studentField.columnName]} 
+                            onChange={onChange}
+                            optionLabel={studentField.displayName}
+                            options={studentField.values ?? []}
+                            required={studentField.isRequired}
+                        /> */}
+                    </div>
                 </>
             
             default: 
-                return <>
+                return <div key={studentField.id} className="mb-2">
                     <label htmlFor={studentField.columnName} className="block text-900 font-medium mb-20">{studentField.displayName}</label>
                     <InputText
                         key={studentField.id}
@@ -52,30 +97,47 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
                         name={studentField.columnName}
                         id={studentField.columnName}
                         type={studentField.type}
-                        placeholder="" className="w-full mb-3"
+                        placeholder={studentField.isArray ? `Enter ${studentField.columnName} and press enter` : ''}
+                        className="w-full mb-2"
                         onChange={onChange}
                         required={studentField.isRequired}
+                        onKeyUp={(e) => handleEnterKey(e, studentField)}
                     />
-                </>
+                    {studentField.isArray && studentField.selected.length > 0 ?
+                        <div className="flex flex-row">
+                            {studentField.selected.map((item) => <Tag value={item} icon="pi pi-times" className="mr-1" key={item} onClick={() => removeItem(item, studentField.columnName)}></Tag>)}
+                        </div>
+                    : null}
+                </div>
         }
     } 
 
-    const formLeftSide = studentFields.filter((field, index) => index < Math.ceil(studentFields.length/2)).map(studentField => createStudentField(studentField))
+    const formLeftSide = studentFields
+                            .filter(field => 
+                                !field.columnName.toLowerCase().includes('consent') &&
+                                !field.columnName.toLowerCase().includes('guardian')
+                            )
+                            .map(studentField => createStudentField(studentField))
 
-    const formRightSide = studentFields.filter((field, index) => index >= Math.ceil(studentFields.length/2)).map(studentField => createStudentField(studentField))
+    const formRightSide = studentFields
+                            .filter(field => 
+                                field.columnName.toLowerCase().includes('consent') || 
+                                field.columnName.toLowerCase().includes('guardian')
+                            )
+                            .map(studentField => createStudentField(studentField))
 
     return (
         <div className="w-full m-auto m-2">
             <form onSubmit={handleSubmit}>
-                <div style={{ display: "flex", justifyContent: "normal", gap: "8em" }}>
-                    <div style={{ width: "40%"}}>
+                <TabView>
+                    <TabPanel header="Student" style={{ fontSize: "13px" }}>
                         {formLeftSide}
-                    </div>
-                    <div style={{ width: "40%"}}>
-                        {formRightSide}
-                    </div>
+                    </TabPanel>
 
-                </div>
+                    <TabPanel header="Guardian & Consent" style={{ fontSize: "13px" }}>
+                        {formRightSide}
+                    </TabPanel>
+                </TabView>
             
                 <Button
                     label="Save Changes"
