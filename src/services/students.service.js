@@ -31,15 +31,15 @@ export class StudentsService {
 
     static editStudentPortfolioItem(studentId, portfolioId, studentPortfolioItemDto) {
         delete studentPortfolioItemDto.id
-        return httpClient.post(`/students/${studentId}/portfolio/${portfolioId}`, studentPortfolioItemDto)
+        return httpClient.put(`/students/${studentId}/portfolio/${portfolioId}`, studentPortfolioItemDto)
     }
 
     static editStudentAchievementItem(studentId, achievementId, studentAchievementItemDto) {
         delete studentAchievementItemDto.id
-        return httpClient.post(`/students/${studentId}/achievements/${achievementId}`, studentAchievementItemDto)
+        return httpClient.put(`/students/${studentId}/achievements/${achievementId}`, studentAchievementItemDto)
     }
 
     static updateStudentDetails(studentId, updateStudentDetailsDto) {
-        return httpClient.post(`/students/${studentId}`, updateStudentDetailsDto)
+        return httpClient.put(`/students/${studentId}`, updateStudentDetailsDto)
     }
 }

@@ -14,7 +14,7 @@ const Tab1 = ({ student }) => {
     { heading: "Guardian Name", paragraph: student.guardianName },
     { heading: "Guardian Email", paragraph: student.guardianEmail },
     { heading: "Guardian Relation", paragraph: student.guardianRelationship },
-    { heading: "Guardian Whatsapp", paragraph: student.guardianWhatsapp },
+    { heading: "Guardian Phone", paragraph: student.guardianPhoneNumber },
   ];
 
   return (

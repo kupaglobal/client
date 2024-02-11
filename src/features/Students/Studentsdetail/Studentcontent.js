@@ -10,8 +10,10 @@ import { Checkbox } from "primereact/checkbox";
 import { Link } from "react-router-dom";
 import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
+import { StudentsService } from "../../../services/students.service";
+import { ucFirst } from "../../../utils"
 
-const Studentcontent = ({ student }) => {
+const Studentcontent = ({ student, setStudent }) => {
   const handleClickOpen = () => {};
   const categories = [
     { name: "Review assessment", key: "RA" },
@@ -32,19 +34,27 @@ const Studentcontent = ({ student }) => {
       student[key] = ''
     }
   })
+//  student.gender = ucFirst(student.gender)
 
   const [updateStudentDetailsFormData, setUpdateStudentDetailsFormData] = useState(student)
   const [showEditStudentDetailsForm, setShowEditStudentDetailsForm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const updateStudentDetails = async () => {
-    setTimeout(() => {
+    try {
+      if (updateStudentDetailsFormData.gender) {
+        updateStudentDetailsFormData.gender = updateStudentDetailsFormData.gender.toUpperCase();
+      }
       setIsLoading(true)
+      const {data: updatedStudent} = await StudentsService.updateStudentDetails(student.id, updateStudentDetailsFormData)
+      setStudent(updatedStudent)
       setShowEditStudentDetailsForm(false)
       setIsLoading(false)
-    }, 2000)
-    // 
-  }
+    } catch (e) {
+      console.error(e)
+      setIsLoading(false)
+    }
+}
   return (
     <>
       <Card style={{ width: "300px" }}>
@@ -173,6 +183,7 @@ const Studentcontent = ({ student }) => {
           style={{ width: "40vw" }}
           visible={showEditStudentDetailsForm}
           breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+          onHide={() => setShowEditStudentDetailsForm(false)}
         > 
           <div> 
             <EditStudentDetailsForm

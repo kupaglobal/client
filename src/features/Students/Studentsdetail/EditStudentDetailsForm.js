@@ -9,23 +9,30 @@ import { Tag } from "primereact/tag";
 const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, isLoading }) => {
     const [error, setError] = useState()
     const onChange=(e)=>{
-
         setError('')
         setFormData({...formData,[e.target.name]:e.target.value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // setError('')
-        // setFormData({...formData, skillGained: '' })
-        // await updateStudentDetails()
+    }
+
+    const handleSaveChanges = async () => {
+        setError('')
+        studentFields.filter(field => field.isArray).forEach(field => {
+            formData[field.columnName] = field.selected            
+        })
+        setFormData({
+            ...formData,
+        })
+        await updateStudentDetails()
     }
 
     const [studentFields, setStudentFields] = useState([])
     async function fetchStudentFields() {
         const { data: studentFieldsRes} = await StudentsService.getStudentFields();
         setStudentFields(studentFieldsRes.map(studentField => {
-            studentField.selected = studentField.isArray ? [] : null;
+            studentField.selected = studentField.isArray && formData[studentField.columnName] ? formData[studentField.columnName] : null;
             return studentField;
         }))
     }
@@ -55,12 +62,14 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
         if (studentField) {
             const remainingItems = studentField.selected.filter(item => item !== removedItem)
 
-            setStudentFields(studentFields.map(field => {
-                if (field.columnName === fieldColumnName) {
-                    studentField.selected = remainingItems
-                }
-                return studentField
-            }))
+            setStudentFields(
+                studentFields.map(studentField => {
+                    if (studentField.columnName === fieldColumnName) {
+                        studentField.selected = remainingItems
+                    }
+                    return studentField;
+                })
+            )
         }
     }
 
@@ -97,13 +106,13 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
                         name={studentField.columnName}
                         id={studentField.columnName}
                         type={studentField.type}
-                        placeholder={studentField.isArray ? `Enter ${studentField.columnName} and press enter` : ''}
+                        placeholder={studentField.isArray ? `Enter individual ${studentField.columnName} and press enter` : ''}
                         className="w-full mb-2"
                         onChange={onChange}
                         required={studentField.isRequired}
                         onKeyUp={(e) => handleEnterKey(e, studentField)}
                     />
-                    {studentField.isArray && studentField.selected.length > 0 ?
+                    {studentField.isArray && studentField.selected?.length > 0 ?
                         <div className="flex flex-row">
                             {studentField.selected.map((item) => <Tag value={item} icon="pi pi-times" className="mr-1" key={item} onClick={() => removeItem(item, studentField.columnName)}></Tag>)}
                         </div>
@@ -142,8 +151,9 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
                 <Button
                     label="Save Changes"
                     icon="pi pi-image"
-                    type="submit"
+                    type="button"
                     className="custom-button"
+                    onClick={() => handleSaveChanges()}
                     loading={isLoading}
                 />
     

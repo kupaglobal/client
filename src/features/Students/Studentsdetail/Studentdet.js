@@ -42,7 +42,7 @@ const Studentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {student ? <Studentcontent student={student} /> : ''}
+          {student ? <Studentcontent student={student} setStudent={setStudent} /> : ''}
         </div>
         <div>
           {student ? <Studenttabs1 student={student} /> : ''}
