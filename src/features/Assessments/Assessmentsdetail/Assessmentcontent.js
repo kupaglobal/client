@@ -26,19 +26,24 @@ const Assessmentcontent = ({ assessment, onReload }) => {
     { heading: "Description", paragraph: 'This is the best description of this test', },
   ];
 
+  const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
     async function fetchGroups() {
       try {
         const {data: groupsRes} = await GroupsService.getGroups()
         const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
         setGroups(groups)
+        setShouldRetry(false)
       } catch (e) {
+        setShouldRetry(false)
         toast('error',e.response?.data?.message ? e.response?.data?.message : e.message)
         console.log(e)
       }
-  }
-    fetchGroups()
-  }, [toast])
+    }
+    if (shouldRetry) {
+      fetchGroups()
+    }
+  }, [toast, shouldRetry])
   const [selectedGroup, setSelectedGroup] = useState('')
 
   const downloadTemplate = async () => {

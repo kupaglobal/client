@@ -58,6 +58,7 @@ const Studentgroup = () => {
     }
   }
 
+  const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
     async function fetchGroups() {
       try {
@@ -65,12 +66,16 @@ const Studentgroup = () => {
         const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
         setGroups(groups)
       } catch (e) {
+        setShouldRetry(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
       }
     }
-    fetchGroups()
-  }, [toast])
+    if (shouldRetry) {
+      fetchGroups()
+
+    }
+  }, [toast, shouldRetry])
     return (
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>

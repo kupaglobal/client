@@ -69,7 +69,7 @@ const CurrentSubscriptionContainer = ({ subscription: currentSubscription }) => 
         if (shouldRetry) {
             fetchSubscriptions();   
         }
-    }, [setShowPlans, toast, setPlans, currentSubscription.id, selectedSubscriptionId])
+    }, [setShowPlans, toast, setPlans, currentSubscription.id, selectedSubscriptionId, shouldRetry])
 
     const closePlans = () => {
         setShowPlans(false)

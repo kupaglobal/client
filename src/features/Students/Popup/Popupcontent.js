@@ -35,6 +35,7 @@ export default function Popupcontent({ onReload }) {
     })
   } 
 
+  const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
     async function fetchGroups() {
       try {
@@ -42,12 +43,16 @@ export default function Popupcontent({ onReload }) {
         const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
         setGroups(groups)
       } catch (e) {
+        setShouldRetry(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
       }
     }
-    fetchGroups()
-  }, [toast])
+
+    if (shouldRetry) {
+      fetchGroups()
+    }
+  }, [toast, shouldRetry])
 
   useEffect(() => {
     if (reloadStudents) {
@@ -57,9 +62,8 @@ export default function Popupcontent({ onReload }) {
         payload: false
       })
     }
-  }, [reloadStudents, dispatch, onReload])
+  }, [reloadStudents, dispatch, onReload, shouldRetry])
   const footerContent = (
-
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
         label="Cancel"
