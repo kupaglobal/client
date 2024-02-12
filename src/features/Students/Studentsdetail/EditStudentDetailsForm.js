@@ -29,17 +29,18 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
     }
 
     const [studentFields, setStudentFields] = useState([])
-    async function fetchStudentFields() {
-        const { data: studentFieldsRes} = await StudentsService.getStudentFields();
-        setStudentFields(studentFieldsRes.map(studentField => {
-            studentField.selected = studentField.isArray && formData[studentField.columnName] ? formData[studentField.columnName] : null;
-            return studentField;
-        }))
-    }
     
     useEffect(() => {
+        async function fetchStudentFields() {
+            const { data: studentFieldsRes} = await StudentsService.getStudentFields();
+            setStudentFields(studentFieldsRes.map(studentField => {
+                studentField.selected = studentField.isArray && formData[studentField.columnName] ? formData[studentField.columnName] : null;
+                return studentField;
+            }))
+        }
+    
         fetchStudentFields()
-    }, [setStudentFields])
+    }, [setStudentFields, formData])
 
     const handleEnterKey = async (event, studentField) => {
         const field = studentField.columnName;

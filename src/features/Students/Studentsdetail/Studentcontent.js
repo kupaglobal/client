@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
-import { ucFirst } from "../../../utils"
 
 const Studentcontent = ({ student, setStudent }) => {
   const handleClickOpen = () => {};
@@ -28,7 +27,7 @@ const Studentcontent = ({ student, setStudent }) => {
     { heading: "Cohort", paragraph: "N/A" },
     { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
   ];
-  let updateStudentDto = {}
+
   Object.keys(student).forEach(key => {
     if (student[key] === 'N/a') {
       student[key] = ''
