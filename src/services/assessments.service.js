@@ -25,6 +25,21 @@ export class AssessmentsService {
         })
     }
 
+    static getAssessmentResultsByStudentId(studentId, filterOptions = {}) {
+        let params = {
+            studentId,
+            ...filterOptions
+        }
+        Object.keys(params).forEach(key => {
+            if (params[key]==="") {
+                delete params[key]
+            }
+        })
+        return httpClient.get('/assessment-results', {
+            params
+        })
+    }
+
     static createAssessments(newAssessment) {
         return httpClient.post('/assessments', newAssessment)
     }

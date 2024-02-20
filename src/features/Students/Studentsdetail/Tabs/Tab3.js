@@ -1,29 +1,50 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Tab2headings } from "./Tab2";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
-const Tab3 = () => {
-
-    const navigate = useNavigate();
+import { AssessmentsService } from "../../../../services/assessments.service";
+import { toastStore } from "../../../../store/toast";
+const Tab3 = ({ student }) => {
+  const toast = useContext(toastStore)
+  const navigate = useNavigate();
   
-    const handleRowClick = (row) => {
-      navigate(`/assessments`);
-    };
+  const handleRowClick = ({data: row }) => {
+    navigate(`/assessments/${row.assessment.id}`);
+  };
+
+  const [assessmentResults, setAssessmentResults] = useState([])
+  const [refetchAssessments, setRefetchAssessments] = useState(true)
+
+  useEffect(() => {
+    async function getStudentAssessmentResults() {
+      try {
+        const { data: { results } } = await AssessmentsService.getAssessmentResultsByStudentId(student.id)
+        setAssessmentResults(results) 
+        setRefetchAssessments(false)
+      } catch (e) {
+        toast('error', 'Failed to get student assessment results, please try again.')
+        setRefetchAssessments(false)
+      }
+    }
+    if (refetchAssessments) {
+      getStudentAssessmentResults()
+    }
+  }, [refetchAssessments, setAssessmentResults, student])
 
 
   const createColumns = (type, initialData) => {
     const commonColumns = [
-      { field: "Level", header: "Level" },
-      { field: "Subject", header: "Subject" },
-      { field: "Score", header: "Score" },
-      { field: "Grade", header: "Grade" },
-      { field: "Date", header: "Date" },
+      // { field: "Level", header: "Level" },
+      // { field: "Subject", header: "Subject" },
+      { field: "score", header: "Score" },
+      { field: "grade", header: "Grade" },
+      { field: "dateConducted", header: "Date" },
     ];
 
     const specificColumns = type === "Student Scores"
-      ? [{ field: "Assessment", header: "Assessment" }]
+      ? [{ field: "assessment.name", header: "Assessment" }]
       : [{ field: "Institution", header: "Institution" }];
 
     return [...specificColumns, ...commonColumns];
@@ -109,7 +130,7 @@ const Tab3 = () => {
         <Tab2headings Name={"Student Scores"} />
         <div className="card">
           <DataTable
-            value={filterProducts()}
+            value={assessmentResults}
             removableSort
             paginator
             rows={5}
@@ -134,33 +155,6 @@ const Tab3 = () => {
         </div>
       </div>
 
-      <div>
-        <Tab2headings Name={"Assessments from other Institutions"} />
-        <div className="card">
-          <DataTable
-            value={initialProductsOtherAssessments} 
-            removableSort
-            paginator
-            rows={5}
-            tableStyle={{ minWidth: "50rem" }}
-            globalFilter={globalFilter}
-            header={header}
-            emptyMessage="No data found."
-            selectionMode="single"
-            scrollable
-          >
-            {createColumns("Other Assessments", initialProductsOtherAssessments).map((col, i) => (
-              <Column
-                key={col.field}
-                field={col.field}
-                header={col.header}
-                sortable
-                style={{ fontSize: "12px" }}
-              />
-            ))}
-          </DataTable>
-        </div>
-      </div>
     </>
   );
 };

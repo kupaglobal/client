@@ -9,6 +9,7 @@ import { HIDE_ERRORED_STUDENTS_POPUP, RELOAD, SHOW_ADD_STUDENTS_POPUP } from "..
 import { studentsStore } from "../../../store/students";
 import { GroupsService } from "../../../services/groups.service";
 import { toastStore } from "../../../store/toast";
+import { HttpStatusCode } from "axios";
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
@@ -19,9 +20,19 @@ export default function Popupcontent({ onReload }) {
   const [selectedGroup, setSelectedGroup] = useState('')
 
   const addSelectedStudentsToGroup = async () => {
-    await GroupsService.addStudentsToGroup(selectedStudents.map(selectedStudent => selectedStudent.id), selectedGroup.id)
-    setAddToGroupVisibility(false)
-    toast('success', `${selectedStudents.length} Students were added to the group: ${selectedGroup.name}`)
+    try {
+      const res = await GroupsService.addStudentsToGroup(selectedStudents.map(selectedStudent => selectedStudent.id), selectedGroup.id)
+      if (res.status === HttpStatusCode.Ok) {
+        toast('success', `${selectedStudents.length} Students were added to the group: ${selectedGroup.name}`)
+        setAddToGroupVisibility(false)
+      } else {
+        console.log(res)
+        toast('error', res.response.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+      toast('error', 'Failed to add students to the group. Please try again.')
+    }
   } 
 
   const setVisibility = (visibility) => {

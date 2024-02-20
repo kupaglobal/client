@@ -14,8 +14,8 @@ const AssessmentDashboard = () => {
     { heading: `Highest ${assessment.type}`, paragraph: assessment.stats.highest },
     { heading: `Lowest ${assessment.type}`, paragraph: assessment.stats.lowest },
     { heading: `Average ${assessment.type}`, paragraph: assessment.stats.average },
-    { heading: "Highest Student", paragraph: assessment.highestStudent && assessment.highestStudent.firstName ? `Jennifer Phiri` : 'n/a' },
-    { heading: "Lowest Student", paragraph: assessment.lowestStudent && assessment.lowestStudent.firstName ? `Mike Flowers` : 'n/a' },
+    { heading: "Highest Student", paragraph: assessment.highestStudent && assessment.highestStudent.firstName ? `${assessment.highestStudent.firstName} ${assessment.highestStudent.lastName}` : 'n/a' },
+    { heading: "Lowest Student", paragraph: assessment.lowestStudent && assessment.lowestStudent.firstName ? `${assessment.lowestStudent.firstName} ${assessment.lowestStudent.lastName}` : 'n/a' },
     { heading: "Total No. Students", paragraph: assessment.studentsCount ? assessment.studentsCount : 'n/a' },
   ];
 
