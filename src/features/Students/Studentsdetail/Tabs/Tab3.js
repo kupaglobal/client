@@ -31,10 +31,10 @@ const Tab3 = ({ student }) => {
     if (refetchAssessments) {
       getStudentAssessmentResults()
     }
-  }, [refetchAssessments, setAssessmentResults, student])
+  }, [refetchAssessments, setAssessmentResults, student, toast])
 
 
-  const createColumns = (type, initialData) => {
+  const createColumns = (type) => {
     const commonColumns = [
       // { field: "Level", header: "Level" },
       // { field: "Subject", header: "Subject" },
@@ -60,50 +60,19 @@ const Tab3 = ({ student }) => {
       Date: "1/2/2023",
     },
     {
-        Assessment: "Eng101",
-        Level: "Grade 2",
-        Subject: "English",
-        Score: 10,
-        Grade: "A1 Distinction",
-        Date: "1/2/2023",
-    },
-  ];
-
-  const initialProductsOtherAssessments = [
-    {
-      Institution: "Macheke Primary School", // Add the Institution data here
+      Assessment: "Eng101",
       Level: "Grade 2",
-      Subject: "Mathematics",
-      Score: '76%',
-      Grade: "Distinction ",
-      Date: "2/2/2023",
-    },
-    {
-    Institution: "The Makers Club", // Add the Institution data here
-      Level: "Grade 2",
-      Subject: "Mathematics",
-      Score: '86%',
-      Grade: "Distinction ",
-      Date: "2/8/2023",
+      Subject: "English",
+      Score: 10,
+      Grade: "A1 Distinction",
+      Date: "1/2/2023",
     },
   ];
   
-
-  const [products] = useState(initialProductsStudentScores);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const onInputChange = (event) => {
     setGlobalFilter(event.target.value);
-  };
-
-  const filterProducts = () => {
-    return products.filter(
-      (product) =>
-        Object.values(product)
-          .join(" ")
-          .toLowerCase()
-          .includes(globalFilter.toLowerCase())
-    );
   };
 
   const renderHeader = () => {
