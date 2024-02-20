@@ -6,6 +6,7 @@ import { toastStore } from "../../store/toast";
 import { GroupsService } from "../../services/groups.service";
 import NewGroupForm from "./NewGroupForm";
 import { Dialog } from "primereact/dialog";
+import NewCohortForm from "../Cohorts/NewCohortForm";
 
 const options = [
   { label: "Edit Group", icon: "pi pi-pencil" },
@@ -19,9 +20,14 @@ const Studentgroup = () => {
   const [ groups, setGroups ] = useState([])
   const [ isLoading, setIsLoading ] = useState(false)
   const [createGroupVisibility, setCreateGroupVisibility] = useState(false)
+  const [createCohortVisibility, setCreateCohortVisibility] = useState(false)
 
   const [formData,setFormData]=useState({
     "name": ""
+  })
+  const [newCohortFormData,setNewCohortFormData]=useState({
+    name: "",
+    dates: null
   })
 
   const footerContent = (
@@ -58,6 +64,20 @@ const Studentgroup = () => {
     }
   }
 
+  const createCohort = async () => {
+    setIsLoading(true)
+    try {
+      // await GroupsService.createGroup(formData)
+      toast('success', 'New Group Created')
+//      window.location.href = '/students?a=Groups'
+      setIsLoading(false)
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+      setIsLoading(false)
+    }
+
+  }
+
   const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
     async function fetchGroups() {
@@ -78,13 +98,19 @@ const Studentgroup = () => {
   }, [toast, shouldRetry])
     return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+      <Button
           className="custom-button"
           icon={<AiOutlinePlus />}
           label="Create new Group"
           outlined
           onClick={() => setCreateGroupVisibility(true)}
+        />
+        <Button
+          className="custom-button"
+          icon={<AiOutlinePlus />}
+          label="Create new Cohort"
+          onClick={() => setCreateCohortVisibility(true)}
         />
       </div>
       <div
@@ -111,6 +137,18 @@ const Studentgroup = () => {
 
         <div>
           <NewGroupForm formData={formData} setFormData={setFormData} />
+        </div>
+      </Dialog>
+      <Dialog
+        header="New Cohort"
+        visible={createCohortVisibility}
+        style={{ width: "30vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setCreateCohortVisibility(false)}
+      >
+        <div>
+          <NewCohortForm formData={newCohortFormData} setFormData={setNewCohortFormData} createCohort={createCohort} />
         </div>
       </Dialog>
 
