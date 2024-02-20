@@ -40,9 +40,11 @@ const CurrentSubscriptionContainer = ({ subscription: currentSubscription }) => 
             if (paymentStatus === 'pending' && paymentLink) {
                 toast('success', `You are being redirected to ${paymentProvider} for payment...`)
                 window.location.href = paymentLink
-            } else if (paymentStatus === 'completed') {
+            } else if (paymentStatus === 'paid') {
                 toast(`Your organisation is now subscribed to ${selectedSubscription.name} (${selectedSubscription.period})!`)
-                window.location.href = ''
+                setTimeout(() => {
+                    window.location.href = ''
+                }, 3000)
             }
         } else {
             toast('error', 'First select a subscription plan.')
@@ -103,7 +105,7 @@ const CurrentSubscriptionContainer = ({ subscription: currentSubscription }) => 
                 <div className="flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
                         <div className="text-2xl text-900 font-semibold mb-3">{currentSubscription.name}</div>
-                        <p className="m-0 line-height-3 mb-5 text-secondary text-lg text-800">1 {ucFirst(currentSubscription.period)} Subscription</p>
+                        <p className="m-0 line-height-3 mb-5 text-secondary text-lg text-800">{ucFirst(currentSubscription.period)} Subscription</p>
                     </div>
                     <button
                         onClick={() => setShowPlans(true)}
