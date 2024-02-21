@@ -57,7 +57,7 @@ const Tab1 = ({ student }) => {
               }}
             >
             </p>
-            {student.careerAmbition.map(ambition => <Tag rounded className="custom-accordion-content" severity="success">{ambition}</Tag> )}
+            {student.careerAmbition.map(ambition => <Tag rounded key={ambition} className="custom-accordion-content" severity="success">{ambition}</Tag> )}
           </AccordionTab>
           {/* <AccordionTab
             headerClassName="custom-accordion-header"
@@ -116,7 +116,7 @@ const Tab1 = ({ student }) => {
               </div>
             }
           >
-            {student.interests.map(interest => <Tag rounded className="custom-accordion-content">{interest}</Tag>)}
+            {student.interests.map(interest => <Tag rounded key={interest} className="custom-accordion-content">{interest}</Tag>)}
           </AccordionTab>
         </Accordion>
       </div>
