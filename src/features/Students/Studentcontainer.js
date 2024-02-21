@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import Table from "../../components/Table/Table";
 import Studentgroup from "../Groups/Studentgroup";
+import Studentcohort from "../Cohorts/Studentcohort";
 import "./student.css";
 import { TabView, TabPanel } from "primereact/tabview";
 import Popupcontent from "./Popup/Popupcontent";
@@ -53,7 +54,7 @@ const tableRowItem = "students";
 
 
 const Studentcontainer = () => {
-  const tabs = ['Students', 'Groups']
+  const tabs = ['Students', 'Cohorts', 'Groups']
   const [queryParams] = useSearchParams()
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
   const [ selectedTab ] = useState(index >= 0 ? index : 0)
@@ -94,6 +95,9 @@ const Studentcontainer = () => {
       <TabView activeIndex={selectedTab}>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
           <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
+        </TabPanel>
+        <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
+          <Studentcohort />
         </TabPanel>
         <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentgroup />
