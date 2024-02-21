@@ -10,14 +10,18 @@ import { studentsStore } from "../../../store/students";
 import { GroupsService } from "../../../services/groups.service";
 import { toastStore } from "../../../store/toast";
 import { HttpStatusCode } from "axios";
+import { CohortsService } from "../../../services/cohorts.service";
         
 export default function Popupcontent({ onReload }) {
   const { state, dispatch } = useContext(studentsStore)
   const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
   const [addToGroupVisibility, setAddToGroupVisibility] = useState(false)
+  const [addToCohortVisibility, setAddToCohortVisibility] = useState(false)
   const { toast } = useContext(toastStore);
   const [groups, setGroups] = useState([])
-  const [selectedGroup, setSelectedGroup] = useState('')
+  const [cohorts, setCohorts] = useState([])
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedCohort, setSelectedCohort] = useState(null)
 
   const addSelectedStudentsToGroup = async () => {
     try {
@@ -32,6 +36,22 @@ export default function Popupcontent({ onReload }) {
     } catch (e) {
       console.log(e)
       toast('error', 'Failed to add students to the group. Please try again.')
+    }
+  } 
+
+  const addSelectedStudentsToCohort = async () => {
+    try {
+      const res = await CohortsService.addStudentsToCohort(selectedStudents.map(selectedStudent => selectedStudent.id), selectedCohort.id)
+      if (res.status === HttpStatusCode.Ok) {
+        toast('success', `${selectedStudents.length} Students were added to the cohort: ${selectedCohort.name}`)
+        setAddToGroupVisibility(false)
+      } else {
+        console.log(res)
+        toast('error', res.response.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+      toast('error', 'Failed to add students to the cohort. Please try again.')
     }
   } 
 
@@ -60,8 +80,21 @@ export default function Popupcontent({ onReload }) {
       }
     }
 
+    async function fetchCohorts() {
+      try {
+        const {data: cohortsRes} = await CohortsService.getCohorts()
+        const cohorts = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
+        setCohorts(cohorts)
+      } catch (e) {
+        setShouldRetry(false)
+        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+        console.log(e)
+      }
+    }
+
     if (shouldRetry) {
       fetchGroups()
+      fetchCohorts()
     }
   }, [toast, shouldRetry])
 
@@ -111,6 +144,25 @@ export default function Popupcontent({ onReload }) {
       />
     </div>
   );
+  const addToCohortFooterContent = (
+
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        onClick={() => setAddToCohortVisibility(false)}
+        className="custom-button"
+        outlined
+      />
+      <Button
+        label="Add to Cohort"
+        icon="pi pi-user-plus"
+        onClick={() => addSelectedStudentsToCohort()}
+        className="custom-button"
+        disabled={!selectedCohort}
+      />
+    </div>
+  );
   // const [selectedOption, setSelectedOption] = useState("");
   const [projectOptions] = useState([
     { name: "Via template", code: 'VT' },
@@ -123,25 +175,38 @@ export default function Popupcontent({ onReload }) {
 
   return (
     <>
-      {selectedStudents.length > 0 ? <Button
-        outlined
-        icon={<AiOutlinePlus />}
-        label="Add Students To Group"
-        className="custom-button mx-2"
-        onClick={() => setAddToGroupVisibility(true)}
-      /> : selectedStudents}
+      <div id="buttons">
+        {selectedStudents.length > 0 ? 
+          <div>
+            <Button
+              outlined
+              icon={<AiOutlinePlus />}
+              label="Add Students To Group"
+              className="custom-button mx-2"
+              onClick={() => setAddToGroupVisibility(true)}
+            />
+            <Button
+              icon={<AiOutlinePlus />}
+              label="Add Students To Cohort"
+              className="custom-button mx-2"
+              onClick={() => setAddToCohortVisibility(true)}
+            />
+          </div>
+          :       <Button
+          outlined
+          icon={<AiOutlinePlus />}
+          label="Add Students"
+          className="custom-button"
+          onClick={() => setVisibility(true)}
+        />
+  
+        }
+      </div>
        
-      <Button
-        outlined
-        icon={<AiOutlinePlus />}
-        label="Add Students"
-        className="custom-button"
-        onClick={() => setVisibility(true)}
-      />
       <Dialog
-        header="Add Students to Group"
+        header="Add Selected Students to Group"
         visible={addToGroupVisibility}
-        style={{ width: "60vw" }}
+        style={{ width: "30vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
         onHide={() => setAddToGroupVisibility(false)}
@@ -154,6 +219,26 @@ export default function Popupcontent({ onReload }) {
           <Dropdowncomp
             projectoption={groups}
             onSelected={setSelectedGroup}
+          />
+        </div>
+
+      </Dialog>
+      <Dialog
+        header="Add Selected Students to Cohort"
+        visible={addToCohortVisibility}
+        style={{ width: "30vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setAddToCohortVisibility(false)}
+        footer={addToCohortFooterContent}
+      >
+        <div>
+          <p style={{ fontSize: "13px" }}>
+            Select a cohort to add the students to
+          </p>
+          <Dropdowncomp
+            projectoption={cohorts}
+            onSelected={setSelectedCohort}
           />
         </div>
 

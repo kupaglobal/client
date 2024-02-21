@@ -50,9 +50,10 @@ const Studentcohort = () => {
         console.log(e)
     }
   }
+
   const options = [
     { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {setEditCohortVisibility(true)} },
-    //   { label: "Add Student", icon: "pi pi-user-plus" },
+    { label: "View Students", icon: "pi pi-user-plus", url: `/students?a=Students&cohortId=${selectedCohort?.id}`  },
     { label: "Message Cohort", icon: "pi pi-comment", command: () => {toast('info', 'This feature is coming soon...')} },
     { label: "Delete Cohort", icon: "pi pi-trash", command: showDeletePopup },
   ];

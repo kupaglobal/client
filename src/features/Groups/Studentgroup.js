@@ -106,12 +106,6 @@ const Studentgroup = () => {
           outlined
           onClick={() => setCreateGroupVisibility(true)}
         />
-        <Button
-          className="custom-button"
-          icon={<AiOutlinePlus />}
-          label="Create new Cohort"
-          onClick={() => setCreateCohortVisibility(true)}
-        />
       </div>
       <div
         style={{
@@ -134,8 +128,7 @@ const Studentgroup = () => {
         onHide={() => setCreateGroupVisibility(false)}
         footer={footerContent}
       >
-
-        <div>
+       <div>
           <NewGroupForm formData={formData} setFormData={setFormData} />
         </div>
       </Dialog>

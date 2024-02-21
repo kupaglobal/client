@@ -59,19 +59,37 @@ const Studentcontainer = () => {
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
   const [ selectedTab ] = useState(index >= 0 ? index : 0)
 
-  const [students, setStudents] = useState([])
+  const [ selectedCohortId ] = useState(queryParams.get('cohortId') ? queryParams.get('cohortId') : null)
+
+  const [ students, setStudents ] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadStudents, setReloadStudents ] = useState(true)
   const { state, dispatch } = useContext(studentsStore)
-  const { selectedStudents} = state
+  const { selectedStudents } = state
+  const [ filterOptions, setFilterOptions ] = useState([])
+  const [ selectedFilterOptions, setSelectedFilterOptions ] = useState({
+    cohortId: selectedCohortId
+  }) 
+  const handleStudentsFilter = (selectedFilterOptions) => {
+    setSelectedFilterOptions(selectedFilterOptions)
+    console.log('to send', selectedFilterOptions)
+    setReloadStudents(true)
+  }
 
   useEffect(() => {
     async function fetchStudents() {
       setReloadStudents(false)
       try {
-        const {data: studentsRes} = await StudentsService.getStudents()
+        const {data: studentsRes} = await StudentsService.getStudents(selectedFilterOptions)
         const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
         setStudents(students)
+        setFilterOptions(studentsRes.filterOptions?.map(option => { 
+          option.filterValue = ''
+          if (option.id==='cohortId') {
+            option.filterValue = selectedCohortId
+          }
+          return {...option, isRange: false}
+        }) ?? [])
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
@@ -80,7 +98,7 @@ const Studentcontainer = () => {
     if (reloadStudents) {
       fetchStudents()
     }
-  }, [reloadStudents, toast])
+  }, [reloadStudents, toast, selectedFilterOptions, selectedCohortId])
 
   const handleSelectedRowsChanged = ({selectedRows}) => {
     dispatch({ 
@@ -94,7 +112,7 @@ const Studentcontainer = () => {
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={students} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
+          <Table columns={columns} data={students} filterOptions={filterOptions} onFilter={handleStudentsFilter} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
         </TabPanel>
         <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentcohort />

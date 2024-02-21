@@ -9,18 +9,19 @@ import { Button } from "primereact/button";
 const FilterOptions = ({ filterOptions = [], onFilter, isLoading }) => {
     let fd = {}
     filterOptions.forEach(filterOption => {
-        fd[filterOption.id] = filterOption.type === 'date' && filterOption.isRange ? null : ""
+      fd[filterOption.id] = filterOption.type === 'date' && filterOption.isRange ? null : filterOption.filterValue
+      console.log('in loop', fd)
     })
 
     const [formData,setFormData]=useState(fd)
 
     const [selectedFilterOptions, setSelectedFilterOptions] = useState([])
     const addToSelectedOptions = (value) => {
-        const alreadySelectedOptionIds = selectedFilterOptions.map(option => option.id)
-        if (!alreadySelectedOptionIds.includes(value.id)) {
-            setCurrentFilterOption(value.id)
-            setSelectedFilterOptions([...selectedFilterOptions, value])
-        }
+      const alreadySelectedOptionIds = selectedFilterOptions.map(option => option.id)
+      if (!alreadySelectedOptionIds.includes(value.id)) {
+        setCurrentFilterOption(value.id)
+        setSelectedFilterOptions([...selectedFilterOptions, filterOptions.filter(filterOption => filterOption.id === value.id)[0]])
+      }
     }
   const [currentFilterOption, setCurrentFilterOption] = useState('')  
      
@@ -49,7 +50,12 @@ const FilterOptions = ({ filterOptions = [], onFilter, isLoading }) => {
     selectedFilters = selectedFilters.map(option => ({
       ...option,
       value: formData[option.id]
-    })).filter(option => option.value)
+    })).filter(option => option.filterValue)
+
+    selectedFilters.forEach(filter => {
+      setFormData({ ...formData, [filter.id]: filter.filterValue })
+    })
+    console.log('onFilter', formData, selectedFilters)
     onFilter(formData)
   }
 
@@ -83,7 +89,9 @@ const FilterOptions = ({ filterOptions = [], onFilter, isLoading }) => {
           >
             <div className="flex flex-row w-full">
                 {selectedFilterOptions.map((filterOption, index) => {
+                  console.log('filterOption', filterOption)
                     return <FilterOption 
+                            key={filterOption.id}
                             filterOption={filterOption}
                             formData={formData}
                             setFormData={setFormData}

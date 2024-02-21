@@ -5,8 +5,26 @@ export class StudentsService {
         return httpClient.get('/students/student-fields')
     }
 
-    static getStudents() {
-        return httpClient.get('/students')
+    static getStudents(filterOptions = {}) {
+        let params = {
+            ...filterOptions
+        }
+        Object.keys(params).forEach(key => {
+            if (params[key] && params[key]==="") {
+                delete params[key]
+            }
+        })
+
+        let url = '/students'
+        
+        if (params['cohortId']) {
+            url = `/cohorts/${params['cohortId']}/students`
+            delete params['cohortId']
+        }
+
+        return httpClient.get(url, {
+            params
+        })
     }
 
     static getSingleStudent(studentId) {

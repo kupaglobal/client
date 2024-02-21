@@ -119,7 +119,7 @@ const Table = ({
 
       <div>
         {
-          filterOptions !== null ?
+          filterOptions !== null && filterOptions.length > 0 ?
           <FilterOptions filterOptions={filterOptions} onFilter={onFilter} isLoading={isLoading} /> : null
         }
       </div>
