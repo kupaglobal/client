@@ -4,9 +4,12 @@ import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
 import { toastStore } from "../../store/toast";
+import { authStore } from "../../store/auth";
+import { SET_LOGGED_IN_USER } from "../../store/actions";
 
 const UpsertProfile = () => {
     const goTo = useNavigate()
+    const { dispatch } = useContext(authStore);
     const { toast } = useContext(toastStore)
 
     const [profileFormData,setProfileFormData]=useState({
@@ -20,6 +23,9 @@ const UpsertProfile = () => {
         try {
             const {data: authResponse} = await AuthService.upsertProfile(profileFormData);
             if (authResponse && authResponse.emailVerified === true) { // successful
+                const {data: profileRes} = await AuthService.getProfile()
+                dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
+          
                 goTo('/dashboard?welcome')
             } else {
                 toast('error','We failed to update your profile. Please try again.')

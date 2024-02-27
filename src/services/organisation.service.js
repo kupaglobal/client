@@ -18,7 +18,7 @@ export default class OrganisationService {
         return httpClient.get('/auth/user-roles')
     }
     static acceptInvitation(invitationId) {
-        return httpClient.post(`/invitations/${invitationId}/ACCEPTED`)
+        return httpClient.patch(`/invitations/${invitationId}/ACCEPTED`)
     }
     static getInvitationById(invitationId) {
         return httpClient.get(`/invitations/${invitationId}`)

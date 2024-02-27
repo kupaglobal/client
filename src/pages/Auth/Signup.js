@@ -13,8 +13,13 @@ const Signup = () => {
     const { dispatch } = useContext(authStore);
     const { toast } = useContext(toastStore);
 
-    useEffect(() => {
-        
+    const savedInvitation = localStorage.getItem('accept-invitation') ? JSON.parse(localStorage.getItem('accept-invitation')) : null
+
+    const [formData,setFormData]=useState({
+        fullName: '',
+        email:'',
+        password:'',
+        role: savedInvitation?.role ?? null
     })
 
     const handleSubmit = async (e) => {
@@ -34,11 +39,6 @@ const Signup = () => {
         }
     }
 
-    const [formData,setFormData]=useState({
-        fullName: '',
-        email:'',
-        password:'',
-    })
 
     const onChange=(e)=>{
         setFormData({...formData,[e.target.name]:e.target.value})

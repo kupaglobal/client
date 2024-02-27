@@ -9,7 +9,7 @@ const Dashboard = () => {
     <div>
       <h1 className='module__heading'>Dashboard Page</h1>
       <div style={{ alignSelf: "center"}}>
-       <WelcomePopup user={state.loggedInUser?.firstName ? `, ${state.loggedInUser.firstName}` : ""}/>
+       <WelcomePopup user={state.loggedInUser}/>
       </div>
 
     </div>

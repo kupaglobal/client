@@ -16,7 +16,7 @@ const AcceptInvitation = () => {
     async function checkForAuth() {
         setReload(false)
         if (params.invitationId) {
-            const invitation = await getInvitation(params.invitationId);
+            const invitation = (await getInvitation(params.invitationId)).data
 
             if (!authState.loggedInUser) { // not logged in
                 localStorage.setItem('accept-invitation', JSON.stringify(invitation))
