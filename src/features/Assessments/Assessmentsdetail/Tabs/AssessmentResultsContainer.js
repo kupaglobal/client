@@ -31,7 +31,7 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
     } : {
         id: "result_grade",
         name: "Grade",
-        selector: (row) => 'dd',
+        selector: (row) => row.grade,
         sortable: true,
     },
     {
