@@ -69,4 +69,15 @@ export class AssessmentsService {
             }
         })
     }
+
+    static saveFeedback(assessmentId, feedback) {
+        delete feedback.id
+        return httpClient.post(`/assessment-results/${assessmentId}/feedback`, {
+            feedback
+        })
+    }
+
+    static editAssessmentResult(assessmentId, assessmentResultDto) {
+        return httpClient.patch(`/assessment-results/${assessmentId}`, assessmentResultDto)
+    }
 }

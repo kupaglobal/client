@@ -8,13 +8,15 @@ import { CohortsService } from "../../services/cohorts.service";
 import ListCohortCard from "../../components/Cards/ListCohortCard";
 import EditCohortForm from "./EditCohort";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import AddFacilitatorToCohort from "./AddFacilitatorToCohort";
 
-const Studentcohort = () => {
+const Studentcohort = ({ user }) => {
   const { toast } = useContext(toastStore);
   const [ cohorts, setCohorts ] = useState([])
   const [ isLoading, setIsLoading ] = useState(false)
   const [createCohortVisibility, setCreateCohortVisibility] = useState(false)
   const [editCohortVisibility, setEditCohortVisibility] = useState(false)
+  const [addFacilitatorVisibility, setAddFacilitatorVisibility] = useState(false)
 
   const [newCohortFormData,setNewCohortFormData]=useState({
     name: "",
@@ -53,7 +55,8 @@ const Studentcohort = () => {
 
   const options = [
     { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {setEditCohortVisibility(true)} },
-    { label: "View Students", icon: "pi pi-user-plus", url: `/students?a=Students&cohortId=${selectedCohort?.id}`  },
+    { label: "Add Facilitator to Cohort", icon: "pi pi-user-plus", command: () => {setAddFacilitatorVisibility(true)} },
+    { label: "View Students", icon: "pi pi-users", url: `/students?a=Students&cohortId=${selectedCohort?.id}`  },
     { label: "Message Cohort", icon: "pi pi-comment", command: () => {toast('info', 'This feature is coming soon...')} },
     { label: "Delete Cohort", icon: "pi pi-trash", command: showDeletePopup },
   ];
@@ -80,14 +83,18 @@ const Studentcohort = () => {
   }, [toast, shouldRefetch])
     return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-        <Button
-          className="custom-button"
-          icon={<AiOutlinePlus />}
-          label="Create new Cohort"
-          onClick={() => setCreateCohortVisibility(true)}
-        />
-      </div>
+        {
+            user.role === 'FACILITATOR' ? null : 
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                <Button
+                    className="custom-button" 
+                    icon={<AiOutlinePlus />}
+                    label="Create new Cohort"
+                    onClick={() => setCreateCohortVisibility(true)}
+                />
+            </div>
+    
+        }
       <div
         style={{
           marginTop: "10px",
@@ -96,9 +103,12 @@ const Studentcohort = () => {
           gap: "20px",
         }}
       >
-        {cohorts.map(cohort => (
+        {cohorts.length > 0 ? cohorts.map(cohort => (
           <ListCohortCard key={cohort.id} cohort={cohort} options={options} handleOptionClick={handleOptionClick} setSelectedCohort={setSelectedCohort} />
-        ))}
+        )) : 
+        <div className="flex justify-center">
+            You haven't been added to any cohort.
+        </div>}
       </div>
       <Dialog
         header="New Cohort"
@@ -122,6 +132,19 @@ const Studentcohort = () => {
       >
         <div>
           <EditCohortForm cohort={selectedCohort} formData={selectedCohort} setFormData={setSelectedCohort} isLoading={isLoading}  />
+        </div>
+      </Dialog>
+
+      <Dialog
+        header="Add Facilitator to Cohort"
+        visible={addFacilitatorVisibility}
+        style={{ width: "30vw" }}
+        maximizable
+        breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+        onHide={() => setAddFacilitatorVisibility(false)}
+      >
+        <div>
+          <AddFacilitatorToCohort cohort={selectedCohort} formData={selectedCohort} setFormData={setSelectedCohort} isLoading={isLoading}  />
         </div>
       </Dialog>
 

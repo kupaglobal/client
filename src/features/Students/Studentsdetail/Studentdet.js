@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs";
 import Studentcontent from "./Studentcontent";
 import Studenttabs1 from "./Studenttabs1";
 import MeatballMenu from "../../../components/MeatballMenu";
 import { useParams } from "react-router-dom";
 import { StudentsService } from "../../../services/students.service";
+import { authStore } from "../../../store/auth";
 
 const Studentdet = () => {
   const breadCrumbs = "Students";
   const breadCrumbsLinkTo = "students";
   const [student, setStudent] = useState(null)
   const studentId = useParams().id
+  const {state: authState} = useContext(authStore)
 
   const options = [
     { label: "Upload new student data", icon: "pi pi-upload"},
@@ -42,7 +44,7 @@ const Studentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {student ? <Studentcontent student={student} setStudent={setStudent} /> : ''}
+          {student ? <Studentcontent student={student} setStudent={setStudent} user={authState.loggedInUser}/> : ''}
         </div>
         <div>
           {student ? <Studenttabs1 student={student} /> : ''}

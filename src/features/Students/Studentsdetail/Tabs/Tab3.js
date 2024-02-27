@@ -3,19 +3,25 @@ import { Tab2headings } from "./Tab2";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { useNavigate } from "react-router-dom";
 import { AssessmentsService } from "../../../../services/assessments.service";
 import { toastStore } from "../../../../store/toast";
+import EditAssessmentResultForm from "../../../Assessments/Popup/EditAssessmentResultForm";
+import { Dialog } from "primereact/dialog";
+import { authStore } from "../../../../store/auth";
 const Tab3 = ({ student }) => {
-  const toast = useContext(toastStore)
-  const navigate = useNavigate();
+  const {toast} = useContext(toastStore)
+  const {state: authState} = useContext(authStore)
   
   const handleRowClick = ({data: row }) => {
-    navigate(`/assessments/${row.assessment.id}`);
+    setShowEditAssessmentResultsForm(true)
+    setSelectedAssessmentResult(row)
   };
 
+  const [selectedAssessmentResult, setSelectedAssessmentResult] = useState(null)
+  const [showEditAssessmentResultsForm, setShowEditAssessmentResultsForm] = useState(false)
   const [assessmentResults, setAssessmentResults] = useState([])
   const [refetchAssessments, setRefetchAssessments] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     async function getStudentAssessmentResults() {
@@ -33,6 +39,24 @@ const Tab3 = ({ student }) => {
     }
   }, [refetchAssessments, setAssessmentResults, student, toast])
 
+  const updateAssessmentResult = async () => {
+    try {
+      setIsLoading(true)
+      if (authState.loggedInUser.role === 'FACILITATOR') {
+        await AssessmentsService.saveFeedback(selectedAssessmentResult.id, selectedAssessmentResult.feedback)
+      } else {
+        await AssessmentsService.editAssessmentResult(selectedAssessmentResult.id, selectedAssessmentResult)
+      }
+      setRefetchAssessments(true)
+      toast('success', 'Assessment result has been updated.')
+      setIsLoading(false)
+      setShowEditAssessmentResultsForm(false)
+    } catch (e) {
+      toast('error', 'Failed to update assessment result. Please try again')
+      setIsLoading(false)
+    }
+
+  }
 
   const createColumns = (type) => {
     const commonColumns = [
@@ -123,6 +147,23 @@ const Tab3 = ({ student }) => {
           </DataTable>
         </div>
       </div>
+      <Dialog
+          header={`Edit Assessment Results`}
+          style={{ width: "30vw" }}
+          visible={showEditAssessmentResultsForm}
+          breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+          onHide={() => setShowEditAssessmentResultsForm(false)}
+        > 
+          <div> 
+            <EditAssessmentResultForm
+              formData={selectedAssessmentResult}
+              setFormData={setSelectedAssessmentResult}
+              updateAssessmentResult={updateAssessmentResult}
+              isLoading={isLoading}
+              user={authState.loggedInUser}
+            />
+          </div>
+        </Dialog>
 
     </>
   );

@@ -29,7 +29,9 @@ const Login = () => {
             const {data: authResponse} = await AuthService.login(formData);
             if (authResponse && authResponse.access_token) { // successful
                 localStorage.setItem('jwtToken', authResponse.access_token);
-                dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
+                const {data: profileRes} = await AuthService.getProfile()
+                dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
+
                 if (authResponse.organisationId) {
                     window.location.href = '/students'
                 } else {

@@ -13,6 +13,10 @@ export class CohortsService {
         return httpClient.put(`/cohorts/${cohortId}`, editCohortData)
     }
 
+    static addFacilitatorsToCohort(cohortId, facilitatorIds) {
+        return httpClient.post(`/cohorts/${cohortId}/tag`, facilitatorIds)
+    }
+
     static deleteCohort(cohortId) {
         return httpClient.delete(`/cohorts/${cohortId}`)
     }

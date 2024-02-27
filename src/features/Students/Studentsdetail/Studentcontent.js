@@ -12,7 +12,7 @@ import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
 
-const Studentcontent = ({ student, setStudent }) => {
+const Studentcontent = ({ student, setStudent, user }) => {
   const handleClickOpen = () => {};
   const categories = [
     { name: "Review assessment", key: "RA" },
@@ -164,12 +164,13 @@ const Studentcontent = ({ student, setStudent }) => {
             justifyContent: "space-between",
           }}
         >
-          <Button
+          {user.role !== 'FACILITATOR' ? (<Button
             label="Edit Profile"
             icon="pi pi-user-edit"
             className="p-button-outlined p-button-sm"
             onClick={() => setShowEditStudentDetailsForm(true)}
-          />
+          />) : ''}
+          
 
           <Button
             label="Share"

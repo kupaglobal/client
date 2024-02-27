@@ -11,6 +11,7 @@ import { StudentsService } from "../../services/students.service";
 import { studentsStore } from "../../store/students";
 import { SET_SELECTED_STUDENTS } from "../../store/actions";
 import { useSearchParams } from "react-router-dom";
+import { authStore } from "../../store/auth";
 
 
 // const handleButtonClick = (row) => {
@@ -65,6 +66,8 @@ const Studentcontainer = () => {
   const { toast } = useContext(toastStore);
   const [ reloadStudents, setReloadStudents ] = useState(true)
   const { state, dispatch } = useContext(studentsStore)
+  const { state: authState } = useContext(authStore)
+
   const { selectedStudents } = state
   const [ filterOptions, setFilterOptions ] = useState([])
   const [ selectedFilterOptions, setSelectedFilterOptions ] = useState({
@@ -108,6 +111,11 @@ const Studentcontainer = () => {
     console.log(selectedStudents)
   }
 
+  const groupsContainer = authState.loggedInUser.role === 'FACILITATOR' ? "" : (
+    <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
+      <Studentgroup />
+    </TabPanel>
+)
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
@@ -115,11 +123,9 @@ const Studentcontainer = () => {
           <Table columns={columns} data={students} filterOptions={filterOptions} onFilter={handleStudentsFilter} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
         </TabPanel>
         <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
-          <Studentcohort />
+          <Studentcohort user={authState.loggedInUser} />
         </TabPanel>
-        <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
-          <Studentgroup />
-        </TabPanel>
+        {groupsContainer}
       </TabView>
     </div>
   );
