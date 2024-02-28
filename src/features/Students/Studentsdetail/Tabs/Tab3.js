@@ -27,7 +27,15 @@ const Tab3 = ({ student }) => {
     async function getStudentAssessmentResults() {
       try {
         const { data: { results } } = await AssessmentsService.getAssessmentResultsByStudentId(student.id)
-        setAssessmentResults(results) 
+        setAssessmentResults(results.map(result => {
+          if (!result.grade) {
+            result.grade = '--'
+          }
+          if (!result.score) {
+            result.score = '--'
+          }
+          return result
+        })) 
         setRefetchAssessments(false)
       } catch (e) {
         toast('error', 'Failed to get student assessment results, please try again.')
@@ -62,9 +70,10 @@ const Tab3 = ({ student }) => {
     const commonColumns = [
       // { field: "Level", header: "Level" },
       // { field: "Subject", header: "Subject" },
-      { field: "score", header: "Score" },
-      { field: "grade", header: "Grade" },
-      { field: "dateConducted", header: "Date" },
+      { field: "score", header: "Score", sortable: true },
+      { field: "grade", header: "Grade", sortable: true },
+      { field: "feedback", header: "Feedback" },
+      { field: "dateConducted", header: "Date", sortable: true },
     ];
 
     const specificColumns = type === "Student Scores"
@@ -140,7 +149,7 @@ const Tab3 = ({ student }) => {
                 key={col.field}
                 field={col.field}
                 header={col.header}
-                sortable
+                sortable={col.sortable}
                 style={{ fontSize: "12px" }}
               />
             ))}
