@@ -85,7 +85,7 @@ export default function WelcomePopup({ user }) {
       footer={facilitatorFooterContent}
       > 
       <div>
-        Welcome to Kupa Global{ user?.firstName ? `, ${user.firstName}` : "" }! You have now joined { user.organisation.name}. You will soon be added to cohorts of students where you will be able to add feedback for the students on the assessments they took.
+        Welcome to Kupa Global{ user?.firstName ? `, ${user.firstName}` : "" }! You have now joined { user.organisation?.name}. You will soon be added to cohorts of students where you will be able to add feedback for the students on the assessments they took.
       </div>
     </Dialog>
 
