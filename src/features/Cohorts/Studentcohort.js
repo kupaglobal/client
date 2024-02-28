@@ -66,15 +66,18 @@ const Studentcohort = ({ user }) => {
   const [shouldRefetch, setShouldRefetch] = useState(true)
   useEffect(() => {
     async function fetchCohorts() {
+      setIsLoading(true)
       try {
         const {data: cohortsRes} = await CohortsService.getCohorts()
         const cohorts = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
         setCohorts(cohorts)
         setShouldRefetch(false)
+        setIsLoading(false)
       } catch (e) {
         setShouldRefetch(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
+        setIsLoading(false)
       }
     }
     if (shouldRefetch) {
@@ -107,7 +110,7 @@ const Studentcohort = ({ user }) => {
           <ListCohortCard key={cohort.id} cohort={cohort} options={options} handleOptionClick={handleOptionClick} setSelectedCohort={setSelectedCohort} />
         )) : 
         <div className="flex justify-center">
-            You haven't been added to any cohort.
+            {isLoading ? 'Please wait...' : `You haven't been added to any cohort.`}
         </div>}
       </div>
       <Dialog

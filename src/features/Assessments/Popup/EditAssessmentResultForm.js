@@ -48,7 +48,7 @@ const EditAssessmentResultForm = ({ formData, setFormData, updateAssessmentResul
             </div>
             <div className="mb-10">
                 <label htmlFor="feedback" className={`block mb-20 ${userAllowedFields.includes('feedback') ? 'text-900' : 'text-200'}`}>Feedback</label>
-                <InputTextarea value={formData.feedback} name="feedback" onChange={onChange} rows={5} cols={45} disabled={!userAllowedFields.includes('feedback')} />
+                <InputTextarea value={formData.feedback} name="feedback" onChange={onChange} rows={5} cols={40} disabled={!userAllowedFields.includes('feedback')} />
             </div>
 
             <div className="my-4">
