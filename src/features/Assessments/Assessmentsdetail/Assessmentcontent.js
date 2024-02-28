@@ -4,7 +4,6 @@ import { Card } from "primereact/card";
 import { useState } from "react";
 import { ucFirst } from "../../../utils";
 import { toastStore } from "../../../store/toast";
-import { GroupsService } from "../../../services/groups.service";
 import { Dialog } from "primereact/dialog";
 import Dropdowncomp from "../../../components/Dropdown";
 import { AssessmentsService } from "../../../services/assessments.service";
@@ -13,13 +12,14 @@ import Avatar from "react-avatar";
 import { cleanedDateStr } from "../../../utils/moment";
 import { Tag } from "primereact/tag";
 import AssessmentResultsUploadContainer from "../AssessmentResultsUploadContainer";
+import { CohortsService } from "../../../services/cohorts.service";
 
 const Assessmentcontent = ({ assessment, onReload }) => {
   const { toast } = useContext(toastStore)
 
   const [uploadTemplateVisibility, setUploadTemplateVisibility] = useState(false);
   const [downloadTemplateVisibility, setDownloadTemplateVisibility] = useState(false);
-  const [groups, setGroups] = useState([])
+  const [cohorts, setCohorts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const assessmentDetails = [
     { heading: "Date Created", paragraph: cleanedDateStr(assessment.dateCreated) },
@@ -28,11 +28,11 @@ const Assessmentcontent = ({ assessment, onReload }) => {
 
   const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
-    async function fetchGroups() {
+    async function fetchCohorts() {
       try {
-        const {data: groupsRes} = await GroupsService.getGroups()
-        const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
-        setGroups(groups)
+        const {data: cohortsRes} = await CohortsService.getCohorts()
+        const cohorts = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
+        setCohorts(cohorts)
         setShouldRetry(false)
       } catch (e) {
         setShouldRetry(false)
@@ -41,15 +41,15 @@ const Assessmentcontent = ({ assessment, onReload }) => {
       }
     }
     if (shouldRetry) {
-      fetchGroups()
+      fetchCohorts()
     }
   }, [toast, shouldRetry])
-  const [selectedGroup, setSelectedGroup] = useState('')
+  const [selectedCohort, setSelectedCohort] = useState('')
 
   const downloadTemplate = async () => {
     try {
       setIsLoading(true)
-      await AssessmentsService.downloadAssessmentTemplate(assessment, null, selectedGroup.id) 
+      await AssessmentsService.downloadAssessmentTemplate(assessment, null, selectedCohort.id) 
       setIsLoading(false)
       setDownloadTemplateVisibility(false)
     } catch (e) {
@@ -77,7 +77,7 @@ const Assessmentcontent = ({ assessment, onReload }) => {
         icon="pi pi-download"
         onClick={() => downloadTemplate()}
         className="custom-button"
-        disabled={!selectedGroup}
+        disabled={!selectedCohort}
         loading={isLoading}
       />
     </div>
@@ -196,11 +196,11 @@ const Assessmentcontent = ({ assessment, onReload }) => {
       >
         <div>
           <p style={{ fontSize: "13px" }}>
-            Select a group to download the template.
+            Select a cohort to download the template.
           </p>
           <Dropdowncomp
-            projectoption={groups}
-            onSelected={setSelectedGroup}
+            projectoption={cohorts}
+            onSelected={setSelectedCohort}
           />
         </div>
 

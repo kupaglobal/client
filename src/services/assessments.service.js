@@ -44,12 +44,12 @@ export class AssessmentsService {
         return httpClient.post('/assessments', newAssessment)
     }
 
-    static async downloadAssessmentTemplate(assessment, studentIds = [], groupId= null) {
+    static async downloadAssessmentTemplate(assessment, studentIds = [], cohortId= null) {
         return new Promise(async (resolve, reject) => {
             try {
                 const res = await httpClient.post(`/assessments/${assessment.id}/results-template`, {
                     studentIds,
-                    groupId
+                    cohortId
                 }, {
                     headers: { 
                         'Accept': 'text/csv',
