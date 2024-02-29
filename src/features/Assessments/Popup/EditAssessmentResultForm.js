@@ -28,19 +28,10 @@ const EditAssessmentResultForm = ({ formData: assessmentResult, updateAssessment
       })
     }
 
-    const [dateConducted, setDateConducted] = useState(new Date(assessmentResult.dateConducted))
-    const [feedback, setFeedback] = useState(assessmentResult.feedback)
-
-    // const setDateConducted = (date) => {
-    //     formData.dateConducted = date
-    //     setFormData(formData)
-    // }
-
     const handleSubmit = (e) => {
         e.preventDefault()
         updateAssessmentResult({
             ...formData,
-            dateConducted
         })
     }
 
