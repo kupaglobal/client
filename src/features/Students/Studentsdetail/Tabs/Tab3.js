@@ -47,19 +47,20 @@ const Tab3 = ({ student }) => {
     }
   }, [refetchAssessments, setAssessmentResults, student, toast])
 
-  const updateAssessmentResult = async () => {
+  const updateAssessmentResult = async (assessmentResultDto) => {
     try {
       setIsLoading(true)
       if (authState.loggedInUser.role === 'FACILITATOR') {
-        await AssessmentsService.saveFeedback(selectedAssessmentResult.id, selectedAssessmentResult.feedback)
+        await AssessmentsService.saveFeedback(selectedAssessmentResult.id, assessmentResultDto.feedback)
       } else {
-        await AssessmentsService.editAssessmentResult(selectedAssessmentResult.id, selectedAssessmentResult)
+        await AssessmentsService.editAssessmentResult(selectedAssessmentResult.id, assessmentResultDto)
       }
       setRefetchAssessments(true)
       toast('success', 'Assessment result has been updated.')
       setIsLoading(false)
       setShowEditAssessmentResultsForm(false)
     } catch (e) {
+      console.error(e)
       toast('error', 'Failed to update assessment result. Please try again')
       setIsLoading(false)
     }
@@ -70,7 +71,7 @@ const Tab3 = ({ student }) => {
     const commonColumns = [
       // { field: "Level", header: "Level" },
       // { field: "Subject", header: "Subject" },
-      { field: "score", header: "Score", sortable: true },
+      { field: "score", header: "Score (%)", sortable: true },
       { field: "grade", header: "Grade", sortable: true },
       { field: "feedback", header: "Feedback" },
       { field: "dateConducted", header: "Date", sortable: true },
@@ -161,7 +162,7 @@ const Tab3 = ({ student }) => {
           style={{ width: "30vw" }}
           visible={showEditAssessmentResultsForm}
           breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-          onHide={() => setShowEditAssessmentResultsForm(false)}
+          onHide={() => setShowEditAssessmentResultsForm(false) && setSelectedAssessmentResult(null)}
         > 
           <div> 
             <EditAssessmentResultForm

@@ -25,7 +25,7 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
     },
     (assessment.type === 'score') ? {
       id: "result_score",
-      name: "Score",
+      name: "Score (%)",
       selector: (row) => row.score,
       sortable: true,
     } : {

@@ -71,7 +71,6 @@ export class AssessmentsService {
     }
 
     static saveFeedback(assessmentId, feedback) {
-        delete feedback.id
         return httpClient.post(`/assessment-results/${assessmentId}/feedback`, {
             feedback
         })

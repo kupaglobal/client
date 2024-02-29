@@ -50,7 +50,7 @@ export default function Popupcontent({ onReload }) {
   // const [selectedOption, setSelectedOption] = useState("");
   const [projectOptions] = useState([
     { name: "Score (e.g. 70%)", code: 'score' },
-    { name: "Grade (e.g. A, B)",  code: 'grade' },
+    { name: "Grade (e.g. A, B or Pass/Fail)",  code: 'grade' },
   ]);
 
   // const handleOptionSelect = (event) => {
