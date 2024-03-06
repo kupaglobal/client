@@ -5,7 +5,7 @@ import { MdOutlineSearch } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import FilterOptions from "./FilterOptions";
-
+import { loadingSkeleton } from "../../utils";
 const customStyles = {
   rows: {
     style: {
@@ -42,7 +42,7 @@ const Table = ({
   hideSearch = false,
   filterOptions = [],
   onFilter,
-  isLoading = false,
+  isLoading,
   handleSelectedRowsChanged = () => {}
 }) => {
   const navigate = useNavigate();
@@ -124,6 +124,8 @@ const Table = ({
         }
       </div>
       <DataTable
+        progressPending={isLoading}
+        progressComponent={loadingSkeleton}
         columns={columns}
         data={searchText.length > 0 ? filteredData : data}
         onRowClicked={handleRowClick}
@@ -133,7 +135,8 @@ const Table = ({
         selectableRows // Enable selection
         onSelectedRowsChange={handleSelectedRowsChanged}
         customStyles={customStyles}
-      />
+      >
+      </DataTable>
     </div>
   );
 };

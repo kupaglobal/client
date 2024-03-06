@@ -29,18 +29,26 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
     }
 
     const [studentFields, setStudentFields] = useState([])
+    const [shouldRefetch, setShouldRefetch] = useState(true)
     
     useEffect(() => {
         async function fetchStudentFields() {
             const { data: studentFieldsRes} = await StudentsService.getStudentFields();
             setStudentFields(studentFieldsRes.map(studentField => {
-                studentField.selected = studentField.isArray && formData[studentField.columnName] ? formData[studentField.columnName] : null;
+                studentField.selected = studentField.isArray === true && formData[studentField.columnName] ? formData[studentField.columnName] : null;
+                console.log('test', studentField.columnName, studentField.isArray, formData[studentField.columnName])
+                if (studentField.isArray) {
+                    setFormData({ ...formData, [studentField.columnName]: ''})
+                }
                 return studentField;
             }))
+            setShouldRefetch(false)
         }
-    
-        fetchStudentFields()
-    }, [setStudentFields, formData])
+  
+        if (shouldRefetch) {
+            fetchStudentFields()
+        }
+    }, [setStudentFields, formData, setFormData, shouldRefetch])
 
     const handleEnterKey = async (event, studentField) => {
         const field = studentField.columnName;
@@ -48,7 +56,12 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
             setStudentFields(
                 studentFields.map(studentField => {
                     if (studentField.columnName === field) {
-                        studentField.selected = [...new Set([...studentField.selected, formData[field]])]
+                        if (Array.isArray(studentField.selected)) {
+                            studentField.selected = [...new Set([...studentField.selected, formData[field]])]
+                        } else {
+                            studentField.selected = [...new Set([studentField.selected!=='' ? studentField.selected: null, formData[field]])].filter(item => item)
+                        }
+                        console.log('inHandle', studentField.selected)
                     }
                     return studentField;
                 })
@@ -60,6 +73,7 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
 
     const removeItem = async (removedItem, fieldColumnName) => {
         const studentField = studentFields.filter(studentField => studentField.columnName === fieldColumnName)[0] ?? null;
+        const field = studentField.columnName;
         if (studentField) {
             const remainingItems = studentField.selected.filter(item => item !== removedItem)
 
@@ -71,6 +85,7 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
                     return studentField;
                 })
             )
+            setFormData({ ...formData, [field]: ''})
         }
     }
 
@@ -113,9 +128,9 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
                         required={studentField.isRequired}
                         onKeyUp={(e) => handleEnterKey(e, studentField)}
                     />
-                    {studentField.isArray && studentField.selected?.length > 0 ?
+                    {studentField.isArray && Array.isArray(studentField.selected) && studentField.selected?.length > 0 ?
                         <div className="flex flex-row">
-                            {studentField.selected.map((item) => <Tag value={item} icon="pi pi-times" className="mr-1" key={item} onClick={() => removeItem(item, studentField.columnName)}></Tag>)}
+                            {(studentField.selected).map((item) => <Tag value={item} icon="pi pi-times" className="mr-1" key={item} onClick={() => removeItem(item, studentField.columnName)}></Tag>)}
                         </div>
                     : null}
                 </div>

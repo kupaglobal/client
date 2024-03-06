@@ -106,18 +106,19 @@ const Tab1 = ({ student }) => {
               </SplitterPanel>
             </Splitter>
           </AccordionTab> */}
+          {student.interests ?  
           <AccordionTab
             headerClassName="custom-accordion-header"
             header={
               <div>
                 <HiOutlineHeart size={18} />
 
-                <span style={{ paddingLeft: "10px" }}>Interests ({student.interests.length})</span>
+                <span style={{ paddingLeft: "10px" }}>Interests ({student.interests?.length})</span>
               </div>
             }
           >
             {student.interests.map(interest => <Tag rounded key={interest} className="custom-accordion-content">{interest}</Tag>)}
-          </AccordionTab>
+          </AccordionTab> : null}
         </Accordion>
       </div>
     </div>

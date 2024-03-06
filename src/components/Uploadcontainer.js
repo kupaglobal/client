@@ -35,7 +35,7 @@ const Uploadcontainer = () => {
     let toastType = "success"
     const res = event.xhr;
     const response = JSON.parse(res.response);
-    const { created, errored: erroredStudents } = response;
+    const { created, errored: erroredStudents, reasons } = response;
 
     if (response && response.errored && response.errored.length === 0) {
       toastMessage = 'Students uploaded successfully';
@@ -65,13 +65,16 @@ const Uploadcontainer = () => {
       payload: true
     })
 
-    studentsDispatch({
-      type: SHOW_ERRORED_STUDENTS_POPUP,
-      payload: {
-        erroredStudents: erroredStudents,
-        message: toastMessage
-      }
-    })
+    if (erroredStudents.length > 0) {
+      studentsDispatch({
+        type: SHOW_ERRORED_STUDENTS_POPUP,
+        payload: {
+          erroredStudents: erroredStudents,
+          message: toastMessage,
+          reasons
+        }
+      })
+    }
   }
 
   const handleError = (error) => {

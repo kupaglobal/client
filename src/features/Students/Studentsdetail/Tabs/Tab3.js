@@ -8,6 +8,8 @@ import { toastStore } from "../../../../store/toast";
 import EditAssessmentResultForm from "../../../Assessments/Popup/EditAssessmentResultForm";
 import { Dialog } from "primereact/dialog";
 import { authStore } from "../../../../store/auth";
+import { rankTrophy } from "../../../../utils";
+import { Tooltip } from "primereact/tooltip";
 const Tab3 = ({ student }) => {
   const {toast} = useContext(toastStore)
   const {state: authState} = useContext(authStore)
@@ -67,11 +69,15 @@ const Tab3 = ({ student }) => {
 
   }
 
+  const scoreBody = (row) => {
+    return (row.topPerformer) ? <><Tooltip target=".tooltip"/><span className="tooltip" data-pr-tooltip={`#${row.topPerformer.rank} Top Performer`}>{row.score} {rankTrophy[row.topPerformer.rank]}</span></> : row.score
+  }
+
   const createColumns = (type) => {
     const commonColumns = [
       // { field: "Level", header: "Level" },
       // { field: "Subject", header: "Subject" },
-      { field: "score", header: "Score (%)", sortable: true },
+      { field: "score", header: "Score (%)", sortable: true, body: scoreBody },
       { field: "grade", header: "Grade", sortable: true },
       { field: "feedback", header: "Feedback" },
       { field: "dateConducted", header: "Date", sortable: true },
@@ -149,6 +155,7 @@ const Tab3 = ({ student }) => {
               <Column
                 key={col.field}
                 field={col.field}
+                body={col.body}
                 header={col.header}
                 sortable={col.sortable}
                 style={{ fontSize: "12px" }}

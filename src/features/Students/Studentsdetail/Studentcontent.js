@@ -12,7 +12,7 @@ import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
 
-const Studentcontent = ({ student, setStudent, user }) => {
+const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
   const categories = [
     { name: "Review assessment", key: "RA" },
@@ -49,6 +49,7 @@ const Studentcontent = ({ student, setStudent, user }) => {
       setStudent(updatedStudent)
       setShowEditStudentDetailsForm(false)
       setIsLoading(false)
+      reloadStudent()
     } catch (e) {
       console.error(e)
       setIsLoading(false)

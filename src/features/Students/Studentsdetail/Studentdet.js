@@ -28,7 +28,7 @@ const Studentdet = () => {
         }
       })
       setStudent(student)
-    } 
+    }
     fetchStudent()
   }, [studentId])
 
@@ -44,7 +44,7 @@ const Studentdet = () => {
       </div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {student ? <Studentcontent student={student} setStudent={setStudent} user={authState.loggedInUser}/> : ''}
+          {student ? <Studentcontent student={student} setStudent={setStudent} user={authState.loggedInUser} reloadStudent={() => window.location.href=''}/> : ''}
         </div>
         <div>
           {student ? <Studenttabs1 student={student} /> : ''}

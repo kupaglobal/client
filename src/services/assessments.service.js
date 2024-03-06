@@ -77,6 +77,6 @@ export class AssessmentsService {
     }
 
     static editAssessmentResult(assessmentId, assessmentResultDto) {
-        return httpClient.patch(`/assessment-results/${assessmentId}`, assessmentResultDto)
+        return httpClient.put(`/assessment-results/${assessmentId}`, assessmentResultDto)
     }
 }

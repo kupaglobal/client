@@ -31,7 +31,7 @@ const AssessmentResultsUploadContainer = ({ assessment, hide }) => {
     const { created, errored: erroredResults } = response;
 
     if (response && response.errored && response.errored.length === 0) {
-      toastMessage = 'Students uploaded successfully';
+      toastMessage = 'Student Results uploaded successfully';
       // studentsDispatch({
       //   type: RELOAD,
       //   payload: true

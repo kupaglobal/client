@@ -25,7 +25,7 @@ const StudentsProvider = ({ children }) => {
       case SHOW_ADD_STUDENTS_POPUP:
         return { ...state, showAddStudentsPopup: action.payload };
       case SHOW_ERRORED_STUDENTS_POPUP:
-        return { ...state, erroredStudents: action.payload.erroredStudents, erroredStudentsMessage: action.payload.message, showErroredStudentsPopup: true };
+        return { ...state, erroredStudents: action.payload.erroredStudents, reasons: action.payload.reasons, erroredStudentsMessage: action.payload.message, showErroredStudentsPopup: true };
       case HIDE_ERRORED_STUDENTS_POPUP:
         return { ...state, erroredStudents: [], showErroredStudentsPopup: false };
       case SET_SELECTED_STUDENTS:

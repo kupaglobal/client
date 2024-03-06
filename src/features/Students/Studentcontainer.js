@@ -12,12 +12,16 @@ import { studentsStore } from "../../store/students";
 import { SET_SELECTED_STUDENTS } from "../../store/actions";
 import { useSearchParams } from "react-router-dom";
 import { authStore } from "../../store/auth";
-
+import { rankTrophy, ucFirst } from "../../utils";
+import { Tooltip } from "primereact/tooltip";
 
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
-
+const studentName = (row) => {
+  const name = `${row.firstName} ${row.middleName ? ` ${row.middleName} `: ''}${row.lastName}`
+  return (row.topPerformerRank && row.topPerformerScore) ? <><Tooltip target=".tooltip"/><span className="tooltip" data-pr-tooltip={`#${row.topPerformerRank} Top Performer`}>{name} {rankTrophy[row.topPerformerRank]}</span></> : name
+}
 
 const columns = [
   {
@@ -29,7 +33,8 @@ const columns = [
   {
     id: "st_name",
     name: "Student Name",
-    selector: (row) => `${row.firstName} ${row.lastName}`,
+    body: studentName,
+    selector: studentName,//(row) => `${row.firstName} ${row.middleName ? ` ${row.middleName} `: ''}${row.lastName} ${topPerformerTrophy(row)}`,
     sortable: true,
   },
   {
@@ -41,7 +46,7 @@ const columns = [
   {
     id: "st_gender",
     name: "Gender",
-    selector: (row) => row.gender,
+    selector: (row) => ucFirst(row.gender),
     sortable: true,
   },
   {
@@ -65,14 +70,14 @@ const Studentcontainer = () => {
   const [ students, setStudents ] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadStudents, setReloadStudents ] = useState(true)
-  const { state, dispatch } = useContext(studentsStore)
+  const { dispatch } = useContext(studentsStore)
   const { state: authState } = useContext(authStore)
 
-  const { selectedStudents } = state
   const [ filterOptions, setFilterOptions ] = useState([])
   const [ selectedFilterOptions, setSelectedFilterOptions ] = useState({
     cohortId: selectedCohortId
   }) 
+  const [isLoading, setIsLoading] = useState(false)
   const handleStudentsFilter = (selectedFilterOptions) => {
     setSelectedFilterOptions(selectedFilterOptions)
     console.log('to send', selectedFilterOptions)
@@ -82,6 +87,7 @@ const Studentcontainer = () => {
   useEffect(() => {
     async function fetchStudents() {
       setReloadStudents(false)
+      setIsLoading(true)
       try {
         const {data: studentsRes} = await StudentsService.getStudents(selectedFilterOptions)
         const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
@@ -93,9 +99,11 @@ const Studentcontainer = () => {
           }
           return {...option, isRange: false}
         }) ?? [])
+        setIsLoading(false)
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
+        setIsLoading(false)
       }
     }
     if (reloadStudents) {
@@ -108,7 +116,6 @@ const Studentcontainer = () => {
       type: SET_SELECTED_STUDENTS,
       payload: selectedRows
     })
-    console.log(selectedStudents)
   }
 
   const groupsContainer = authState.loggedInUser.role === 'FACILITATOR' ? "" : (
@@ -120,7 +127,7 @@ const Studentcontainer = () => {
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={students} filterOptions={filterOptions} onFilter={handleStudentsFilter} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
+          <Table isLoading={isLoading} columns={columns} data={students} filterOptions={filterOptions} onFilter={handleStudentsFilter} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
         </TabPanel>
         <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentcohort user={authState.loggedInUser} />

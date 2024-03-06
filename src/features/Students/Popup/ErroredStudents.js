@@ -14,8 +14,7 @@ const ErroredStudents = () => {
   const { state: templatesState } = useContext(templatesStore)
   const { state: studentsState } = useContext(studentsStore)
   const template = templatesState.activeTemplate
-  const erroredStudents = studentsState.erroredStudents
-  const erroredStudentsMessage = studentsState.erroredStudentsMessage
+  const {erroredStudents, erroredStudentsMessage, reasons} = studentsState
 
   const columns = [{id: 'row', displayName: 'Row', columnName: 'row'}, ...template.fields].map(field => ({
     id: field.columnName,
@@ -58,6 +57,9 @@ const ErroredStudents = () => {
                 <MdFullscreen />
             </IconButton>
             )}
+            {
+              reasons.map(reason => <div><span className="line-height-3 text-red-500 mb-3">{reason}</span></div>)
+            }
 
             <Table columns={columns} data={erroredStudents} tableRowItem={tableRowItem} hideSearch={true}/>
       </div>

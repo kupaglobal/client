@@ -58,7 +58,7 @@ const Assessmentscontainer = () => {
   const [assessments, setAssessments] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadAssessments, setReloadAssessments ] = useState(true)
-
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     async function fetchAssessments() {
       setReloadAssessments(false)
@@ -66,9 +66,11 @@ const Assessmentscontainer = () => {
         const {data: assessmentsRes} = await AssessmentsService.getAssessments()
         const assessments = assessmentsRes.assessments.map(assessment => ({ ...assessment, isSelected: false }))
         setAssessments(assessments)
+        setIsLoading(false)
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         console.log(e)
+        setIsLoading(false)
       }
     }
     if (reloadAssessments) {
@@ -80,7 +82,7 @@ const Assessmentscontainer = () => {
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
         <TabPanel header="ASSESSMENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table columns={columns} data={assessments} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadAssessments(true)}/>}/>
+          <Table isLoading={isLoading} columns={columns} data={assessments} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadAssessments(true)}/>}/>
         </TabPanel>
       </TabView>
     </div>
