@@ -42,12 +42,12 @@ export default function Popupcontent({ onReload }) {
   const addSelectedStudentsToCohort = async () => {
     try {
       const res = await CohortsService.addStudentsToCohort(selectedStudents.map(selectedStudent => selectedStudent.id), selectedCohort.id)
-      if (res.status === HttpStatusCode.Ok) {
+      if (res.status === HttpStatusCode.Created) {
         toast('success', `${selectedStudents.length} Students were added to the cohort: ${selectedCohort.name}`)
-        setAddToGroupVisibility(false)
+        setAddToCohortVisibility(false)
       } else {
         console.log(res)
-        toast('error', res.response.data.message)
+        toast('error', res.response?.data?.message ?? 'Something went wrong, please try again.')
       }
     } catch (e) {
       console.log(e)

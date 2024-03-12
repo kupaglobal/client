@@ -110,7 +110,7 @@ const Studentcohort = ({ user }) => {
           <ListCohortCard key={cohort.id} cohort={cohort} options={options} handleOptionClick={handleOptionClick} setSelectedCohort={setSelectedCohort} />
         )) : 
         <div className="flex justify-center">
-            {isLoading ? 'Please wait...' : `You haven't been added to any cohort.`}
+            {isLoading ? 'Please wait...' : user.role === 'FACILITATOR' ? `You haven't been added to any cohort.` : 'There are no cohorts created.'}
         </div>}
       </div>
       <Dialog
