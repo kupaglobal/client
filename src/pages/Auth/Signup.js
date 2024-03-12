@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
 import { useContext } from 'react';
 import { authStore } from '../../store/auth';
@@ -22,6 +22,8 @@ const Signup = () => {
         password:'',
         role: savedInvitation?.role ?? null
     })
+    const goTo = useNavigate()
+
 
     const handleSubmit = async (e) => {
         setIsLoading(true)
@@ -33,7 +35,8 @@ const Signup = () => {
                 setIsLoading(false)
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
-                window.location.href = '/auth/verify-email'
+                
+                goTo('/auth/verify-email')
             } else {
                 setIsLoading(false)
                 toast('error', error.data?.message || 'We failed to create your account. Please try again.')
