@@ -122,6 +122,7 @@ const Studentcohort = ({ user }) => {
         onHide={() => setCreateCohortVisibility(false)}
       >
         <div>
+          <i className="block text-xs mb-4">NB: A cohort is a grouping of students by time period and curriculum.</i>
           <NewCohortForm formData={newCohortFormData} setFormData={setNewCohortFormData} isLoading={isLoading}  />
         </div>
       </Dialog>

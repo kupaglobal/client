@@ -75,7 +75,8 @@ const AssessmentDashboard = () => {
           >
             <AssessmentGraph results={Object.values(results)} labels={Object.keys(results)} />
           </AccordionTab>
-          <AccordionTab
+
+          {/* <AccordionTab
             headerClassName="custom-accordion-header"
             header={
               <div>
@@ -85,8 +86,9 @@ const AssessmentDashboard = () => {
               </div>
             }
           >
-            {/* {graphHere} */}
-          </AccordionTab>
+
+          </AccordionTab> */}
+
         </Accordion>
       </div>
     </div>
