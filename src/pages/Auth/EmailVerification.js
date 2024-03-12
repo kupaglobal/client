@@ -20,9 +20,12 @@ const EmailVerification = () => {
     //     lastName: ''
     // })
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const verifyEmail = async (e) => {
         e.preventDefault();
         setError('')
+        setIsLoading(true)
 
         try {
             const {data: authResponse} = await AuthService.verifyEmail(tokenFormData);
@@ -30,11 +33,14 @@ const EmailVerification = () => {
                 setTokenFormData({
                     token:'',
                 })
+                setIsLoading(false)
                 goTo('/auth/profile')
             } else {
+                setIsLoading(false)
                 setError('We failed to verify your email. Please try again.')
             }
         } catch (e) {
+            setIsLoading(false)
             if (e.response?.data?.error === "Email already verified") {
                 goTo('/dashboard?welcome')
             } else {
@@ -94,7 +100,7 @@ const EmailVerification = () => {
                         <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
                     </div> */}
 
-                    <Button label="Verify" type="submit" icon="pi pi-envelope" className=" mt-6 m-auto bg-primary" />
+                    <Button label="Verify" type="submit" icon="pi pi-envelope" loading={isLoading} className=" mt-6 m-auto bg-primary" />
                 </form>
                 <div className="mt-4">
                     <span className="text-900 font-medium line-height-3">Haven't received an email from us?</span>

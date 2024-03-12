@@ -14,6 +14,7 @@ const Signup = () => {
     const { toast } = useContext(toastStore);
 
     const savedInvitation = localStorage.getItem('accept-invitation') ? JSON.parse(localStorage.getItem('accept-invitation')) : null
+    const [isLoading, setIsLoading] = useState(false)
 
     const [formData,setFormData]=useState({
         fullName: '',
@@ -23,18 +24,22 @@ const Signup = () => {
     })
 
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault();
 
         try {
             const {data: authResponse, response: error} = await AuthService.signup(formData);
             if (authResponse && authResponse.access_token) { // successful
+                setIsLoading(false)
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 dispatch({ type: SET_LOGGED_IN_USER, payload: authResponse })
                 window.location.href = '/auth/verify-email'
             } else {
+                setIsLoading(false)
                 toast('error', error.data?.message || 'We failed to create your account. Please try again.')
             }
         } catch (e) {
+            setIsLoading(false)
             toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         }
     }
@@ -68,7 +73,7 @@ const Signup = () => {
                     <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
                 </div> */}
 
-                <Button label="Create Account" type="submit" icon="pi pi-user" className=" mt-2 m-auto bg-primary" />
+                <Button label="Create Account" type="submit" loading={isLoading} icon="pi pi-user" className=" mt-2 m-auto bg-primary" />
             </form>
             <div className="mt-4">
                 <span className="text-900 font-medium line-height-3">Already have an account?</span>

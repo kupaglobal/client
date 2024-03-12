@@ -21,13 +21,18 @@ const ChangePassword = () => {
     const goTo = useNavigate()
     const { toast } = useContext(toastStore);
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault();
 
         try {
+            setIsLoading(false)
             await AuthService.changePassword(formData);
             goTo('/auth/login')
         } catch (e) {
+            setIsLoading(false)
             toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
         }
     }
@@ -52,7 +57,7 @@ const ChangePassword = () => {
                 <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
             </div> */}
 
-            <Button label="Save Password" icon="pi pi-lock" className="m-auto bg-primary" />
+            <Button label="Save Password" icon="pi pi-lock" loading={isLoading} className="m-auto bg-primary" />
         </form>
         <div className="mt-4">
             <Link className="font-medium no-underline ml-2 text-blue-500 cursor-pointer" to="../login">Back to Login</Link>

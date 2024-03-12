@@ -17,17 +17,20 @@ const Login = () => {
     const { dispatch } = useContext(authStore);
     const { toast } = useContext(toastStore);
 
+    const [isLoading, setIsLoading] = useState(false)
 
     const onChange=(e)=>{
         setFormData({...formData,[e.target.name]:e.target.value})
     }
 
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault();
 
         try {
             const {data: authResponse} = await AuthService.login(formData);
             if (authResponse && authResponse.access_token) { // successful
+                setIsLoading(false)
                 localStorage.setItem('jwtToken', authResponse.access_token);
                 const {data: profileRes} = await AuthService.getProfile()
                 dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
@@ -38,9 +41,11 @@ const Login = () => {
                     window.location.href = '/organisation'
                 }
             } else {
+                setIsLoading(false)
                 toast('error', 'Your email/password is incorrect. Please try again.')
             }
         } catch (e) {
+            setIsLoading(false)
             let error = e.response?.data?.error ? e.response?.data?.error : e.message
             toast('error', error === 'Unauthorized' ? 'Invalid email and/or password.': error)
         }
@@ -65,7 +70,7 @@ const Login = () => {
                 <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
             </div> */}
 
-            <Button label="Login" icon="pi pi-user" className="m-auto bg-primary" />
+            <Button label="Login" icon="pi pi-user" loading={isLoading} className="m-auto bg-primary" />
         </form>
         <div className="mt-4">
             <div><Link className="font-medium no-underline text-blue-500 text-right cursor-pointer" to="../forgot-password">Forgot your password?</Link></div>

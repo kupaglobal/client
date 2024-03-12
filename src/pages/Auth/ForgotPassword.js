@@ -9,13 +9,18 @@ const ForgotPassword = () => {
     const goTo = useNavigate()
     const { toast } = useContext(toastStore);
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault();
 
         try {
             await AuthService.resetPassword(formData);
+            setIsLoading(false)
             goTo(`/auth/change-password?email=${formData.email}`)
         } catch (e) {
+            setIsLoading(false)
             toast('error', e.response?.data?.error ? e.response?.data?.error : e.message)
         }
     }
@@ -23,6 +28,7 @@ const ForgotPassword = () => {
     const [formData,setFormData]=useState({
         email:'',
     })
+
 
     const onChange=(e)=>{
         setFormData({...formData,[e.target.name]:e.target.value})
@@ -48,7 +54,7 @@ const ForgotPassword = () => {
                     <a className="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a>
                 </div> */}
 
-                <Button label="Reset Password" type="submit" icon="pi pi-lock" className=" mt-2 m-auto bg-primary" />
+                <Button label="Reset Password" type="submit" loading={isLoading} icon="pi pi-lock" className=" mt-2 m-auto bg-primary" />
             </form>
             <div className="mt-4">
                 <Link className="font-medium no-underline ml-2 text-blue-500 cursor-pointer" to="../login">Login here</Link>
