@@ -43,3 +43,9 @@ export const loadingSkeleton = (<><div className="w-full justify-center border-r
 </ul>
 </div></>)
   
+export const graphSkeleton = (<div className="flex mt-4 w-full" style={{justifyContent: "center", alignItems: 'center'}}>
+<Skeleton size="1.5rem" height="4rem" className="mr-2 h-15rem"></Skeleton>
+<Skeleton size="1.5rem" height="4rem" className="mr-2 h-15rem"></Skeleton>
+<Skeleton size="1.5rem" height="4rem" className="mr-2 h-15rem"></Skeleton>
+<Skeleton size="1.5rem" height="4rem" className="h-15rem"></Skeleton>
+</div>)

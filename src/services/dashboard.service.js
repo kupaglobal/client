@@ -7,5 +7,16 @@ export class DashboardService {
     static getStudentsAgeYTD() {
         return httpClient.get('/dashboard/age')
     }
-
+    static getReminders() {
+        return httpClient.get('/todos')
+    }
+    static addReminder(reminderDto) {
+        return httpClient.post('/todos', reminderDto)
+    }
+    static updateReminder(reminderId, reminderDto) {
+        return httpClient.patch(`/todos/${reminderId}`, reminderDto)
+    }
+    static deleteReminder(reminderId) {
+        return httpClient.delete(`/todos/${reminderId}`)
+    }
 }
