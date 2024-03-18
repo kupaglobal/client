@@ -21,13 +21,13 @@ export default function StudentsGenderGraph() {
                 {
                     type: 'bar',
                     label: 'Male',
-                    backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+                    backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
                     data: []
                 },
                 {
                     type: 'bar',
                     label: 'Female',
-                    backgroundColor: documentStyle.getPropertyValue('--pink-300'),
+                    backgroundColor: documentStyle.getPropertyValue('--purple-300'),
                     data: []
                 }
             ]
@@ -101,7 +101,7 @@ export default function StudentsGenderGraph() {
         if (shouldRefetch) {
             getStudentsGenderStats()
         }
-    }, []);
+    }, [shouldRefetch]);
 
     return (
         <>

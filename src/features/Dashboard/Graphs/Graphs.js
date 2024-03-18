@@ -14,7 +14,7 @@ export default function StackedBarDemo() {
                 <h3>Students Gender YTD</h3>
                 <StudentsGenderGraph />
             </Card>
-            <Card className="flex">
+            <Card className="flex flex-column align-items-center justify-center border-0">
                 <h3>Students Age Overall</h3>
                 <StudentsAgeGraph />
             </Card> 
