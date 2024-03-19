@@ -11,11 +11,11 @@ export default function StackedBarDemo() {
     return (
         <div className='flex flex-row justify-content-center gap-2  w-full card bg-grey gap-4 responsive'>
             <Card className="flex">
-                <h3>Students Gender YTD</h3>
+                <h3>Students Gender</h3>
                 <StudentsGenderGraph />
             </Card>
             <Card className="flex flex-column align-items-center justify-center border-0">
-                <h3>Students Age Overall</h3>
+                <h3>Students Ages</h3>
                 <StudentsAgeGraph />
             </Card> 
             <Card className="flex">

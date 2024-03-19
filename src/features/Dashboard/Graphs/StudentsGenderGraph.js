@@ -95,8 +95,6 @@ export default function StudentsGenderGraph() {
             } catch (e) {
                 setIsLoading(false)
             }
-            
-
         }
         if (shouldRefetch) {
             getStudentsGenderStats()
