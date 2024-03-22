@@ -59,7 +59,7 @@ const TemplatesContainer = ({ setActiveStep, setActiveTemplate }) => {
             title={template.name}
             date={cleanedDateStr(template.dateCreated)}
             hideImg={true}
-            category={`Created by ${template.createdBy.firstName} ${template.createdBy.lastName}`}
+            category={`${template.createdBy ? `Created by ${template.createdBy?.firstName} ${template.createdBy?.lastName}` : '' }`}
             description={template.fields.map(field => field.displayName).join(", ")}
             selected={template.isSelected}
             loading={isDownloading === template.id}

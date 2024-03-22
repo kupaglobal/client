@@ -298,14 +298,14 @@ const RemindersList = () => {
               <div className="gap-2 flex flex-row p-align-center">
                 <Avatar
                   className="p-mr-2"
-                  label={colleague.firstName.charAt(0)}
+                  label={colleague?.firstName?.charAt(0) ?? ''}
                   shape="circle"
                   size="small"
                 />
                 <div>
-                  <span>{colleague.firstName}</span>
+                  <span>{colleague?.firstName ?? ''}</span>
                   <br />
-                  <span className="p-text-secondary" style={{fontSize: '8pt'}}>{colleague.role}</span>
+                  <span className="p-text-secondary" style={{fontSize: '8pt'}}>{colleague?.role ?? ''}</span>
                 </div>
               </div>
             </li>

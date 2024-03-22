@@ -31,19 +31,19 @@ export default function StudentsAgeGraph() {
             <div className='mt-4'>
                 <Card className="md:w-15rem mb-2 bg-primary">
                     <div>
-                        <div className="text-right text-white font-medium text-xl">{studentsAgeData.lowestAge}</div>
+                        <div className="text-right text-white font-medium text-xl">{studentsAgeData.lowestAge?? '--'}</div>
                         <span className="text-right block text-purple-100 font-medium mb-3">Lowest</span>
                     </div>
                 </Card> 
                 <Card className="md:w-15rem mb-2 bg-purple-400">
                     <div>
-                        <div className="text-900 text-white font-medium text-xl">{studentsAgeData.averageAge}</div>
+                        <div className="text-900 text-white font-medium text-xl">{studentsAgeData.averageAge && studentsAgeData.averageAge!==0 ? studentsAgeData.averageAge : '--'}</div>
                         <span className="block text-purple-100 font-medium mb-3">Average</span>
                     </div>
                 </Card> 
                 <Card className="md:w-15rem mb-2 bg-primary">
                     <div>
-                        <div className="text-right text-white font-medium text-xl">{studentsAgeData.highestAge}</div>
+                        <div className="text-right text-white font-medium text-xl">{studentsAgeData.highestAge?? '--'}</div>
                         <span className="text-right block text-purple-100 font-medium mb-3">Highest</span>
                     </div>
                 </Card> 

@@ -14,7 +14,8 @@ const Dashboard = () => {
       </div>
 
       <section className='flex w-full p-fluid pt-6'>
-        <Graphs />
+        {state.loggedInUser?.organisationId ? 
+        <Graphs /> : null }
       </section>
 
     </div>
