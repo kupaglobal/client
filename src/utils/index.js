@@ -49,3 +49,8 @@ export const graphSkeleton = (<div className="flex mt-4 w-full" style={{justifyC
 <Skeleton size="1.5rem" height="4rem" className="mr-2 h-15rem"></Skeleton>
 <Skeleton size="1.5rem" height="4rem" className="h-15rem"></Skeleton>
 </div>)
+
+export const moneyFormatter = (currency = 'GBP', locale = 'en-US') => new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+});

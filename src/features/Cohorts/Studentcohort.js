@@ -20,20 +20,23 @@ const Studentcohort = ({ user }) => {
 
   const [newCohortFormData,setNewCohortFormData]=useState({
     name: "",
-    dates: null
+    name: "",
+    dates: null,
+    costPerStudent: 0,
+    costPerStudentCurrency: ''
   })
 
   const [selectedCohort, setSelectedCohort] = useState(null)
 
   const showDeletePopup = (event) => {
     confirmPopup({
-        target: event.currentTarget,
-        message: `Do you want to delete the ${selectedCohort.name} cohort?`,
-        icon: 'pi pi-info-circle',
-        defaultFocus: 'reject',
-        acceptClassName: 'p-button-danger',
-        accept: deleteCohort,
-        reject: () => {}
+      target: event.currentTarget,
+      message: `Do you want to delete the ${selectedCohort.name} cohort?`,
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      accept: deleteCohort,
+      reject: () => {}
     });        
   }
 

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import {DashboardService} from '../../../services/dashboard.service'
+import CardLoadingSkeleton from '../../../components/UI/Skeleton/CardLoadingSkeleton';
 
 export default function StudentsAgeGraph() {
     const [studentsAgeData, setStudentsAgeData] = useState(null);
@@ -18,6 +19,7 @@ export default function StudentsAgeGraph() {
                 setIsLoading(false)
             } catch (e) {
                 console.error('error fetching')
+                setShouldRefetch(false)
                 setIsLoading(false)
             }
         }
@@ -48,7 +50,7 @@ export default function StudentsAgeGraph() {
                     </div>
                 </Card> 
             </div>
-            : null 
+            : <CardLoadingSkeleton /> 
             }
         </>
     )

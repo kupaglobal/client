@@ -93,6 +93,7 @@ export default function StudentsGenderGraph() {
                 setStudentsGenderGraph(genderData)
                 setIsLoading(false)
             } catch (e) {
+                setShouldRefetch(false)
                 setIsLoading(false)
             }
         }

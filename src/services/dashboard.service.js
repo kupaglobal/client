@@ -19,4 +19,7 @@ export class DashboardService {
     static deleteReminder(reminderId) {
         return httpClient.delete(`/todos/${reminderId}`)
     }
+    static getTopPerformers() {
+        return httpClient.get(`/dashboard/top-performers`)
+    }
 }
