@@ -54,3 +54,7 @@ export const moneyFormatter = (currency = 'GBP', locale = 'en-US') => new Intl.N
     style: 'currency',
     currency: currency,
 });
+
+export function studentFullName(student) {
+    return student ? `${student.firstName} ${student.middleName ? `${student.middleName} `: ''}${student.lastName}` : '---'
+}

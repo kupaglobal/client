@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
+import { studentFullName } from "../../../utils";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
@@ -68,7 +69,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
           }}
         >
           <Avatar
-            name={`${student.firstName} ${student.lastName}`}
+            name={studentFullName(student)}
             size="100"
             textSizeRatio={1.75}
             round={true}
@@ -85,7 +86,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p style={{ fontSize: 20, fontWeight: 800, marginBottom: "8px" }}>
-              {student.firstName} {student.lastName}
+              {studentFullName(student)}
             </p>
 
             {student.phone && student.phone!=='N/a' ? 

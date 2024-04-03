@@ -5,15 +5,14 @@ import { Chart } from 'primereact/chart';
 export default function CohortCostsGraph({ cohortCostsData }) {
     const [chartData, setCharData] = useState(null)
     const [chartOptions, setChartOptions] = useState({});
-    const [shouldRefetch, setShouldRefetch] = useState(true)
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         function setStudentsGenderGraph(cohortsData) {
             const documentStyle = getComputedStyle(document.documentElement);
             const textColor = documentStyle.getPropertyValue('--text-color');
-            const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-            const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+            // const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+            // const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
             let datasets = [
                 {
@@ -45,11 +44,12 @@ export default function CohortCostsGraph({ cohortCostsData }) {
                 },
                 scales: {
                     x: {
-                        barPercentage: 0.1, // Adjust bar width as needed
+                        barPercentage: 0.2, // Adjust bar width as needed
                         categoryPercentage: 0.1, // Adjust bar width as needed,
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        
                     }
                 }
             };
@@ -59,11 +59,11 @@ export default function CohortCostsGraph({ cohortCostsData }) {
     
         }
         setStudentsGenderGraph(cohortCostsData)
-    }, [shouldRefetch, cohortCostsData]);
+    }, [cohortCostsData]);
 
     return (
         <>
-        <Chart type="bar" data={chartData} options={chartOptions} style={{minWidth: "30rem"}} />
+        <Chart type="bar" data={chartData} options={chartOptions} style={{minWidth: "75rem"}} />
         
         </>
         

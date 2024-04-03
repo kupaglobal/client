@@ -20,7 +20,6 @@ const Studentcohort = ({ user }) => {
 
   const [newCohortFormData,setNewCohortFormData]=useState({
     name: "",
-    name: "",
     dates: null,
     costPerStudent: 0,
     costPerStudentCurrency: ''

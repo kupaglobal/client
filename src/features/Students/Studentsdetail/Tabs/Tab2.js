@@ -6,18 +6,27 @@ import { BsPlus } from "react-icons/bs";
 import { Button } from "primereact/button";
 import { StudentsService } from "../../../../services/students.service";
 import { Dialog } from "primereact/dialog";
-import NewProgramAchievementForm from "../Tabs/NewProgramAchievementForm"
-import NewOtherAchievementForm from "../Tabs/NewOtherAchievementForm"
 import { Link, useNavigate } from "react-router-dom";
 import { toastStore } from "../../../../store/toast";
+import NewAchievementForm from "./NewAchievement";
+import { cleanedDateStr } from "../../../../utils/moment";
 
-const PROGRAM_ACHIEVEMENTS = 'Program Achievements'
-const OTHER_ACHIEVEMENTS = 'Other Achievements'
+
 
 const Tab2 = ({ student }) => {
-  const [ programAchievements, setProgramAchievements ] = useState([]);
+  const achievementTypes = {
+    PROGRAM: 'Program',
+    INTERNSHIP: 'Internship',
+    SCHOLARSHIP: 'Scholarship',
+    OTHER: 'Other'
+  }
 
-  const [ otherAchievements, setOtherAchievements ] = useState([])
+  const [achievements, setAchievements] = useState({
+    PROGRAM: [],
+    INTERNSHIP: [],
+    SCHOLARSHIP: [],
+    OTHER: []
+  })
 
   const [isLoading, setIsLoading] = useState(false)
   const goTo = useNavigate()
@@ -27,25 +36,25 @@ const Tab2 = ({ student }) => {
   useEffect(() => {
     async function getStudentAchievements() {
       const { data: studentAchievementsRes } = await StudentsService.getStudentAchievements(student.id)
-      setProgramAchievements(studentAchievementsRes.achievements.filter(achievement => achievement.type === "Program")) 
-      setOtherAchievements(studentAchievementsRes.achievements.filter(achievement => achievement.type === "Other"))
+      let achievementsByType = {}
+      Object.keys(achievementTypes).forEach(achievementType => {
+        achievementsByType[achievementType.toUpperCase()] = studentAchievementsRes.achievements.filter(achievement => achievement.type.toUpperCase() === achievementType)
+      })
+      setAchievements(achievementsByType)
+      console.log('achievements',achievements, achievementsByType)
+      // loop through achievementTypes and then fill achievements
       setRefetchAchievements(false)
     }
     if (refetchAchievements) {
       getStudentAchievements()
     }
-  }, [refetchAchievements, setProgramAchievements, setOtherAchievements, student])
+  })
 
   function showNewAchievement(name) {
-    if (name === PROGRAM_ACHIEVEMENTS) {
-      setShowNewProgramAchievement(true)
-    } else if (name === OTHER_ACHIEVEMENTS) {
-      setShowNewOtherAchievement(true)
-    }
+    setSelectedAchievementType(name)
   }
 
-  const [showNewProgramAchievement, setShowNewProgramAchievement] = useState(false)
-  const [showNewOtherAchievement, setShowNewOtherAchievement] = useState(false)
+  const [selectedAchievementType, setSelectedAchievementType] = useState(null)
   const [formData,setFormData]=useState({
     "name": "",
     "date": "",
@@ -63,9 +72,7 @@ const Tab2 = ({ student }) => {
 
     try {
       await StudentsService.addStudentAchievement(student.id, formData)
-      goTo(`/students/${student.id}?selectedTab=achievements`)
-      setShowNewProgramAchievement(false)
-      setShowNewOtherAchievement(false)
+      setSelectedAchievementType(null)
       setRefetchAchievements(true)
       setIsLoading(false)
       setFormData({
@@ -77,6 +84,7 @@ const Tab2 = ({ student }) => {
         "referenceLink": "",
         "type": ""
       })
+      goTo(`/students/${student.id}?selectedTab=achievements`)
     } catch (e) {
       toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
       setIsLoading(false)
@@ -98,49 +106,33 @@ const Tab2 = ({ student }) => {
 
   return (
     <>
-      <div>
-
       <Dialog
-        header={`New Achievement for ${student.firstName} ${student.lastName}`}
-        visible={showNewProgramAchievement || showNewOtherAchievement}
+        header={`New ${selectedAchievementType} Achievement for ${student.firstName} ${student.lastName}`}
+        visible={selectedAchievementType}
         style={{ width: "30vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => { setShowNewProgramAchievement(false); setShowNewOtherAchievement(false) }}
+        onHide={() => { setSelectedAchievementType(null) }}
         footer={footerContent}
       > 
         <div> 
-        {showNewProgramAchievement ? 
-          <NewProgramAchievementForm
+          <NewAchievementForm
+            type={selectedAchievementType}
             formData={formData}
             setFormData={setFormData}
             saveNewAchievement={saveNewAchievement}
             isLoading={isLoading}
-          /> 
-          :
-          <NewOtherAchievementForm
-            formData={formData}
-            setFormData={setFormData}
-            saveNewAchievement={saveNewAchievement}
-            isLoading={isLoading}
-          /> 
-        }
+          />
         </div>
       </Dialog>
+      {Object.keys(achievementTypes).map(achievementType => ((
+        <div>
+          <Tab2headings Name={achievementTypes[achievementType]} showNewAchievement={showNewAchievement}/>  
 
-
-        <Tab2headings Name={PROGRAM_ACHIEVEMENTS} showNewAchievement={showNewAchievement}/>  
-
-        {programAchievements.map((achievement, index) => (
-          <Tab2containers key={index} achievement={achievement} />
-        ))}
-      </div>
-      <div>
-        <Tab2headings Name={OTHER_ACHIEVEMENTS} showNewAchievement={showNewAchievement} />
-
-        {otherAchievements.map((achievement, index) => (
-          <Tab2containers key={index} achievement={achievement} />
-        ))}
-      </div>
+          {achievements[achievementType].map((achievement, index) => ((
+            <Tab2containers key={index} achievement={achievement} />
+          )))}
+        </div>
+      )))}
     </>
   );
 };
@@ -179,7 +171,7 @@ export const Tab2containers = ({ achievement }) => {
              : null}
           </p>
           <p style={{ marginBottom: "1rem", fontSize: 13, color: "#cccccc" }}>
-            {achievement.date}
+            {cleanedDateStr(achievement.date)}
           </p>
           <p>
             {achievement.description}
@@ -188,8 +180,7 @@ export const Tab2containers = ({ achievement }) => {
       </div>
 
       <div className="achieve__section-bottom">
-        <div>
-          {" "}
+        <div className="flex flex-row justify-content-center align-items-center">
           <BsTrophyFill size={22} color="#8a92a6" />{" "}
           <span
             style={{ color: "#8a92a6", marginLeft: "5px", fontWeight: 600 }}

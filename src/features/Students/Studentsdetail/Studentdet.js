@@ -6,6 +6,7 @@ import MeatballMenu from "../../../components/MeatballMenu";
 import { useParams } from "react-router-dom";
 import { StudentsService } from "../../../services/students.service";
 import { authStore } from "../../../store/auth";
+import { studentFullName } from "../../../utils";
 
 const Studentdet = () => {
   const breadCrumbs = "Students";
@@ -35,7 +36,7 @@ const Studentdet = () => {
   return (
     <div>
       <Breadcrumb
-        name="Student Name"
+        name={studentFullName(student)}
         firstItem={breadCrumbs}
         linkTo={breadCrumbsLinkTo}
       />

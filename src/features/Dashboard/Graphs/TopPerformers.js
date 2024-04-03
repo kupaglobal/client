@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import {DashboardService} from '../../../services/dashboard.service'
 import { TreeTable } from 'primereact/treetable';
 import { Column } from 'primereact/column';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { rankTrophy } from '../../../utils';
 import { Tooltip } from 'primereact/tooltip';
         
@@ -13,7 +12,7 @@ export default function TopPerformers() {
     const [isLoading, setIsLoading] = useState(true)
 
     const [nodes, setNodes] = useState([])
-    const goTo = useNavigate()
+    // const goTo = useNavigate()
 
 
     useEffect(() => {
@@ -71,9 +70,9 @@ export default function TopPerformers() {
         }
     }, [shouldRefetch]);
 
-    const handleClick = (rowData) => {
-        goTo(`/students/${rowData.data.student.id}`)
-    }
+    // const handleClick = (rowData) => {
+    //     goTo(`/students/${rowData.data.student.id}`)
+    // }
     const nameTemplate = (rowData) => {
         
         return (
