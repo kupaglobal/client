@@ -25,7 +25,7 @@ const Navcomponent = () => {
 
             <Route path="/assessments" element={<Assessments/>}/>
             <Route path="/assessments/:id" element={<Assessmentdet/>}/>
-            <Route path="/reportings" element={<Reports />}/>
+            <Route path="/reports" element={<Reports />}/>
             <Route path="/feedbacks" element={<Feedback />}/>
             <Route path="/inbox" element={<Inbox />}/>
           </Routes>

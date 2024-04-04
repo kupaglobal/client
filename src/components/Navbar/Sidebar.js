@@ -50,7 +50,7 @@ const Sidebar = ({ children }) => {
       icon: <MdAssessment />,
     },
     {
-      path: "/reportings",
+      path: "/reports",
       name: "Reporting",
       icon: <MdOutlineLibraryBooks />,
     },
