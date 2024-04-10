@@ -17,7 +17,7 @@ export default function DashboardGraphs() {
                     <StudentsGenderGraph />
                 </Card>
                 <Card className="flex flex-column align-items-center justify-center border-0">
-                    <h3>Students Ages</h3>
+                    <h3>Student Ages (Year-to-Date)</h3>
                     <StudentsAgeGraph />
                 </Card> 
                 <Card className="flex">

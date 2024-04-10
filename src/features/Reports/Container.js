@@ -147,8 +147,8 @@ export default function ReportsContainter() {
                             
                             <Card className="md:w-15rem my-2 bg-primary">
                                 <div>
-                                    <div className="text-right text-white font-medium text-5xl">{stats.totalStudents}</div>
-                                    <span className="text-right block text-purple-100 font-medium mb-3">Students</span>
+                                    <div className=" text-white font-medium text-5xl">{stats.totalStudents}</div>
+                                    <span className=" block text-purple-100 font-medium mb-3">Students</span>
                                 </div>
                             </Card> 
                             <Card className="md:w-15rem mb-2 bg-purple-400">
@@ -168,8 +168,8 @@ export default function ReportsContainter() {
                             
                             <Card className="md:w-15rem my-2 bg-white-400">
                                 <div>
-                                    <div className="text-right text-primary font-medium text-5xl">{stats.cohorts}</div>
-                                    <span className="text-right block text-purple-400 font-medium mb-3">Cohorts</span>
+                                    <div className=" text-primary font-medium text-5xl">{stats.cohorts}</div>
+                                    <span className=" block text-purple-400 font-medium mb-3">Cohorts</span>
                                 </div>
                             </Card> 
                             <Card className="md:w-15rem mb-2 bg-white-400">
@@ -180,8 +180,8 @@ export default function ReportsContainter() {
                             </Card> 
                             <Card className="md:w-15rem my-2 bg-white-400">
                                 <div>
-                                    <div className="text-right text-primary font-medium text-5xl">{totalFundingText}</div>
-                                    <span className="text-right block text-purple-400 font-medium mb-3">Total Funding</span>
+                                    <div className=" text-primary font-medium text-5xl">{totalFundingText}</div>
+                                    <span className=" block text-purple-400 font-medium mb-3">Total Cost</span>
                                 </div>
                             </Card> 
                         </div>
@@ -190,8 +190,8 @@ export default function ReportsContainter() {
                             
                             <Card className="md:w-15rem mb-2 bg-primary">
                                 <div>
-                                    <div className=" text-right text-900 text-white font-medium text-5xl">{stats.scholarships}</div>
-                                    <span className="text-right block text-purple-100 font-medium mb-3">Scholarships</span>
+                                    <div className="  text-900 text-white font-medium text-5xl">{stats.scholarships}</div>
+                                    <span className=" block text-purple-100 font-medium mb-3">Scholarships</span>
                                 </div>
                             </Card> 
                             <Card className="md:w-15rem mb-2 bg-purple-400">
@@ -202,8 +202,8 @@ export default function ReportsContainter() {
                             </Card> 
                             {/* <Card className="md:w-15rem my-2 bg-primary">
                                 <div>
-                                    <div className="text-right text-white font-medium text-3xl">{stats.internships}</div>
-                                    <span className="text-right block text-purple-100 font-medium mb-3">Internships</span>
+                                    <div className=" text-white font-medium text-3xl">{stats.internships}</div>
+                                    <span className=" block text-purple-100 font-medium mb-3">Internships</span>
                                 </div>
                             </Card>  */}
                             
