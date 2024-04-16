@@ -64,7 +64,7 @@ export default function TeamMembersContent() {
     if (reloadMembers) {
       fetchOrganisationMembers()
     }
-  }, [reloadMembers, toast])
+  }, [reloadMembers, toast, loggedInUser])
 
   return (
     <>
