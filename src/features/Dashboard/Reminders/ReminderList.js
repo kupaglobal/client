@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
 import { InputText } from 'primereact/inputtext';
@@ -8,8 +8,13 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 import { loadingSkeleton } from '../../../utils';
 import { DashboardService } from '../../../services/dashboard.service';
 import OrganisationService from '../../../services/organisation.service';
+import { authStore } from '../../../store/auth';
 
 const RemindersList = () => {
+  const { state: authState } = useContext(authStore);
+  const loggedInUser = authState.loggedInUser
+
+
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
 
@@ -257,7 +262,7 @@ const RemindersList = () => {
     const todo = todos.filter(todo => todo && todo.id === selectedTodoId)[0]
     const todoTags = todo?.taggedUsers.map(taggedUser => taggedUser.id) ?? []
 
-    return colleagues.filter(colleague => todoTags.indexOf(colleague.id) === -1)
+    return colleagues.filter(colleague => todoTags.indexOf(colleague.id) === -1 && colleague.id && colleague.id !== loggedInUser.id)
   }
 
   return (
@@ -271,7 +276,7 @@ const RemindersList = () => {
           onChange={(e) => setNewTodo(e.target.value)}
           placeholder="Add new reminder"
         />
-        <Button size='small' icon="pi pi-plus" onClick={addTodo} />
+        <Button size='small' icon="pi pi-plus" onClick={addTodo} disabled={newTodo===''}  />
       </div>
       {isLoading && todos.length === 0 ? loadingSkeleton :
       <ListBox
@@ -303,7 +308,7 @@ const RemindersList = () => {
                   size="small"
                 />
                 <div>
-                  <span>{colleague?.firstName ?? ''}</span>
+                  <span>{colleague?.firstName ?? ''} {colleague?.lastName ?? ''}</span>
                   <br />
                   <span className="p-text-secondary" style={{fontSize: '8pt'}}>{colleague?.role ?? ''}</span>
                 </div>
