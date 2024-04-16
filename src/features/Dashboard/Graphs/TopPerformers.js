@@ -19,20 +19,28 @@ export default function TopPerformers() {
         async function getTopPerformers() {
             try {
                 setIsLoading(true)
-                const {data: {data: topPerformersData}} = await DashboardService.getTopPerformers()
+                const {data: {data: topPerformersData }} = await DashboardService.getTopPerformers()
+                console.log('topPerformersData', topPerformersData)
                 setShouldRefetch(false)
                 setTopPerformersData(topPerformersData)
                 setIsLoading(false)
-                setNodes(topPerformersData.map((assessmentTopPerformer, index) => {
+                setNodes(topPerformersData.map((assessmentCohort, index) => {
                     return {
-                        key: assessmentTopPerformer.assessment.id,
+                        key: assessmentCohort.assessment.id,
                         label: 'Assessment Name',
-                        data: { name: assessmentTopPerformer.assessment.name, student: '', rank: '' },
-                        children: assessmentTopPerformer.topPerformers.sort((a, b) => b.score - a.score).map((topPerformer, topPerformerIndex) => {
+                        data: { name: assessmentCohort.assessment.name, cohort: '', student: '', rank: '' },
+                        children: assessmentCohort.cohorts.map((cohortTopPerformer, cohortTopPerformerIndex) => {
                             return {
-                                key: topPerformer.id,
-                                label: 'Student',
-                                data: { name: '', student: topPerformer.student, rank: topPerformer }
+                                key: cohortTopPerformer.cohort?.id ?? `cohortTopPerformer-${cohortTopPerformerIndex}`,
+                                label: 'Cohort',
+                                data: { name: '', cohort: cohortTopPerformer.cohort?.name ?? '--', student: '', rank: '' },
+                                children: cohortTopPerformer.topPerformers.sort((a, b) => b.score - a.score).map((topPerformer, topPerformerIndex) => {
+                                    return {
+                                        key: topPerformer.id,
+                                        label: 'Student',
+                                        data: { name: '', cohort: '', student: topPerformer.student, rank: topPerformer }
+                                    }
+                                })
                             }
                         })
                     }
@@ -95,6 +103,7 @@ export default function TopPerformers() {
             <div className="card w-full">
                 <TreeTable value={nodes} className='w-full'>
                     <Column field="name" header="Assessment" expander></Column>
+                    <Column field="cohort" header="Cohort"></Column>
                     <Column field="student" header="Student" body={nameTemplate} on ></Column>
                     <Column field="rank" header="Score & Rank" body={rankTemplate}></Column>
                 </TreeTable>
