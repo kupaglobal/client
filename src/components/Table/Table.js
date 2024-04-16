@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import FilterOptions from "./FilterOptions";
 import { loadingSkeleton } from "../../utils";
+import { Paginator } from "primereact/paginator";
+
 const customStyles = {
   rows: {
     style: {
@@ -43,8 +45,12 @@ const Table = ({
   filterOptions = [],
   onFilter,
   isLoading,
+  pagination,
+  onPaginationChange,
   handleSelectedRowsChanged = () => {}
 }) => {
+  const [paginationFirst, setPaginationFirst] = useState(0)
+
   const navigate = useNavigate();
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
@@ -72,9 +78,13 @@ const Table = ({
 
     setSearchText(e.target.value);
   };
-  // const handleRowSelected = (rows) => {
-  //   // Add this function
-  // };
+
+  const handlePageChange = (newPage) => {
+    setPaginationFirst(newPage.first)
+
+    if (onPaginationChange !== undefined)
+      onPaginationChange({ page: newPage.page+1, limit: newPage.rows})
+  }
 
   const contextActions = React.useMemo(() => {
 		const handleDelete = () => {
@@ -129,7 +139,6 @@ const Table = ({
         columns={columns}
         data={searchText.length > 0 ? filteredData : data}
         onRowClicked={handleRowClick}
-        pagination
         highlightOnHover
         contextActions={contextActions}
         selectableRows // Enable selection
@@ -137,6 +146,17 @@ const Table = ({
         customStyles={customStyles}
       >
       </DataTable>
+
+      {pagination ?  
+        <Paginator
+          totalRecords={pagination.total}
+          first={paginationFirst}
+          pageLinkSize={pagination.pages && pagination.pages < 5 ? pagination.pages : 5 }
+          rowsPerPageOptions={[5, 10, 20, 50]}
+          onPageChange={handlePageChange}
+          rows={pagination.limit}  
+        ></Paginator> : null
+      } 
     </div>
   );
 };

@@ -55,17 +55,28 @@ const Assessmentscontainer = () => {
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
   const [ selectedTab] = useState(index >= 0 ? index : 0)
 
+  const [pagination, setPagination] = useState({ page: 1, limit: 10})
   const [assessments, setAssessments] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadAssessments, setReloadAssessments ] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
+
+  const handlePaginationChange = (newPagination) => {
+    setPagination({
+      page: newPagination.page,
+      limit: newPagination.limit
+    })
+    setReloadAssessments(true)
+  }
+
   useEffect(() => {
     async function fetchAssessments() {
       setReloadAssessments(false)
       try {
-        const {data: assessmentsRes} = await AssessmentsService.getAssessments()
+        const {data: assessmentsRes} = await AssessmentsService.getAssessments(pagination)
         const assessments = assessmentsRes.assessments.map(assessment => ({ ...assessment, isSelected: false }))
         setAssessments(assessments)
+        setPagination(assessmentsRes.pagination)
         setIsLoading(false)
       } catch (e) {
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -76,13 +87,14 @@ const Assessmentscontainer = () => {
     if (reloadAssessments) {
       fetchAssessments()
     }
-  }, [reloadAssessments, toast])
+  }, [reloadAssessments, toast, pagination])
 
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
         <TabPanel header="ASSESSMENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table isLoading={isLoading} columns={columns} data={assessments} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadAssessments(true)}/>}/>
+          <Table isLoading={isLoading} columns={columns} data={assessments} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadAssessments(true)}/>}
+          pagination={pagination} onPaginationChange={handlePaginationChange}/>
         </TabPanel>
       </TabView>
     </div>

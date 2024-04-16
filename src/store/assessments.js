@@ -11,7 +11,10 @@ const initialState = {
   erroredResultsMessage: '',
   selectedResults: [],
   currentAssessment: null,
-  selectedFilterOptions: [],
+  selectedFilterOptions: {
+    page: 1,
+    limit: 10
+  },
   currentAssessmentResults: {
     results: [],
     pagination: {

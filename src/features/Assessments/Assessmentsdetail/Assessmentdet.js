@@ -36,7 +36,7 @@ const Assessmentdet = () => {
                     assessment[key] = 'N/a'
                   }
                 })
-                console.log('ass', assessment)
+
                 setAssessment(assessment)
                 setReload(false)
                 dispatch({

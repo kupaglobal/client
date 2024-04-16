@@ -73,6 +73,7 @@ const Studentcontainer = () => {
   const { dispatch } = useContext(studentsStore)
   const { state: authState } = useContext(authStore)
 
+  const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, count: 0 })
   const [ filterOptions, setFilterOptions ] = useState([])
   const [ selectedFilterOptions, setSelectedFilterOptions ] = useState({
     cohortId: selectedCohortId
@@ -84,6 +85,16 @@ const Studentcontainer = () => {
     setReloadStudents(true)
   }
 
+  const handlePaginationChange = (newPagination) => {
+    setSelectedFilterOptions({
+      ...selectedFilterOptions,
+      page: newPagination.page,
+      limit: newPagination.limit
+    })
+    console.log('about to send', selectedFilterOptions)
+    setReloadStudents(true)
+  }
+
   useEffect(() => {
     async function fetchStudents() {
       setReloadStudents(false)
@@ -92,6 +103,7 @@ const Studentcontainer = () => {
         const {data: studentsRes} = await StudentsService.getStudents(selectedFilterOptions)
         const students = studentsRes.students.map(student => ({ ...student, isSelected: false }))
         setStudents(students)
+        setPagination(studentsRes.pagination)
         setFilterOptions(studentsRes.filterOptions?.map(option => { 
           option.filterValue = ''
           if (option.id==='cohortId') {
@@ -127,7 +139,18 @@ const Studentcontainer = () => {
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
         <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
-          <Table isLoading={isLoading} columns={columns} data={students} filterOptions={filterOptions} onFilter={handleStudentsFilter} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>} handleSelectedRowsChanged={handleSelectedRowsChanged}/>
+          <Table
+            isLoading={isLoading}
+            columns={columns}
+            data={students}
+            filterOptions={filterOptions}
+            onFilter={handleStudentsFilter}
+            tableRowItem={tableRowItem}
+            popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>}
+            handleSelectedRowsChanged={handleSelectedRowsChanged}
+            pagination={pagination}
+            onPaginationChange={handlePaginationChange}
+            />
         </TabPanel>
         <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentcohort user={authState.loggedInUser} />

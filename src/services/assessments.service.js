@@ -1,8 +1,17 @@
 import httpClient from "../utils/httpClient";
 
 export class AssessmentsService {
-    static getAssessments() {
-        return httpClient.get('/assessments')
+    static getAssessments(filterOptions) {
+        let params = {
+            ...filterOptions
+        }
+        Object.keys(params).forEach(key => {
+            if (params[key]==="") {
+                delete params[key]
+            }
+        })
+
+        return httpClient.get('/assessments', { params })
     }
 
     static getAssessmentById(assessmentId) {

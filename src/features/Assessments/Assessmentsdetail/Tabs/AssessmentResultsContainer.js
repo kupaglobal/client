@@ -7,8 +7,8 @@ import { cleanedDateStr } from "../../../../utils/moment";
 const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
   const { state, dispatch } = useContext(assessmentsStore)
   const assessment = state.currentAssessment
-  const {results: assessmentResults, filterOptions} = state.currentAssessmentResults
-  console.log('these are the results', assessmentResults)
+  const {results: assessmentResults, pagination, filterOptions} = state.currentAssessmentResults
+  console.log('these are the results', pagination)
 
   const columns = [
     {
@@ -60,8 +60,8 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
   }
   return (
     <>
-        {/* <Table columns={columns} data={results} tableRowItem={tableRowItem} popupContent={<FilterOptions resource="assessment" />} /> */}
-        <Table columns={columns} data={results} tableRowItem={tableRowItem} filterOptions={filterOptions} hideSearch={true} onFilter={handleOnFilter} isLoading={isLoading} />
+      {/* <Table columns={columns} data={results} tableRowItem={tableRowItem} popupContent={<FilterOptions resource="assessment" />} /> */}
+      <Table columns={columns} data={results} tableRowItem={tableRowItem} filterOptions={filterOptions} hideSearch={true} onFilter={handleOnFilter} isLoading={isLoading} pagination={pagination} onPaginationChange={handleOnFilter} />
     </>
   );
 };
