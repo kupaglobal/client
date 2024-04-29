@@ -69,7 +69,7 @@ const EditCohortForm = ({ cohort, formData, setFormData }) => {
             <div className="card flex mt-6 mb-2">
                 <span className="p-float-label">
                     <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" required />
-                    <label htmlFor="birth_date">Start - End Dates</label>
+                    <label htmlFor="range">Start - End Dates</label>
                 </span>
             </div>
 

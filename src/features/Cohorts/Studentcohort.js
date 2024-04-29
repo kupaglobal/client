@@ -59,6 +59,7 @@ const Studentcohort = ({ user }) => {
     { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {setEditCohortVisibility(true)} },
     { label: "Add Facilitator to Cohort", icon: "pi pi-user-plus", command: () => {setAddFacilitatorVisibility(true)} },
     { label: "View Students", icon: "pi pi-users", url: `/students?a=Students&cohortId=${selectedCohort?.id}`  },
+    { label: "View Report", icon: "pi pi-dollar", url: `/reports?cohortId=${selectedCohort?.id}`  },
     { label: "Message Cohort", icon: "pi pi-comment", command: () => {toast('info', 'This feature is coming soon...')} },
     { label: "Delete Cohort", icon: "pi pi-trash", command: showDeletePopup },
   ];

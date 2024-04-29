@@ -7984,7 +7984,7 @@
   "resolved" "https://registry.npmjs.org/primeicons/-/primeicons-6.0.1.tgz"
   "version" "6.0.1"
 
-"primereact@^9.6.2":
+"primereact@9.6.2":
   "integrity" "sha512-wc7bvhR+9TiWkHADp02R10lnLbtmXiJ0Pdix8jgVh9HdHMaT2tbA6zPuhaRvA1PVT49hvrDXRCL9QB6YtaCi3w=="
   "resolved" "https://registry.npmjs.org/primereact/-/primereact-9.6.2.tgz"
   "version" "9.6.2"

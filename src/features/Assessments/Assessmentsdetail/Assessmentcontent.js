@@ -195,7 +195,7 @@ const Assessmentcontent = ({ assessment, onReload }) => {
         footer={downloadTemplateFooterContent}
       >
         <div>
-          <p style={{ fontSize: "13px" }}>
+          <p style={{ fontSize: "13px", marginBottom: 5 }}>
             Select a cohort to download the template.
           </p>
           <Dropdowncomp

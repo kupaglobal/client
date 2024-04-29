@@ -1,17 +1,23 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Calendar } from 'primereact/calendar';
 import { ReportsService } from '../../services/reports.services';
 import { Chart } from 'primereact/chart';
 import * as moment from 'moment'
-
+import Dropdowncomp from "../../components/Dropdown";
 import CardLoadingSkeleton from '../../components/UI/Skeleton/CardLoadingSkeleton';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { moneyFormatter, ucFirst } from '../../utils';
 import CohortCostsGraph from './CohortCostsGraph';
-export default function ReportsContainter( {handleDatesChange}) {
+import { CohortsService } from '../../services/cohorts.service';
+import { toastStore } from '../../store/toast';
+import { useSearchParams } from 'react-router-dom';
+import { Dropdown } from 'primereact/dropdown';
+export default function ReportsContainter( {handleDatesChange, handleCohortChange}) {
+    const { toast } = useContext(toastStore)
+
     const startOfYear = new Date(new Date().getFullYear(), 0, 1)
     const today = new Date()
     const [dates, setDates] = useState([startOfYear, today])
@@ -26,6 +32,10 @@ export default function ReportsContainter( {handleDatesChange}) {
 
     // const [dates, setDates] = useState([new Date(new Date().getFullYear(), 0, 1), new Date()]);
     const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [queryParams] = useSearchParams()
+
+    const queryCohortId = queryParams.get('cohortId') ? queryParams.get('cohortId') : null
+    const [selectedCohortId, setSelectedCohortId] = useState(queryCohortId)
 
     const handleDateSelect = (e) => {
         if (!selectedStartDate) {
@@ -37,6 +47,7 @@ export default function ReportsContainter( {handleDatesChange}) {
             setDates(dates);
             handleDatesChange(dates.map(date => date.toString()))
             setSelectedStartDate(null);
+            setIsLoading(true)
             setShouldRefetch(true)
         }
     };
@@ -55,7 +66,7 @@ export default function ReportsContainter( {handleDatesChange}) {
     
         async function getStats() {
             try {
-                const { data: reportsStats } = await ReportsService.getStats({ startDate: dates[0], endDate: dates[1] })
+                const { data: reportsStats } = await ReportsService.getStats({ startDate: dates[0], endDate: dates[1], cohortId: selectedCohortId })
 
                 setStats(reportsStats)
                 setIsLoading(false)
@@ -95,12 +106,31 @@ export default function ReportsContainter( {handleDatesChange}) {
             }
         }
         async function getCohortCosts() {
-            const { data: {cohortStats: cohortCostsData} } = await ReportsService.getCohortCosts({ startDate: dates[0], endDate: dates[1] })
+            const { data: {cohortStats: cohortCostsData} } = await ReportsService.getCohortCosts({ startDate: dates[0], endDate: dates[1], cohortId: selectedCohortId })
             setCohortCosts(cohortCostsData)
         }
+        async function fetchCohorts() {
+            try {
+              const {data: cohortsRes} = await CohortsService.getCohorts()
+              const cohorts = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
+              setCohorts(cohorts)
+              const selectedCohort = queryCohortId ? cohorts.filter(cohort => cohort.id == queryCohortId)[0] : null
+              setSelectedCohort(selectedCohort)
+              handleCohortChange(selectedCohort)
+              setIsLoading(false)
+            } catch (e) {
+              toast('error',e.response?.data?.message ? e.response?.data?.message : e.message)
+              setIsLoading(false)
+              console.log(e)
+            }
+        }
+
         if (shouldRefetch) {
             getStats()
             getCohortCosts()
+        }
+        if (shouldRefetch && cohorts === null) {
+            fetchCohorts()
         }
     }, [shouldRefetch, dates])
 
@@ -131,13 +161,33 @@ export default function ReportsContainter( {handleDatesChange}) {
         return `${moment(row.startDate).format('MM/DD/YYYY')} - ${moment(row.endDate).format('MM/DD/YYYY')}`
     }
 
+    const [cohorts, setCohorts] = useState(null)
+    const [selectedCohort, setSelectedCohort] = useState(null)
+    const handleSelectedCohort = (cohort) => {
+        setIsLoading(true)
+        setSelectedCohort(cohort)
+        setSelectedCohortId(cohort.id)
+        setShouldRefetch(true)
+        handleCohortChange(cohort)
+    }
+
     return (
-        <div className='flex flex-column w-full'>
-            <div className='flex justify-content-end mx-8 gap-2 card bg-grey my-4 responsive'>
-                <span className="p-float-label">
-                    <Calendar value={dates} onSelect={handleDateSelect} selectionMode="range" />
-                    <label htmlFor="birth_date">Start - End Date</label>
-                </span>
+        <div className='flex flex-column w-full mt-8 gap-2'>
+            <div className='flex flex-row w-full items-center justify-content-end gap-2'>
+                <div className='flex card bg-grey  responsive'>
+                    <span className="p-float-label">
+                        <Dropdown value={selectedCohort} loading={true} onChange={(e) => handleSelectedCohort(e.value)} options={cohorts} optionLabel="name" 
+                            placeholder="Select a cohort"/>
+                                <label htmlFor="item">Cohort</label>
+                    </span>
+
+                </div>
+                <div className='flex card bg-grey responsive mr-4'>
+                    <span className="p-float-label">
+                        <Calendar value={dates} onSelect={handleDateSelect} selectionMode="range" />
+                        <label htmlFor="date_range">Start - End Date</label>
+                    </span>
+                </div>
             </div>
 
             {/* <p>Showing data from {dataFromText}</p> */}
