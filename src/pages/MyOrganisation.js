@@ -170,7 +170,7 @@ const OrganisationContainer = () => {
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <Dialog
-        header="New organisation"
+        header="New Organisation"
         visible={visible}
         style={{ width: "30vw" }}
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
@@ -189,7 +189,7 @@ const OrganisationContainer = () => {
           </div>
 
         </TabPanel>
-        <TabPanel header="Team Members" rightIcon="" style={{ fontSize: "14px" }}>
+        <TabPanel header="Team Members & Facilitators" rightIcon="" style={{ fontSize: "14px" }}>
           <TeamMembers/>
         </TabPanel>
       </TabView>

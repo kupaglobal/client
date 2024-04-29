@@ -8,7 +8,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className='module__heading'>{state.loggedInUser?.organisation?.name} Dashboard</h1>
+      <h1 className='module__heading'>{state.loggedInUser?.organisation?.name} Dashboard (All Time) </h1>
       <div style={{ alignSelf: "center"}}>
        <WelcomePopup user={state.loggedInUser}/>
       </div>

@@ -54,11 +54,11 @@ const Sidebar = ({ children }) => {
       name: "Reporting",
       icon: <MdOutlineLibraryBooks />,
     },
-    {
-      path: "/inbox",
-      name: "Inbox",
-      icon: <MdChatBubbleOutline />,
-    },
+    // {
+    //   path: "/inbox",
+    //   name: "Inbox",
+    //   icon: <MdChatBubbleOutline />,
+    // },
   ].filter(route => Boolean(route));
   const bottomitem = [
     {

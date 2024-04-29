@@ -12,7 +12,7 @@ export default function DashboardGraphs() {
     return (
         <div className='flex flex-column w-full'>
             <div className='flex flex-row justify-content-center gap-2 w-full card bg-grey gap-4 responsive'>
-                <Card className="flex">
+                <Card className="flex w-full">
                     <h3>Students Gender</h3>
                     <StudentsGenderGraph />
                 </Card>
@@ -25,8 +25,8 @@ export default function DashboardGraphs() {
                 </Card> 
             </div>
             <div className='flex flex-row justify-content-center gap-2 mt-4 card bg-grey'>
-                <Card className="flex w-8">
-                    <h3>Top Performers</h3>
+                <Card className="flex w-full">
+                    <h3>Top Performers Since Inception</h3>
                     <TopPerformers />
                 </Card>
             </div>

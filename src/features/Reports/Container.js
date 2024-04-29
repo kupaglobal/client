@@ -11,7 +11,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { moneyFormatter, ucFirst } from '../../utils';
 import CohortCostsGraph from './CohortCostsGraph';
-export default function ReportsContainter() {
+export default function ReportsContainter( {handleDatesChange}) {
     const startOfYear = new Date(new Date().getFullYear(), 0, 1)
     const today = new Date()
     const [dates, setDates] = useState([startOfYear, today])
@@ -33,7 +33,9 @@ export default function ReportsContainter() {
         } else {
             const startDate = selectedStartDate;
             const endDate = e.value;
-            setDates([startDate, endDate].sort((a, b) => a.getTime() - b.getTime()));
+            const dates = [startDate, endDate].sort((a, b) => a.getTime() - b.getTime())
+            setDates(dates);
+            handleDatesChange(dates.map(date => date.toString()))
             setSelectedStartDate(null);
             setShouldRefetch(true)
         }
@@ -59,34 +61,35 @@ export default function ReportsContainter() {
                 setIsLoading(false)
                 setShouldRefetch(false)
 
-                if (reportsStats.genderSplit.FEMALE !== 0 && reportsStats.genderSplit.MALE !== 0) {
-                    const data = {
-                        labels: Object.keys(reportsStats.genderSplit).map(key => ucFirst(key)),
-                        datasets: [
-                            {
-                                data: Object.values(reportsStats.genderSplit),
-                                backgroundColor: genderColors.map(color => documentStyle.getPropertyValue(`--${color}-300`)),
-                                hoverBackgroundColor: genderColors.map(color => documentStyle.getPropertyValue(`--${color}-500`))
-                            }
-                        ]
-                    }
-                    const options = {
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    usePointStyle: true
-                                }
+                const data = {
+                    labels: Object.keys(reportsStats.genderSplit).map(key => ucFirst(key)),
+                    datasets: [
+                        {
+                            data: Object.values(reportsStats.genderSplit),
+                            backgroundColor: genderColors.map(color => documentStyle.getPropertyValue(`--${color}-300`)),
+                            hoverBackgroundColor: genderColors.map(color => documentStyle.getPropertyValue(`--${color}-500`))
+                        }
+                    ]
+                }
+                const options = {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                usePointStyle: true
                             }
                         }
-                    };
-            
-                    setGenderChartData(data);
-                    setGenderChartOptions(options);
-                } else {
-                    setGenderChartData(null)
-                    setGenderChartOptions(null)
-                }
-            } catch (e) {
+                    }
+                };
+        
+                setGenderChartData(data);
+                setGenderChartOptions(options);
+                try {
+                    handleDatesChange(dates)
+                 } catch (e) {
+                     console.log('err', e)
+                 }
+             
+           } catch (e) {
                 setIsLoading(false)
                 setShouldRefetch(false)
             }

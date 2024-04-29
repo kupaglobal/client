@@ -15,7 +15,7 @@ const NewOrganisationForm = ({ formData, setFormData }) => {
     const sizeOptions = ['1-10', '10-100', '100+']
     const [size, setSize] = useState(sizeOptions[0]);
 
-    const studentsAgeOptions = ['13-19', '19+']
+    const studentsAgeOptions = ['Under 18', '18+', 'Both']
     const [studentsAge, setStudentsAge] = useState(studentsAgeOptions[0]);
 
     const organisationTypes = ['University', 'High School', 'Secondary School', 'Primary School', 'Grant or Scholarship Provider', 'Other - Private Teaching Institution (bootcamp, courses, etc)','Other - NGO'];
@@ -107,7 +107,7 @@ const NewOrganisationForm = ({ formData, setFormData }) => {
     return (
     <div className="w-full m-auto m-2">
         <form onSubmit={handleSubmit}>
-            <label htmlFor="name" className="block text-900 font-medium mb-20">Name</label>
+            <label htmlFor="name" className="block text-900 font-medium mb-20">Name of Organisation</label>
             <InputText name="name" id="name" type="text" placeholder="" className="w-full mb-3" onChange={onChange} required/>
 
             <label htmlFor="registrationNumber" className="block text-900 font-medium mb-20">Registration Number (Optional)</label>
