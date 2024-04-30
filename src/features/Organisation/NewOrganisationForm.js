@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import { SelectButton } from 'primereact/selectbutton';
 import { InputText } from "primereact/inputtext";
-import { useNavigate } from "react-router-dom";
 import countries from '../../data/countries.json'
 import { Dropdown } from 'primereact/dropdown';
 import OrganisationService from "../../services/organisation.service";
@@ -67,7 +66,6 @@ const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
         setError('')
         setFormData({...formData,[e.target.name]:e.target.value})
     }
-    const goTo = useNavigate()
 
     const handleOrganisationNameChange = (e) => {
         handleOrganisationNameBlur(e)

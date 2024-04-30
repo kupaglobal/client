@@ -1,7 +1,6 @@
 // import { useState } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import NewOrganisationForm from '../features/Organisation/NewOrganisationForm'
 import OrganisationDetail from '../features/Organisation/OrganisationDetail'
@@ -11,8 +10,6 @@ import { useContext, useEffect, useState } from "react";
 import { authStore } from "../store/auth";
 import { AuthService } from "../services/auth.service";
 import { SET_LOGGED_IN_USER } from "../store/actions";
-import OrganisationService from "../services/organisation.service";
-import { toastStore } from "../store/toast";
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
@@ -109,41 +106,7 @@ const OrganisationContainer = () => {
   const [queryParams] = useSearchParams()
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
 
-  const [loading, setLoading] = useState(false)
-  const { toast } = useContext(toastStore);
   const [refetchProfile, setRefetchProfile] = useState(true)
-  const saveNewOrganisation = async () => {
-    try {
-      setLoading(true)
-      await OrganisationService.createOrganisation(newOrganisationFormData);
-      setLoading(false)
-      setVisible(false)
-      setRefetchProfile(true)
-    } catch (e) {
-      toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
-      setLoading(false)
-      console.log(e)
-    }
-  }
-  const footerContent = (
-  
-    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
-    {/* <Button
-        label="Cancel"
-        icon="pi pi-times"
-        onClick={() => setVisible(false)}
-        className="custom-button"
-        outlined
-    /> */}
-    <Button
-        label="Save"
-        icon="pi pi-building"
-        onClick={() => saveNewOrganisation()}
-        className="custom-button"
-        loading={loading}
-    />
-    </div>
-  );
   
   const goTo = useNavigate()
   const newUser = queryParams.get('new') !== undefined && queryParams.get('new') !== null
