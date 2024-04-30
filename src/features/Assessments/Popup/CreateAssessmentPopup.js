@@ -76,7 +76,8 @@ export default function Popupcontent({ onReload }) {
     "name": "",
     "type": "",
     "dateConducted": "",
-    "description": ""
+    "description": "",
+    "referenceLink": ""
   })
 
 
@@ -108,7 +109,7 @@ export default function Popupcontent({ onReload }) {
       >
         <div>
         <form>
-            <label htmlFor="name" className="block text-900 font-medium mb-20">Name</label>
+            <label htmlFor="name" className="block text-900 font-medium mb-20">Name*</label>
             <InputText name="name" id="name" type="text" placeholder="" className="w-full mb-3" onChange={onChange} required/>
 
             {/* <label htmlFor="dateConduncted" className="block text-900 font-medium mb-20">Date Conducted</label>
@@ -116,6 +117,9 @@ export default function Popupcontent({ onReload }) {
          
             <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
             <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
+
+            <label htmlFor="referenceLink" className="block text-900 font-medium mb-20">Reference Link</label>
+            <InputText name="referenceLink" id="referenceLink" type="url" placeholder="" className="w-full mb-3" onChange={onChange}/>
 
             <p style={{ fontSize: "13px" }}>
               Select the type for this assessment

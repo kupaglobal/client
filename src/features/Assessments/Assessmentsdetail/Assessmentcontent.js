@@ -7,7 +7,7 @@ import { toastStore } from "../../../store/toast";
 import { Dialog } from "primereact/dialog";
 import Dropdowncomp from "../../../components/Dropdown";
 import { AssessmentsService } from "../../../services/assessments.service";
-import DetailsContent from "../../../components/DetailsContent";
+import DetailsContent, { LinkDetailsContent } from "../../../components/DetailsContent";
 import Avatar from "react-avatar";
 import { cleanedDateStr } from "../../../utils/moment";
 import { Tag } from "primereact/tag";
@@ -23,8 +23,12 @@ const Assessmentcontent = ({ assessment, onReload }) => {
   const [isLoading, setIsLoading] = useState(false)
   const assessmentDetails = [
     { heading: "Date Created", paragraph: cleanedDateStr(assessment.dateCreated) },
-    { heading: "Description", paragraph: 'This is the best description of this test', },
+    { heading: "Description", paragraph: assessment.description !=='' ? assessment.description : '--' },
   ];
+
+  if (assessment.referenceLink) {
+    assessmentDetails.push({ heading: 'Link', paragraph: assessment.referenceLink, })
+  }
 
   const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
@@ -150,6 +154,13 @@ const Assessmentcontent = ({ assessment, onReload }) => {
           </div>
           <div>
             {assessmentDetails.map((detail, index) => (
+              detail.heading === 'Link' ? 
+              <LinkDetailsContent
+                key={index}
+                heading={detail.heading}
+                link={detail.paragraph}
+              /> 
+              : 
               <DetailsContent
                 key={index}
                 heading={detail.heading}

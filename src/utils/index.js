@@ -58,3 +58,10 @@ export const moneyFormatter = (currency = 'GBP', locale = 'en-US') => new Intl.N
 export function studentFullName(student) {
     return student ? `${student.firstName} ${student.middleName ? `${student.middleName} `: ''}${student.lastName}` : '---'
 }
+
+export const truncateStringWithEllipsis = (str, length) => {
+    if (!str) return ''
+    if (str.length <= length) return str
+    return `${str.slice(0, length)}...`
+}
+  

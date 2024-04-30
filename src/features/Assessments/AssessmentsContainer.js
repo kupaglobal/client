@@ -73,7 +73,7 @@ const Assessmentscontainer = () => {
     async function fetchAssessments() {
       setReloadAssessments(false)
       try {
-        const {data: assessmentsRes} = await AssessmentsService.getAssessments(pagination)
+        const {data: assessmentsRes} = await AssessmentsService.getAssessments({ page: pagination.page, limit: pagination.limit })
         const assessments = assessmentsRes.assessments.map(assessment => ({ ...assessment, isSelected: false }))
         setAssessments(assessments)
         setPagination(assessmentsRes.pagination)

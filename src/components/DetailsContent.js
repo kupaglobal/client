@@ -1,6 +1,8 @@
 import React from "react";
 import { LiaCircleSolid } from "react-icons/lia";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { truncateStringWithEllipsis } from "../utils";
 
 const DetailsContentWrapper = styled.div`
   display: flex;
@@ -54,4 +56,19 @@ const DetailsContent = ({ heading, paragraph }) => {
   );
 };
 
+export const LinkDetailsContent = ({ heading, link }) => {
+  return (
+    <TsDetailsContainer>
+      <DetailsContentWrapper>
+        <IconWrapper color="#402B6B" />
+        <DetailsContent2>
+          <DetailsPara>{heading}</DetailsPara>
+          <DetailsPara2>
+            <Link to={link} target="_blank">{ truncateStringWithEllipsis(link, 30)} </Link>
+          </DetailsPara2>
+        </DetailsContent2>
+      </DetailsContentWrapper>
+    </TsDetailsContainer>
+  );
+};
 export default DetailsContent;
