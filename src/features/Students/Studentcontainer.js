@@ -146,7 +146,7 @@ const Studentcontainer = () => {
             filterOptions={filterOptions}
             onFilter={handleStudentsFilter}
             tableRowItem={tableRowItem}
-            popupContent={<Popupcontent onReload={() => setReloadStudents(true)}/>}
+            popupContent={<Popupcontent onReload={() => setReloadStudents(true)} loggedInUser={authState.loggedInUser} />}
             handleSelectedRowsChanged={handleSelectedRowsChanged}
             pagination={pagination}
             onPaginationChange={handlePaginationChange}

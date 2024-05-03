@@ -31,7 +31,7 @@ const StudentsProvider = ({ children }) => {
       case SET_SELECTED_STUDENTS:
         return { ...state, selectedStudents: action.payload };
       case RELOAD: 
-        return { ...state, reloadStudents: action.payload }
+        return { ...state, reloadStudents: action.payload, selectedStudents: [] }
       default:
         throw new Error();
     }

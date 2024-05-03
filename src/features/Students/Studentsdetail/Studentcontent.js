@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Avatar from "react-avatar";
 import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
@@ -12,6 +12,8 @@ import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
 import { studentFullName } from "../../../utils";
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { toastStore } from "../../../store/toast";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
@@ -34,10 +36,12 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
       student[key] = ''
     }
   })
+  const { toast } = useContext(toastStore)
 //  student.gender = ucFirst(student.gender)
 
   const [updateStudentDetailsFormData, setUpdateStudentDetailsFormData] = useState(student)
   const [showEditStudentDetailsForm, setShowEditStudentDetailsForm] = useState(false)
+  const [showDeleteStudentDialog, setShowDeleteStudentDialog] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const updateStudentDetails = async () => {
@@ -55,7 +59,35 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
       console.error(e)
       setIsLoading(false)
     }
-}
+  }
+  const showDeletePopup = (event) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: `Are you sure you want to delete ${student.firstName}${student.middleNames ? student.middleNames : ''} ${student.lastName}?`,
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      accept: deleteStudent,
+      reject: () => {}
+    });        
+  }
+
+  const deleteStudent = async () => {
+    setIsLoading(true)
+
+    try {
+      await StudentsService.deleteStudents([student.id]);
+      toast('success', 'Student has been deleted.');
+      setIsLoading(false)
+      setTimeout(() => {
+        window.location.href = '/students'
+      }, 1500)
+    } catch (e) {
+      setIsLoading(false)
+      toast('error', 'Failed to delete student. Please try again.');
+      console.error(`Exception when deleting student: ${e}`)
+    }
+  }
   return (
     <>
       <Card style={{ width: "300px" }}>
@@ -162,6 +194,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
 
         <div
           style={{
+            flexDirection: "row",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -172,13 +205,30 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
             className="p-button-outlined p-button-sm"
             onClick={() => setShowEditStudentDetailsForm(true)}
           />) : ''}
-          
 
           <Button
             label="Share"
             icon="pi pi-share-alt"
             className="p-button-outlined p-button-sm"
           />
+        </div>
+        <div          
+          style={{
+            marginTop: 8,
+            flexDirection: "row",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <ConfirmPopup />
+          {user.role === 'ORGANISATION_ADMIN' ? (<Button
+            loading={isLoading}
+            label="Delete Student"
+            icon="pi pi-trash"
+            className="p-button-outlined p-button-danger p-button-sm"
+            onClick={showDeletePopup}
+          />) : ''}
+
         </div>
         <Dialog
           header={`Edit Student Details`}
@@ -194,6 +244,17 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
               updateStudentDetails={updateStudentDetails}
               isLoading={isLoading}
             />
+          </div>
+        </Dialog>
+        <Dialog
+          header={`Delete student`}
+          style={{ width: "40vw" }}
+          visible={showDeleteStudentDialog}
+          breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+          onHide={() => setShowDeleteStudentDialog(false)}
+        > 
+          <div> 
+            Are you sure you want to delete {student.firstName}{student.middleNames ? student.middleNames : ''} {student.lastName}?
           </div>
         </Dialog>
 

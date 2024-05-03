@@ -60,4 +60,8 @@ export class StudentsService {
     static updateStudentDetails(studentId, updateStudentDetailsDto) {
         return httpClient.put(`/students/${studentId}`, updateStudentDetailsDto)
     }
+
+    static deleteStudents(studentIds) {
+        return httpClient.delete('/students', {data: { studentIds }})
+    }
 }

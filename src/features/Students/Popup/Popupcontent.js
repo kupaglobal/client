@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import Dropdowncomp from "../../../components/Dropdown";
 import Templatetab from "./Templatetab";
 import ErroredStudents from "./ErroredStudents";
@@ -11,8 +11,11 @@ import { GroupsService } from "../../../services/groups.service";
 import { toastStore } from "../../../store/toast";
 import { HttpStatusCode } from "axios";
 import { CohortsService } from "../../../services/cohorts.service";
+import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
+import { StudentsService } from "../../../services/students.service";
         
-export default function Popupcontent({ onReload }) {
+export default function Popupcontent({ onReload, loggedInUser }) {
+
   const { state, dispatch } = useContext(studentsStore)
   const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
   const [addToGroupVisibility, setAddToGroupVisibility] = useState(false)
@@ -22,6 +25,7 @@ export default function Popupcontent({ onReload }) {
   const [cohorts, setCohorts] = useState([])
   const [selectedGroup, setSelectedGroup] = useState(null)
   const [selectedCohort, setSelectedCohort] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const addSelectedStudentsToGroup = async () => {
     try {
@@ -107,6 +111,37 @@ export default function Popupcontent({ onReload }) {
       })
     }
   }, [reloadStudents, dispatch, onReload, shouldRetry])
+
+  const showDeletePopup = (event) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: `Are you sure you want to delete the selected students?`,
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      accept: deleteStudents,
+      reject: () => {}
+    });        
+  }
+
+  const deleteStudents = async () => {
+    setIsLoading(true) 
+    try {
+      await StudentsService.deleteStudents(selectedStudents.map(student => student.id))
+      toast('success', 'Students have been deleted.')
+      setIsLoading(false) 
+      onReload()
+      dispatch({
+        type: RELOAD,
+        payload: false
+      })
+    } catch (e) {
+      console.error(e, `Exception when deleting students, e: ${e}`)
+      toast('success', 'Failed to delete the students. Please try again.')
+      setIsLoading(false) 
+    }
+  }
+
   const footerContent = (
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
@@ -126,7 +161,6 @@ export default function Popupcontent({ onReload }) {
     </div>
   );
   const addToGroupFooterContent = (
-
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
         label="Cancel"
@@ -191,6 +225,17 @@ export default function Popupcontent({ onReload }) {
               className="custom-button mx-2"
               onClick={() => setAddToCohortVisibility(true)}
             />
+
+            <ConfirmPopup/>
+            {loggedInUser.role === 'ORGANISATION_ADMIN' ? 
+            <Button
+              loading={isLoading}
+              outlined
+              icon={<AiOutlineDelete />}
+              label="Delete"
+              className="p-button-danger custom-button mx-2"
+              onClick={showDeletePopup}
+            /> : ''}
           </div>
           :       <Button
           outlined
