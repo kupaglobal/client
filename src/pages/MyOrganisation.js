@@ -121,6 +121,8 @@ const OrganisationContainer = () => {
       const {data: profileRes} = await AuthService.getProfile()
       if (!profileRes?.organisationId && !newUser) {
         goTo('/dashboard?welcome')
+      } else if (profileRes.firstName === null || profileRes.lastName === null) {
+        goTo('/auth/profile?nn')
       } else if (profileRes?.organisation) {
         setProfile(profileRes)
         dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
