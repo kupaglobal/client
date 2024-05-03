@@ -27,7 +27,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const userDetails = [
     { heading: "Date of Birth", paragraph: student.dob },
     { heading: "Gender", paragraph: student.gender },
-    { heading: "Cohort", paragraph: "N/A" },
+    { heading: "Cohort", paragraph: student.cohorts.map(cohort => cohort.name).join(', ') },
     { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
   ];
 

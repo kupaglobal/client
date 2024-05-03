@@ -27,7 +27,7 @@ const columns = [
   {
     id: "avatar",
     name: "No.",
-    selector: (row) => row.avatar,
+    selector: (row) => row.studentNumber,
     sortable: true,
   },
   {
@@ -37,12 +37,12 @@ const columns = [
     selector: studentName,//(row) => `${row.firstName} ${row.middleName ? ` ${row.middleName} `: ''}${row.lastName} ${topPerformerTrophy(row)}`,
     sortable: true,
   },
-  {
-    id: "st_course",
-    name: "Course",
-    selector: (row) => row.courseEnrollment,
-    sortable: true,
-  },
+  // {
+  //   id: "st_course",
+  //   name: "Course",
+  //   selector: (row) => row.courseEnrollment,
+  //   sortable: true,
+  // },
   {
     id: "st_gender",
     name: "Gender",
@@ -51,8 +51,8 @@ const columns = [
   },
   {
     id: "st_class",
-    name: "Cohort #",
-    selector: (row) => row.st_class,
+    name: "Cohort",
+    selector: (row) => row.cohorts.map(cohort => cohort.name).join(', '),
     sortable: true,
   },
 ];

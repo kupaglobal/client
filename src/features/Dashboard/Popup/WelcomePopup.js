@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
         
 export default function WelcomePopup({ user }) {
-  console.log(user)
     const [queryParams] = useSearchParams()
     const isNewOrgAdmin = (user.role === 'ORGANISATION_ADMIN' && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null) || false
     const isNewFacilitator = (user.role === 'FACILITATOR' && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null) || false
