@@ -45,7 +45,7 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
             const endDate = e.value;
             const dates = [startDate, endDate].sort((a, b) => a.getTime() - b.getTime())
             setDates(dates);
-            handleDatesChange(dates.map(date => date.toString()))
+            handleDatesChange(dates.map(date => date.toString()), false)
             setSelectedStartDate(null);
             setIsLoading(true)
             setShouldRefetch(true)
@@ -95,7 +95,7 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
                 setGenderChartData(data);
                 setGenderChartOptions(options);
                 try {
-                    handleDatesChange(dates)
+                    handleDatesChange(dates, true)
                  } catch (e) {
                      console.log('err', e)
                  }

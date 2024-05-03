@@ -6,17 +6,21 @@ const Reports = () => {
   const { state } = useContext(authStore)
   const [dates, setDates] = useState([])
   const [selectedCohort, setSelectedCohort] = useState(null)
+  const [dateRangeText, setDateRangeText] = useState('YTD')
 
   const handleCohortChange = (cohort ) => {
     setSelectedCohort(cohort)
   }
 
-  const handleDatesChange = (dates) => {
+  const handleDatesChange = (dates, ytd = false) => {
     setDates(dates.map(date => cleanedDateStr(date)))
+    if (ytd === false) {
+      setDateRangeText(dates.map(date => cleanedDateStr(date)).join(' - '))
+    }
   }
   return (
     <div>
-      <h1 className='module__heading'>{state.loggedInUser.organisation.name} Reports ({dates[0]} - {dates[1]})</h1>
+      <h1 className='module__heading'>{state.loggedInUser.organisation.name} Reports ({dateRangeText})</h1>
       {selectedCohort ? <span className='mt-2 text-sm  text-grey'>Cohort: {selectedCohort.name} </span> : null }
       <ReportsContainter handleDatesChange={handleDatesChange} handleCohortChange={handleCohortChange} />
     </div>
