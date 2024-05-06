@@ -6,7 +6,6 @@ import {
   MdAssessment,
   MdLogout,
   MdOutlineLibraryBooks,
-  MdChatBubbleOutline,
   MdOutlinePersonSearch,
 } from "react-icons/md";
 import { PiStudent, PiBuildings } from "react-icons/pi";
