@@ -13,8 +13,8 @@ const AssessmentResultsContainer = ({ onFilter, isLoading }) => {
   const columns = [
     {
       id: "result_id",
-      name: "ID.",
-      selector: (row) => row.avatar,
+      name: "#",
+      selector: (row) => row.student.studentNumber,
       sortable: true,
     },
     {

@@ -33,10 +33,10 @@ export default function StudentsGenderGraph() {
             ]
             const labels = Object.keys(genderData.data)
             labels.forEach(label => {
-                // update female
-                datasets[0].data.push(genderData.data[label].FEMALE)
                 // update male
-                datasets[1].data.push(genderData.data[label].MALE)
+                datasets[0].data.push(genderData.data[label].MALE)
+                // update female
+                datasets[1].data.push(genderData.data[label].FEMALE)
             })
 
             

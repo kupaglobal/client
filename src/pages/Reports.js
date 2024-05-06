@@ -12,8 +12,8 @@ const Reports = () => {
     setSelectedCohort(cohort)
   }
 
-  const handleDatesChange = (dates, ytd = false) => {
-    setDates(dates.map(date => cleanedDateStr(date)))
+  const handleDatesChange = (newDates, ytd = false) => {
+    setDates(newDates.map(date => cleanedDateStr(date)))
     if (ytd === false) {
       setDateRangeText(dates.map(date => cleanedDateStr(date)).join(' - '))
     }

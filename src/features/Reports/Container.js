@@ -5,7 +5,6 @@ import { Calendar } from 'primereact/calendar';
 import { ReportsService } from '../../services/reports.services';
 import { Chart } from 'primereact/chart';
 import * as moment from 'moment'
-import Dropdowncomp from "../../components/Dropdown";
 import CardLoadingSkeleton from '../../components/UI/Skeleton/CardLoadingSkeleton';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -36,6 +35,9 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
 
     const queryCohortId = queryParams.get('cohortId') ? queryParams.get('cohortId') : null
     const [selectedCohortId, setSelectedCohortId] = useState(queryCohortId)
+    const [cohorts, setCohorts] = useState(null)
+    const [selectedCohort, setSelectedCohort] = useState(null)
+
 
     const handleDateSelect = (e) => {
         if (!selectedStartDate) {
@@ -112,9 +114,9 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
         async function fetchCohorts() {
             try {
               const {data: cohortsRes} = await CohortsService.getCohorts()
-              const cohorts = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
-              setCohorts(cohorts)
-              const selectedCohort = queryCohortId ? cohorts.filter(cohort => cohort.id == queryCohortId)[0] : null
+              const cohortsData = cohortsRes.cohorts.map(cohort => ({ ...cohort, isSelected: false }))
+              setCohorts(cohortsData)
+              const selectedCohort = queryCohortId ? cohortsData.filter(cohort => cohort.id === queryCohortId)[0] : null
               setSelectedCohort(selectedCohort)
               handleCohortChange(selectedCohort)
               setIsLoading(false)
@@ -132,7 +134,7 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
         if (shouldRefetch && cohorts === null) {
             fetchCohorts()
         }
-    }, [shouldRefetch, dates])
+    }, [shouldRefetch, dates, handleCohortChange, handleDatesChange, queryCohortId, selectedCohortId, toast, cohorts])
 
     useEffect(() => {
         let fundingCostsPerCurrency = {}
@@ -161,8 +163,6 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
         return `${moment(row.startDate).format('MM/DD/YYYY')} - ${moment(row.endDate).format('MM/DD/YYYY')}`
     }
 
-    const [cohorts, setCohorts] = useState(null)
-    const [selectedCohort, setSelectedCohort] = useState(null)
     const handleSelectedCohort = (cohort) => {
         setIsLoading(true)
         setSelectedCohort(cohort)
