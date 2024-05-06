@@ -1,6 +1,4 @@
-import {useState} from 'react'
 import { Dropdown } from 'primereact/dropdown';
-        
 
 const Dropdowncomp = ({projectoption, onSelected, placeholder, isLoading = true, label, selectedOption }) => {
 
