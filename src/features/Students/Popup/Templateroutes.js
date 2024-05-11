@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BreadCrumb } from 'primereact/breadcrumb';
-import Templateroute1 from "./Templateroute1";
+// import Templateroute1 from "./Templateroute1";
 import Uploadcontainer from "../../../components/Uploadcontainer";
 
 const createTemplateTabs = [
@@ -34,7 +34,7 @@ export function BreadcrumbNav({ activeStep, handleStepClick, tabs }) {
 
 function Templateroutes({ case1card: Case1Card, section }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [activeTemplate, setActiveTemplate] = useState(null)
+  // const [activeTemplate, setActiveTemplate] = useState(null)
   const [tabs] = useState(!section || section==='Create Template' ? createTemplateTabs : savedTemplateTabs)
 
   const handleStepClick = (stepIndex) => {

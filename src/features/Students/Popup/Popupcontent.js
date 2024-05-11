@@ -231,10 +231,10 @@ export default function Popupcontent({ onReload, loggedInUser }) {
     </div>
   );
   // const [selectedOption, setSelectedOption] = useState("");
-  const [projectOptions] = useState([
-    { name: "Via template", code: 'VT' },
-    { name: "Manual Input",  code: 'MI' },
-  ]);
+  // const [projectOptions] = useState([
+  //   { name: "Via template", code: 'VT' },
+  //   { name: "Manual Input",  code: 'MI' },
+  // ]);
 
   // const handleOptionSelect = (event) => {
   //   setSelectedOption(event.target.value);

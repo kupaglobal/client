@@ -1,9 +1,6 @@
 import { useState, useContext } from "react";
-import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
-import { StudentsService } from "../../../services/students.service"
 import { TemplatesService } from "../../../services/templates.service";
-import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { toastStore } from "../../../store/toast";
 import { templatesStore } from "../../../store/templates";
@@ -12,31 +9,31 @@ import { Tooltip } from "primereact/tooltip";
 
 
 const Createroute1 = (props) => {
-  const [studentFields, setStudentFields] = useState([])
+  const [studentFields] = useState([])
   const [selectedFields, setSelectedFields] = useState([]);
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false)
   const { toast } = useContext(toastStore);
   const { dispatch } = useContext(templatesStore);
 
-  async function fetchStudentFields() {
-    try {
-      setCreateTemplateLoading(true)
-      const { data: studentFieldsRes} = await StudentsService.getStudentFields();
-      setStudentFields(studentFieldsRes)
-      setSelectedFields([...studentFieldsRes.filter(studentField => studentField.isRequired)])
-      setCreateTemplateLoading(false)
-    } catch (e) {
-      setCreateTemplateLoading(false)
-      toast('error',e.response?.data?.error ? e.response?.data?.error : 'Failed to get student fields, please try again.')
+  // async function fetchStudentFields() {
+  //   try {
+  //     setCreateTemplateLoading(true)
+  //     const { data: studentFieldsRes} = await StudentsService.getStudentFields();
+  //     setStudentFields(studentFieldsRes)
+  //     setSelectedFields([...studentFieldsRes.filter(studentField => studentField.isRequired)])
+  //     setCreateTemplateLoading(false)
+  //   } catch (e) {
+  //     setCreateTemplateLoading(false)
+  //     toast('error',e.response?.data?.error ? e.response?.data?.error : 'Failed to get student fields, please try again.')
 
-    }
-  }
+  //   }
+  // }
 
-  useEffect(() => {
-    fetchStudentFields()
-  }, [setStudentFields, setSelectedFields])
+  // useEffect(() => {
+  //   fetchStudentFields()
+  // }, [setStudentFields, setSelectedFields])
 
-  const [newTemplateName, setNewTemplateName] = useState("");
+  // const [newTemplateName, setNewTemplateName] = useState("");
 
   const onStudentFieldChange = (e) => {
     let _selectedFields = [...selectedFields];
@@ -79,7 +76,7 @@ const Createroute1 = (props) => {
   }
   const clearForm = () => {
     setCreateTemplateLoading(false)
-    setNewTemplateName("")
+//    setNewTemplateName("")
     setSelectedFields(studentFields.filter(studentField => studentField.isRequired))
   }
 
