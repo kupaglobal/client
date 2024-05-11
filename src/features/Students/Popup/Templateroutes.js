@@ -4,9 +4,8 @@ import Templateroute1 from "./Templateroute1";
 import Uploadcontainer from "../../../components/Uploadcontainer";
 
 const createTemplateTabs = [
-  { label: "Select Fields" },
-  { label: "Preview" },
   { label: "Upload" },
+  { label: "Review" },
 ];
 
 const savedTemplateTabs = [
@@ -44,13 +43,13 @@ function Templateroutes({ case1card: Case1Card, section }) {
 
   let contentComponent;
   switch (activeStep) {
+    // case 0:
+    //   contentComponent = <Case1Card setActiveStep={setActiveStep} setActiveTemplate={setActiveTemplate}/>
+    //   break;
+    // case 1:
+    //   contentComponent = <Templateroute1 template={activeTemplate} setActiveStep={setActiveStep} />;
+    //   break;
     case 0:
-      contentComponent = <Case1Card setActiveStep={setActiveStep} setActiveTemplate={setActiveTemplate}/>
-      break;
-    case 1:
-      contentComponent = <Templateroute1 template={activeTemplate} setActiveStep={setActiveStep} />;
-      break;
-    case 2:
       contentComponent = <Uploadcontainer />;
       break;
     default:

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FileUpload } from "primereact/fileupload";
 import styled from 'styled-components';
 import { templatesStore } from "../store/templates";
@@ -7,6 +7,8 @@ import { getEnv } from "../utils/env";
 import { toastStore } from "../store/toast";
 import { RELOAD, SHOW_ADD_STUDENTS_POPUP, SHOW_ERRORED_STUDENTS_POPUP } from "../store/actions";
 import { studentsStore } from "../store/students";
+import { Button } from "primereact/button";
+import { TemplatesService } from "../services/templates.service";
 
 const StyledFileUpload = styled(FileUpload)`
   .p-button {
@@ -23,8 +25,9 @@ const Uploadcontainer = () => {
   const { toast } = useContext(toastStore)
   const { state: authState } = useContext(authStore)
   const template = templatesState.activeTemplate;
+  const [isLoading, setIsLoading] = useState(false)
 
-  const uploadUrl = (templateId) => (`${getEnv('BASE_URL','https://sapi.kupaglobal.com')}/templates/${templateId}/upload`)
+  const uploadUrl = () => (`${getEnv('BASE_URL','https://sapi.kupaglobal.com')}/templates/upload`)
 
   const beforeUpload = (event) => {
     event.xhr.open('POST', uploadUrl(template.id));
@@ -89,6 +92,19 @@ const Uploadcontainer = () => {
       toast('error', toastMessage)
     }
   }
+
+  const downloadTemplate = async () => {
+    try {
+      setIsLoading(true)
+      await TemplatesService.downloadTemplate(null);
+      setIsLoading(false)
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : 'Failed to download the template.')
+      console.log(e)
+      setIsLoading(false)
+    }
+
+  }
   return (
     <div >
       <StyledFileUpload
@@ -99,6 +115,7 @@ const Uploadcontainer = () => {
         url={uploadUrl(template.id)}
         onError={handleError}
         onUpload={onUpload}
+        auto
         pt={{
           badge: {
             root: {
@@ -110,9 +127,22 @@ const Uploadcontainer = () => {
         }}
         removeIcon="pi pi-trash"
         emptyTemplate={
-          <p className="m-0">Drag and drop the populated template: <b>{template.name}</b> here to upload.</p>
+          <p className="m-0 text-sm">Click 'Choose' to upload a populated template.</p>
         }
       />
+          <div className="mt-5">
+            <Button
+              label="Download Template"
+              icon="pi pi-download"
+              type="submit"
+              className="custom-button outline"
+              disabled={isLoading}
+              loading={isLoading}
+              onClick={downloadTemplate}
+              outlined
+            />
+          </div>
+
     </div>
   );
 };

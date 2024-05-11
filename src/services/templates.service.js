@@ -16,7 +16,7 @@ export class TemplatesService {
     static downloadTemplate(template) {
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await httpClient.post(`/templates/${template.id}/download`, {}, {
+                const res = await httpClient.post(`/templates/download`, {}, {
                     headers: { 
                         'Accept': 'text/csv',
                     },
@@ -26,7 +26,7 @@ export class TemplatesService {
                 const url = window.URL.createObjectURL(new Blob([res.data], { type: 'text/csv' }));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', `Kupa_Global_Template_${template.name.replace(/ /g, '_')}.csv`);
+                link.setAttribute('download', `Helios_Student_Template.csv`);
                 document.body.appendChild(link);
                 link.click();
                 resolve();
@@ -41,7 +41,7 @@ export class TemplatesService {
             try {
                 var formData = new FormData();
                 formData.append("file", file);
-                const res = await httpClient.post(`/templates/${template.id}/upload`, formData, {
+                const res = await httpClient.post(`/templates/upload`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }

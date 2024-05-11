@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { toastStore } from "../../../store/toast";
 import { templatesStore } from "../../../store/templates";
 import { SET_ACTIVE_TEMPLATE } from "../../../store/actions";
+import { Tooltip } from "primereact/tooltip";
 
 
 const Createroute1 = (props) => {
@@ -18,9 +19,17 @@ const Createroute1 = (props) => {
   const { dispatch } = useContext(templatesStore);
 
   async function fetchStudentFields() {
-    const { data: studentFieldsRes} = await StudentsService.getStudentFields();
-    setStudentFields(studentFieldsRes)
-    setSelectedFields([...studentFieldsRes.filter(studentField => studentField.isRequired)])
+    try {
+      setCreateTemplateLoading(true)
+      const { data: studentFieldsRes} = await StudentsService.getStudentFields();
+      setStudentFields(studentFieldsRes)
+      setSelectedFields([...studentFieldsRes.filter(studentField => studentField.isRequired)])
+      setCreateTemplateLoading(false)
+    } catch (e) {
+      setCreateTemplateLoading(false)
+      toast('error',e.response?.data?.error ? e.response?.data?.error : 'Failed to get student fields, please try again.')
+
+    }
   }
 
   useEffect(() => {
@@ -46,14 +55,16 @@ const Createroute1 = (props) => {
       e.preventDefault()
       setCreateTemplateLoading(true)
       const {data: newTemplate} = await TemplatesService.createTemplate({
-        name: newTemplateName,
+        name: `${Date.now()}`,
         studentFieldIds: selectedFields.map(selectedField => selectedField.id)
       })
+      console.log()
       const {data: template}= await TemplatesService.getTemplateById(newTemplate.id) 
       dispatch({
         type: SET_ACTIVE_TEMPLATE,
         payload: template
       })
+      await TemplatesService.downloadTemplate(template);
       if (props.setActiveStep) {
         props.setActiveStep(1)
       }
@@ -75,12 +86,14 @@ const Createroute1 = (props) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <form onSubmit={createTemplate}>
-        <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+        {/* <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
           <p style={{ fontSize: 13, alignSelf: "center" }}>Template Name :</p>
           <InputText value={newTemplateName} onChange={(e) => setNewTemplateName(e.target.value)} required/>
-        </div>
+        </div> */}
         <div>
-          <p style={{ fontSize: 13, alignSelf: "center" }}>Select Fields</p>
+          
+
+          <p style={{ fontSize: 13, alignSelf: "center" }}>Select Fields you have the data for. <Tooltip target=".custom-target-icon" className="text-sm" /><span className="custom-target-icon text-primary cursor-pointer" data-pr-tooltip="The fields which are uncheckable (e.g First Name, Last Name etc) are mandatory and also used to mark duplicate students in your organisation." data-pr-position="right">Learn More</span></p>
           <div
             style={{
               marginTop: 20,
@@ -115,10 +128,11 @@ const Createroute1 = (props) => {
           </div>
           <div className="mt-5">
             <Button
-              label="Create Template"
-              icon="pi pi-plus"
+              label="Download Template & Proceed"
+              icon="pi pi-download"
               type="submit"
               className="custom-button"
+              disabled={createTemplateLoading}
               loading={createTemplateLoading}
             />
           </div>

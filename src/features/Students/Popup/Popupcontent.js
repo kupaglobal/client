@@ -142,6 +142,27 @@ export default function Popupcontent({ onReload, loggedInUser }) {
     }
   }
 
+  const mergeDuplicates = () => {
+    setIsLoading(true)
+    setTimeout(( ) => {
+      setIsLoading(false)
+      setVisibility(false)
+    }, 2400)
+//    setVisibility(false)
+  }
+
+  const retry = () => {
+    dispatch({
+      type: HIDE_ERRORED_STUDENTS_POPUP,
+      payload: false
+    })
+    dispatch({
+      type: SHOW_ADD_STUDENTS_POPUP,
+      payload: true
+    })
+
+  }
+
   const footerContent = (
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
@@ -151,13 +172,25 @@ export default function Popupcontent({ onReload, loggedInUser }) {
         className="custom-button"
         outlined
       />
-      {/* <Button
-        label="Submit"
-        icon="pi pi-check"
-        onClick={() => setVisible(false)}
+    </div>
+  );
+
+  const erroredStudentsFooterContent = (
+    <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
+      <Button
+        label="Retry"
+        icon="pi pi-undo"
+        onClick={retry}
         className="custom-button"
-        disabled
-      /> */}
+        outlined
+      />
+      <Button
+        label="Merge Duplicates"
+        icon="pi pi-check"
+        onClick={mergeDuplicates}
+        className="custom-button"
+        loading={isLoading}
+      />
     </div>
   );
   const addToGroupFooterContent = (
@@ -290,7 +323,7 @@ export default function Popupcontent({ onReload, loggedInUser }) {
       </Dialog>
 
       <Dialog
-        header="New student data"
+        header="Add new students"
         visible={showAddStudentsPopup}
         style={{ width: "60vw" }}
         maximizable
@@ -299,20 +332,19 @@ export default function Popupcontent({ onReload, loggedInUser }) {
         footer={footerContent}
       >
 
-        <div>
+        {/* <div>
           <p style={{ fontSize: "13px" }}>
             How do you want to add the new data ?
           </p>
           <Dropdowncomp
             projectoption={projectOptions}
           />
-        </div>
+        </div> */}
 
         <div>
           <Templatetab />
         </div>
       </Dialog>
-
       <Dialog
         header="Errored student data"
         visible={showErroredStudentsPopup}
@@ -320,7 +352,7 @@ export default function Popupcontent({ onReload, loggedInUser }) {
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
         onHide={() => setVisibility(false)}
-        footer={footerContent}
+        footer={erroredStudentsFooterContent}
       >
         <div>
           <ErroredStudents />

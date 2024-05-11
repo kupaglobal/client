@@ -1,11 +1,27 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Typography, IconButton } from "@mui/material";
 import { MdFullscreenExit, MdFullscreen} from 'react-icons/md'
 import { templatesStore } from "../../../store/templates";
 import { studentsStore } from "../../../store/students";
 import Table from "../../../components/Table/Table";
+import { StudentsService } from "../../../services/students.service";
+import { toastStore } from "../../../store/toast";
 
 const ErroredStudents = () => {
+  const [studentFields, setStudentFields] = useState([]);
+  async function fetchStudentFields() {
+    try {
+      const { data: studentFieldsRes} = await StudentsService.getStudentFields();
+      setStudentFields(studentFieldsRes)
+    } catch (e) {
+      toast('error',e.response?.data?.error ? e.response?.data?.error : 'Failed to get student fields, please try again.')
+    }
+  }
+
+  useEffect(() => {
+    fetchStudentFields()
+  }, [setStudentFields])
+
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
@@ -15,8 +31,9 @@ const ErroredStudents = () => {
   const { state: studentsState } = useContext(studentsStore)
   const template = templatesState.activeTemplate
   const {erroredStudents, erroredStudentsMessage, reasons} = studentsState
+  const { toast } = useContext(toastStore);
 
-  const columns = [{id: 'row', displayName: 'Row', columnName: 'row'}, ...template.fields].map(field => ({
+  const columns = [{id: 'row', displayName: 'Row', columnName: 'row'}, ...studentFields].map(field => ({
     id: field.columnName,
     name: field.displayName,
     selector: (row) => row[field.columnName],

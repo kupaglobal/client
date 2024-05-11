@@ -11,9 +11,9 @@ const Templatetab = () => {
           <Templateroutes case1card={Createroute1} section="Create Template" />
         </TabPanel>
 
-        <TabPanel header="Saved Templates" style={{ fontSize: "13px" }}>
+        {/* <TabPanel header="Saved Templates" style={{ fontSize: "13px" }}>
           <Templateroutes case1card={TemplatesContainer} section="Saved Templates"/>
-        </TabPanel>
+        </TabPanel> */}
       </TabView>
     </>
   );
