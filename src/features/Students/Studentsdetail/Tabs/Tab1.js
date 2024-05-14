@@ -57,7 +57,7 @@ const Tab1 = ({ student }) => {
               }}
             >
             </p>
-            {student.careerAmbition.map(ambition => <Tag rounded key={ambition} className="custom-accordion-content" severity="success">{ambition}</Tag> )}
+            {student.careerAmbition ? student.careerAmbition?.map(ambition => <Tag rounded key={ambition} className="custom-accordion-content" severity="success">{ambition}</Tag> ) : null}
           </AccordionTab>
           {/* <AccordionTab
             headerClassName="custom-accordion-header"
