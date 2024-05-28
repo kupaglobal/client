@@ -174,18 +174,17 @@ export default function ReportsContainter( {handleDatesChange, handleCohortChang
     return (
         <div className='flex flex-column w-full mt-8 gap-2'>
             <div className='flex flex-row w-full items-center justify-content-end gap-2'>
+                <div className='flex card bg-grey responsive mr-4'>
+                    <span className="p-float-label">
+                        <Calendar value={dates} onSelect={handleDateSelect} selectionMode="range" />
+                        <label htmlFor="date_range">Start - End Date</label>
+                    </span>
+                </div>
                 <div className='flex card bg-grey  responsive'>
                     <span className="p-float-label">
                         <Dropdown value={selectedCohort} loading={true} onChange={(e) => handleSelectedCohort(e.value)} options={cohorts} optionLabel="name" 
                             placeholder="Select a cohort"/>
                                 <label htmlFor="item">Cohort</label>
-                    </span>
-
-                </div>
-                <div className='flex card bg-grey responsive mr-4'>
-                    <span className="p-float-label">
-                        <Calendar value={dates} onSelect={handleDateSelect} selectionMode="range" />
-                        <label htmlFor="date_range">Start - End Date</label>
                     </span>
                 </div>
             </div>
