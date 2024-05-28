@@ -16,22 +16,26 @@ import { cleanedDateStr } from "../../utils/moment";
 
 const columns = [
   {
-    id: "ass_id",
-    name: "ID.",
-    selector: (row) => row.avatar,
-    sortable: true,
-  },
-  {
     id: "ass_name",
     name: "Assessment Name",
     selector: (row) => row.name,
     sortable: true,
+    width: '20%'
   },
   {
     id: "ass_type",
     name: "Assessment Type",
     selector: (row) => ucFirst(row.type),
     sortable: true,
+    width: '15%'
+  },
+  {
+    id: "description",
+    name: "Description",
+    selector: (row) => ucFirst(row.description),
+    style: {wordWrap: 'break-word'},
+    wrap: true,
+    width: '45%'
   },
   {
     id: "ass_dateConducted",
@@ -39,15 +43,8 @@ const columns = [
     selector: (row) => cleanedDateStr(row.dateCreated),
     sortable: true,
   },
-  {
-    id: "ass_description",
-    name: "Description",
-    selector: (row) => ucFirst(row.description),
-    sortable: true,
-  },
 ];
 const tableRowItem = "assessments";
-
 
 const Assessmentscontainer = () => {
   const tabs = ['Assessments']
@@ -94,7 +91,8 @@ const Assessmentscontainer = () => {
       <TabView activeIndex={selectedTab}>
         <TabPanel header="ASSESSMENTS" leftIcon="" style={{ fontSize: "14px" }}>
           <Table isLoading={isLoading} columns={columns} data={assessments} tableRowItem={tableRowItem} popupContent={<Popupcontent onReload={() => setReloadAssessments(true)}/>}
-          pagination={pagination} onPaginationChange={handlePaginationChange}/>
+          pagination={pagination} onPaginationChange={handlePaginationChange}>
+            </Table>
         </TabPanel>
       </TabView>
     </div>
