@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Calendar } from 'primereact/calendar';
 import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown";
 
 const FilterOption = ({ filterOption, formData, setFormData }) => {
   const [dates, setDates] = useState(null);
@@ -15,7 +16,14 @@ const FilterOption = ({ filterOption, formData, setFormData }) => {
   //   // Add this function
   // };
 
+  const [currentFilterOptionValues, setCurrentFilterOptionValues] = useState({}) 
+
   const onChange = (e) => {
+    setCurrentFilterOptionValues({
+      ...currentFilterOptionValues,
+      [e.target.name]: e.target.value
+    })
+
     setTimeout(() => {
       setFormData({...formData,[e.target.name]:e.target.value})
       console.log(formData, e.target.name)
@@ -33,13 +41,30 @@ const FilterOption = ({ filterOption, formData, setFormData }) => {
         case 'string':
           return <>
             <label className="block text-xs" htmlFor={filterOption.id}>{filterOption.displayName}</label>
-            <InputText inputId={filterOption.id} value={filterOption.filterValue} name={filterOption.id} id={filterOption.id} type="text" className="w-full mb-3 p-inputtext-sm" onInput={onChange} required/>
+            <InputText inputId={filterOption.id} value={currentFilterOptionValues[filterOption.id]} name={filterOption.id} id={filterOption.id} type="text" className="w-full mb-3 p-inputtext-sm" onInput={onChange} required/>
           </>
   
         case 'number':
           return <>
             <label className="block text-xs" htmlFor={filterOption.id}>{filterOption.displayName}</label>
             <InputText name={filterOption.id} keyfilter="int" id={filterOption.id} type="text" placeholder={filterOption.placeholder} className="w-full mb-3 p-inputtext-sm" onInput={onChange} onBlur={onChange} required/>
+          </>
+
+        case 'enum': 
+          return <>
+              <label className="block text-xs" htmlFor={filterOption.id}>{filterOption.displayName}</label>
+
+              <Dropdown
+                name={filterOption.id}
+                value={currentFilterOptionValues[filterOption.id]}
+                onChange={onChange}
+                options={filterOption.enumValues}
+                optionLabel="displayName" 
+                optionValue="id" 
+                placeholder={`Select a ${filterOption.displayName}`}
+                className="w-full md:w-14rem mb-3 "
+            />
+
           </>
   
         default: <></>

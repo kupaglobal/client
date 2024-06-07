@@ -152,7 +152,7 @@ const Table = ({
           totalRecords={pagination.total}
           first={paginationFirst}
           pageLinkSize={pagination.pages && pagination.pages < 5 ? pagination.pages : 5 }
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageOptions={[50, 100, 200]}
           onPageChange={handlePageChange}
           rows={pagination.limit}  
         ></Paginator> : null

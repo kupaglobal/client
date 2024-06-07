@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import { authStore } from "../../store/auth";
 import { rankTrophy, ucFirst } from "../../utils";
 import { Tooltip } from "primereact/tooltip";
+import { CohortsService } from "../../services/cohorts.service";
 
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
@@ -52,7 +53,7 @@ const columns = [
   {
     id: "st_class",
     name: "Cohort",
-    selector: (row) => row.cohorts.map(cohort => cohort.name).join(', '),
+    selector: (row) => row.cohorts?.map(cohort => cohort.name).join(', '),
     sortable: true,
   },
 ];
@@ -66,6 +67,7 @@ const Studentcontainer = () => {
   const [ selectedTab ] = useState(index >= 0 ? index : 0)
 
   const [ selectedCohortId ] = useState(queryParams.get('cohortId') ? queryParams.get('cohortId') : null)
+  const [ selectedCohort, setSelectedCohort ] = useState(null)
 
   const [ students, setStudents ] = useState([])
   const { toast } = useContext(toastStore);
@@ -73,10 +75,11 @@ const Studentcontainer = () => {
   const { dispatch } = useContext(studentsStore)
   const { state: authState } = useContext(authStore)
 
-  const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, count: 0 })
+  const [pagination, setPagination] = useState({ page: 1, limit: 50, total: 0, count: 0 })
   const [ filterOptions, setFilterOptions ] = useState([])
   const [ selectedFilterOptions, setSelectedFilterOptions ] = useState({
-    cohortId: selectedCohortId
+    cohortId: selectedCohortId,
+    limit: 50
   }) 
   const [isLoading, setIsLoading] = useState(false)
   const handleStudentsFilter = (selectedFilterOptions) => {
@@ -118,7 +121,17 @@ const Studentcontainer = () => {
         setIsLoading(false)
       }
     }
+    async function fetchSelectedCohort() {
+      try {
+        const {data: cohort} = await CohortsService.getCohort(selectedCohortId)
+        setSelectedCohort(cohort)
+      } catch (e) {
+        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+        console.log(e)
+      }
+    }
     if (reloadStudents) {
+      fetchSelectedCohort()
       fetchStudents()
     }
   }, [reloadStudents, toast, selectedFilterOptions, selectedCohortId])
@@ -138,7 +151,7 @@ const Studentcontainer = () => {
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
-        <TabPanel header="STUDENTS" leftIcon="" style={{ fontSize: "14px" }}>
+        <TabPanel header={selectedCohort ? `Students (${selectedCohort.name} Cohort)` : 'STUDENTS'} leftIcon="" style={{ fontSize: "14px" }}>
           <Table
             isLoading={isLoading}
             columns={columns}
@@ -146,7 +159,7 @@ const Studentcontainer = () => {
             filterOptions={filterOptions}
             onFilter={handleStudentsFilter}
             tableRowItem={tableRowItem}
-            popupContent={<Popupcontent onReload={() => setReloadStudents(true)} loggedInUser={authState.loggedInUser} />}
+            popupContent={<Popupcontent currentCohort={selectedCohort} onReload={() => setReloadStudents(true)} loggedInUser={authState.loggedInUser} />}
             handleSelectedRowsChanged={handleSelectedRowsChanged}
             pagination={pagination}
             onPaginationChange={handlePaginationChange}

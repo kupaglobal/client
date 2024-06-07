@@ -52,7 +52,7 @@ const Assessmentscontainer = () => {
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
   const [ selectedTab] = useState(index >= 0 ? index : 0)
 
-  const [pagination, setPagination] = useState({ page: 1, limit: 10})
+  const [pagination, setPagination] = useState({ page: 1, limit: 50})
   const [assessments, setAssessments] = useState([])
   const { toast } = useContext(toastStore);
   const [ reloadAssessments, setReloadAssessments ] = useState(true)
