@@ -12,7 +12,7 @@ export const generateHeaders = () => {
     return headers
 }
 
-export const baseURL = getEnv('BASE_URL','http://localhost:6023')
+export const baseURL = getEnv('BASE_URL','https://sapi.kupaglobal.com')
 
 const instance = axios.create({
     baseURL,
