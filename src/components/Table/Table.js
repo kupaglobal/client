@@ -7,7 +7,6 @@ import { Button } from "primereact/button";
 import FilterOptions from "./FilterOptions";
 import { loadingSkeleton } from "../../utils";
 import { Paginator } from "primereact/paginator";
-import { Column } from "primereact/column";
 
 const customStyles = {
   rows: {
