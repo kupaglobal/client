@@ -26,7 +26,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const [selectedCategories] = useState([categories[1]]);
   const userDetails = [
     { heading: "Student Number", paragraph: student.studentNumber },
-    { heading: "Date of Birth", paragraph: student.dob },
+    { heading: "Year of Birth", paragraph: student.yearOfBirth },
     { heading: "Gender", paragraph: student.gender },
     { heading: "Cohort", paragraph: student.cohorts.map(cohort => cohort.name).join(', ') },
     { heading: "City, Country", paragraph: `${student.city} ${student.country}` },

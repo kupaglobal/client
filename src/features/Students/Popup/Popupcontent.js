@@ -14,7 +14,7 @@ import { CohortsService } from "../../../services/cohorts.service";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { StudentsService } from "../../../services/students.service";
         
-export default function Popupcontent({ onReload, loggedInUser }) {
+export default function Popupcontent({ onReload, loggedInUser, currentCohort }) {
 
   const { state, dispatch } = useContext(studentsStore)
   const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
@@ -124,6 +124,18 @@ export default function Popupcontent({ onReload, loggedInUser }) {
     });        
   }
 
+  const showRemoveFromCohortPopup = (event) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: `Are you sure you want to remove the selected students from ${currentCohort.name} Cohort?`,
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      accept: removeStudentsFromCohort,
+      reject: () => {}
+    });        
+  }
+
   const deleteStudents = async () => {
     setIsLoading(true) 
     try {
@@ -137,7 +149,25 @@ export default function Popupcontent({ onReload, loggedInUser }) {
       })
     } catch (e) {
       console.error(e, `Exception when deleting students, e: ${e}`)
-      toast('success', 'Failed to delete the students. Please try again.')
+      toast('error', 'Failed to delete the students. Please try again.')
+      setIsLoading(false) 
+    }
+  }
+
+  const removeStudentsFromCohort = async () => {
+    setIsLoading(true) 
+    try {
+      await CohortsService.removeStudentsFromCohort(selectedStudents.map(student => student.id), currentCohort.id)
+      toast('success', 'Students have been removed from cohort.')
+      setIsLoading(false) 
+      onReload()
+      dispatch({
+        type: RELOAD,
+        payload: false
+      })
+    } catch (e) {
+      console.error(e, `Exception when removing students from cohort ${currentCohort.id}, e: ${e}`)
+      toast('error', `Failed to remove students from cohort. Please try again.`)
       setIsLoading(false) 
     }
   }
@@ -228,14 +258,29 @@ export default function Popupcontent({ onReload, loggedInUser }) {
 
             <ConfirmPopup/>
             {loggedInUser.role === 'ORGANISATION_ADMIN' ? 
-            <Button
-              loading={isLoading}
-              outlined
-              icon={<AiOutlineDelete />}
-              label="Delete"
-              className="p-button-danger custom-button mx-2"
-              onClick={showDeletePopup}
-            /> : ''}
+            <>
+              {currentCohort ? 
+                <Button
+                  loading={isLoading}
+                  outlined
+                  icon={<AiOutlineDelete />}
+                  label="Remove from Cohort"
+                  className="p-button-danger custom-button mx-2"
+                  onClick={showRemoveFromCohortPopup}
+                /> 
+                :
+                null
+              }
+              <Button
+                loading={isLoading}
+                outlined
+                icon={<AiOutlineDelete />}
+                label="Delete"
+                className="p-button-danger custom-button mx-2"
+                onClick={showDeletePopup}
+              />
+            </>
+            : ''}
           </div>
           :       <Button
           outlined
@@ -301,7 +346,7 @@ export default function Popupcontent({ onReload, loggedInUser }) {
 
         <div>
           <p style={{ fontSize: "13px" }}>
-            How do you want to add the new data ?
+            How Are you sure you want to add the new data ?
           </p>
           <Dropdowncomp
             projectoption={projectOptions}

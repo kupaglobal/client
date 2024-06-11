@@ -7,7 +7,6 @@ import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
 
 const EditCohortForm = ({ cohort, formData, setFormData }) => {
-    console.log('formData', formData)
     const { toast } = useContext(toastStore)
     const [error] = useState('')
     const [dates, setDates] = useState([new Date(formData.startDate), new Date(formData.endDate)]);

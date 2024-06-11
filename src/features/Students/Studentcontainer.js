@@ -61,7 +61,7 @@ const tableRowItem = "students";
 
 
 const Studentcontainer = () => {
-  const tabs = ['Students', 'Cohorts', 'Groups']
+  const tabs = ['Students', 'Cohorts', 'Tags']
   const [queryParams] = useSearchParams()
   const index = queryParams.get('a') ? tabs.indexOf(queryParams.get('a')) : 0
   const [ selectedTab ] = useState(index >= 0 ? index : 0)
@@ -122,12 +122,14 @@ const Studentcontainer = () => {
       }
     }
     async function fetchSelectedCohort() {
-      try {
-        const {data: cohort} = await CohortsService.getCohort(selectedCohortId)
-        setSelectedCohort(cohort)
-      } catch (e) {
-        toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
-        console.log(e)
+      if (selectedCohortId) {
+        try {
+          const {data: cohort} = await CohortsService.getCohort(selectedCohortId)
+          setSelectedCohort(cohort)
+        } catch (e) {
+          toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
+          console.log(e)
+        }
       }
     }
     if (reloadStudents) {
@@ -144,14 +146,14 @@ const Studentcontainer = () => {
   }
 
   const groupsContainer = authState.loggedInUser.role === 'FACILITATOR' ? "" : (
-    <TabPanel header="GROUPS" rightIcon="" style={{ fontSize: "14px" }}>
-      <Studentgroup />
+    <TabPanel header="Tags" rightIcon="" style={{ fontSize: "14px" }}>
+      <Studentgroup user={authState.loggedInUser} />
     </TabPanel>
 )
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <TabView activeIndex={selectedTab}>
-        <TabPanel header={selectedCohort ? `Students (${selectedCohort.name} Cohort)` : 'STUDENTS'} leftIcon="" style={{ fontSize: "14px" }}>
+        <TabPanel header={selectedCohort ? `Students (${selectedCohort.name} Cohort)` : 'Students'} leftIcon="" style={{ fontSize: "14px" }}>
           <Table
             isLoading={isLoading}
             columns={columns}
@@ -165,7 +167,7 @@ const Studentcontainer = () => {
             onPaginationChange={handlePaginationChange}
             />
         </TabPanel>
-        <TabPanel header="COHORTS" rightIcon="" style={{ fontSize: "14px" }}>
+        <TabPanel header="Cohorts" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentcohort user={authState.loggedInUser} />
         </TabPanel>
         {groupsContainer}

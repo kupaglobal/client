@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import FilterOptions from "./FilterOptions";
 import { loadingSkeleton } from "../../utils";
 import { Paginator } from "primereact/paginator";
+import { Column } from "primereact/column";
 
 const customStyles = {
   rows: {
@@ -136,8 +137,8 @@ const Table = ({
       <DataTable
         progressPending={isLoading}
         progressComponent={loadingSkeleton}
-        columns={columns}
         data={searchText.length > 0 ? filteredData : data}
+        columns={columns}
         onRowClicked={handleRowClick}
         highlightOnHover
         contextActions={contextActions}
@@ -145,6 +146,7 @@ const Table = ({
         onSelectedRowsChange={handleSelectedRowsChanged}
         customStyles={customStyles}
       >
+
       </DataTable>
 
       {pagination ?  

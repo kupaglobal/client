@@ -22,9 +22,15 @@ const AcceptInvitation = () => {
                 localStorage.setItem('accept-invitation', JSON.stringify(invitation))
                 toast('info', 'You need to create an account first')
             } else { // logged in 
-                await acceptInvitation(params.invitationId)
-                toast('success', `You have been successfully added to ${invitation.organisation.name}!`)
-                return goTo('/organisation')
+                try {
+                    await acceptInvitation(params.invitationId)
+                    toast('success', `You have been successfully added to ${invitation.organisation.name}!`)
+                    return goTo('/organisation')
+                } catch (e) {
+                    window.localStorage.clear();
+                    localStorage.setItem('accept-invitation', JSON.stringify(invitation))
+                    toast('info', 'You need to create an account first')
+                }
             }
         }
         goTo('/auth/signup')

@@ -149,7 +149,7 @@ const OrganisationContainer = () => {
       <TabView activeIndex={index}>
         <TabPanel header="My Organisation" leftIcon="" style={{ fontSize: "14px" }}>
           <div className="flex gap-4">
-            {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation}/> : ''} 
+            {profile?.organisationId ? <OrganisationDetail organisation={profile.organisation} onReload={() => setRefetchProfile(true)}/> : ''} 
             {profile?.role === "ORGANISATION_ADMIN" ? <OrganisationTabsContainer organisation={profile.organisation}/> : ''}
           </div>
 

@@ -5,10 +5,12 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
         
 export default function WelcomePopup({ user }) {
+    const savedInvitation = localStorage.getItem('accept-invitation') ? JSON.parse(localStorage.getItem('accept-invitation')) : null
     const [queryParams] = useSearchParams()
-    const isNewOrgAdmin = (user.role === 'ORGANISATION_ADMIN' && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null) || false
+    const isNewOrgAdmin = (user.role === 'ORGANISATION_ADMIN' && !user.organisationId && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null && !savedInvitation) || false
     const isNewFacilitator = (user.role === 'FACILITATOR' && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null) || false
 
+    const isNewInvitedOrgAdmin = (user.role === 'ORGANISATION_ADMIN' && user.organisationId && queryParams.get('welcome') !== undefined && queryParams.get('welcome') !== null) || false
     const [visible, setVisible] = useState(isNewOrgAdmin);
 
     const goTo = useNavigate()
@@ -72,11 +74,11 @@ export default function WelcomePopup({ user }) {
       footer={footerContent}
       > 
       <div>
-        Welcome to Kupa Global{ user?.firstName ? `, ${user.firstName}` : "" }! Before you start adding data, you need to create an organisation. This is how all your Cohorts, Groups and Students will be grouped. You will also be able to add other team members to this organisation.
+        Welcome to Helio{ user?.firstName ? `, ${user.firstName}` : "" }! Before you start adding data, you need to create an organisation. This is how all your Cohorts, Groups and Students will be grouped. You will also be able to add other team members to this organisation.
       </div>
     </Dialog>
     <Dialog
-      header="Welcome"
+      header={`Joined ${user.organisation.name}`}
       visible={isNewFacilitator}
       style={{ width: "30vw" }}
       breakpoints={{ "960px": "75vw", "641px": "100vw" }}
@@ -84,7 +86,20 @@ export default function WelcomePopup({ user }) {
       footer={facilitatorFooterContent}
       > 
       <div>
-        Welcome to Kupa Global{ user?.firstName ? `, ${user.firstName}` : "" }! You have now joined { user.organisation?.name}. You will soon be added to cohorts of students where you will be able to add feedback for the students on the assessments they took.
+        Welcome to Helios{ user?.firstName ? `, ${user.firstName}` : "" }! You have now joined { user.organisation?.name}. You will soon be added to cohorts of students where you will be able to add feedback for the students on the assessments they took.
+      </div>
+    </Dialog>
+
+    <Dialog
+      header={`You are in 👍`}
+      visible={isNewInvitedOrgAdmin}
+      style={{ width: "30vw" }}
+      breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+      onHide={() => goToStudentsPage()}
+      footer={facilitatorFooterContent}
+      > 
+      <div>
+        Welcome to Helios{ user?.firstName ? `, ${user.firstName}` : "" }! You have successfully joined { user.organisation?.name}. You are now able to view all Students & Cohorts under your organisation. You can also invite other team members to this organisation.
       </div>
     </Dialog>
 

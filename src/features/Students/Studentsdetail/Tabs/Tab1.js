@@ -43,7 +43,7 @@ const Tab1 = ({ student }) => {
               >
                 <div>
                   <MdAutoGraph size={18} />
-                  <span style={{ paddingLeft: "10px" }}>Career Aspirations ({student.careerAmbition.length})</span>
+                  <span style={{ paddingLeft: "10px" }}>Career Aspirations ({student.careerAmbition?.length})</span>
                 </div>
               </div>
             }
@@ -57,7 +57,7 @@ const Tab1 = ({ student }) => {
               }}
             >
             </p>
-            {student.careerAmbition.map(ambition => <Tag rounded key={ambition} className="custom-accordion-content" severity="success">{ambition}</Tag> )}
+            {student.careerAmbition ? student.careerAmbition?.map(ambition => <Tag rounded key={ambition} className="custom-accordion-content" severity="success">{ambition}</Tag> ) : null}
           </AccordionTab>
           {/* <AccordionTab
             headerClassName="custom-accordion-header"
@@ -117,7 +117,7 @@ const Tab1 = ({ student }) => {
               </div>
             }
           >
-            {student.interests.map(interest => <Tag rounded key={interest} className="custom-accordion-content">{interest}</Tag>)}
+            {student.interests ? student.interests?.map(interest => <Tag rounded key={interest} className="custom-accordion-content">{interest}</Tag>) : null}
           </AccordionTab> : null}
         </Accordion>
       </div>

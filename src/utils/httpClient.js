@@ -12,7 +12,7 @@ export const generateHeaders = () => {
     return headers
 }
 
-const baseURL = getEnv('BASE_URL','https://sapi.kupaglobal.com')
+export const baseURL = getEnv('BASE_URL','http://localhost:6023')
 
 const instance = axios.create({
     baseURL,
@@ -25,11 +25,11 @@ instance.interceptors.request.use(function(request) {
 })
 
 instance.interceptors.response.use((response) => (response), (error) => {
-    if (error.response.status === 403) {
+    if (error.response.status === 403 && error.config.url.indexOf('/invitations/') === -1) {
         window.localStorage.clear();
         return window.location.href = '/auth/login'
     }
-    return error;
+    throw error;
 })
 
 export default instance;

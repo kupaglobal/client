@@ -7,21 +7,21 @@ import OrganisationService from "../../services/organisation.service";
 import { Button } from "primereact/button";
 import { toastStore } from "../../store/toast";
 
-const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
+const EditOrganisationForm = ({ formData, setFormData, setVisible, onReload }) => {
     const { toast } = useContext(toastStore);
-    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState(countries.filter(country => country.code === formData.country)[0]);
 
     const studentsSizeOptions = ['1-100', '100-500', '500+']
     const [numberOfStudents, setNumberOfStudents] = useState(studentsSizeOptions[0]);
 
     const sizeOptions = ['1-10', '10-100', '100+']
-    const [size, setSize] = useState(sizeOptions[0]);
+    const [size, setSize] = useState(formData.size);
 
     const studentsAgeOptions = ['Under 18', '18+', 'Both']
-    const [studentsAge, setStudentsAge] = useState(studentsAgeOptions[0]);
+    const [studentsAge, setStudentsAge] = useState(formData.studentsAge);
 
     const organisationTypes = ['University', 'High School', 'Secondary School', 'Primary School', 'Grant or Scholarship Provider', 'Other - Private Teaching Institution (bootcamp, courses, etc)','Other - NGO'];
-    const [selectedOrganisationType, setSelectedOrganisationType] = useState("")
+    const [selectedOrganisationType, setSelectedOrganisationType] = useState(formData.type)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -68,24 +68,9 @@ const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
     }
 
     const handleOrganisationNameChange = (e) => {
-        handleOrganisationNameBlur(e)
         setTimeout(() => {
             onChange(e)
         }, 0)
-    }
-
-    const handleOrganisationNameBlur = (e) => {
-        const organisationName = e.target.value;
-        if (organisationName !== '') {
-            const studentNumberPrefix = organisationName.toUpperCase().split(' ').map(part => part[0]).join('')
-            if (studentNumberPrefix) {
-                setStudentNumberPrefix(studentNumberPrefix)
-                setShowStudentNumberPrefix(true)
-            }
-        } else {
-            setStudentNumberPrefix('')
-            setShowStudentNumberPrefix(false)
-        }
     }
 
     const handleCountryChange = (e) => {
@@ -116,22 +101,19 @@ const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
         } else {
             setIsLoading(true)
     
-            let newOrganisation = Object.assign(formData, {})
+            let editOrganisation = Object.assign(formData, {})
     
-            newOrganisation.country = selectedCountry.code;
-            newOrganisation.size = size;
-            newOrganisation.numberOfStudents = numberOfStudents;
-            newOrganisation.studentNumberPrefix = studentNumberPrefix
-            newOrganisation.studentsAge = studentsAge
+            editOrganisation.country = selectedCountry.code;
+            editOrganisation.size = size;
+            editOrganisation.numberOfStudents = numberOfStudents;
+            editOrganisation.studentsAge = studentsAge
     
             try {
                 setIsLoading(false)
-                await OrganisationService.createOrganisation(newOrganisation)
-                toast('success', 'Your Organisation has been created.')
-                setTimeout(() => {
-                    window.location.href = '/organisation'
-                    setVisible(false)
-                }, 2000)
+                await OrganisationService.updateOrganisation(editOrganisation)
+                toast('success', 'Your Organisation has been edited.')
+                setVisible(false)
+                onReload()
             } catch (e) {
                 setIsLoading(false)
                 toast('error', e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -139,33 +121,21 @@ const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
         }
     }
 
-    const [studentNumberPrefix, setStudentNumberPrefix] = useState('')
-    const [showStudentNumberPrefix, setShowStudentNumberPrefix] = useState(false)
-    const [showStudentNumberPrefixInput, setShowStudentNumberPrefixInput] = useState(false)
 
     return (
     <div className="w-full m-auto m-2">
         <form onSubmit={handleSubmit}>
             <label htmlFor="name" className="block text-900 font-medium mb-20">Name of Organisation*</label>
-            <InputText name="name" id="name" type="text" placeholder="" className="w-full" onChange={handleOrganisationNameChange} required/>
-            {showStudentNumberPrefix ? <span className="text-xs mb-3">Student Numbers will be like: <b>{studentNumberPrefix}0001</b> {!showStudentNumberPrefixInput ? <span className="cursor-pointer text-primary text-underline" onClick={() => setShowStudentNumberPrefixInput(true)}>Change</span> : null } </span> : null }
-    
-            {showStudentNumberPrefixInput ? 
-                <>
-                    <label htmlFor="studentNumberPrefix" className="block text-900 font-medium mt-3 mb-20">Organisation Prefix*</label>
-                    <InputText name="studentNumberPrefix" value={studentNumberPrefix} id="studentNumberPrefix" type="text" placeholder="" className="w-full mb-3" onChange={(e) => setStudentNumberPrefix(e.target.value)} required/>
-                </>
-                : 
-                null
-            }
+            <InputText name="name" id="name" type="text" placeholder="" className="w-full" value={formData.name} onChange={handleOrganisationNameChange} disabled/>
+
             <label htmlFor="registrationNumber" className="block text-900 font-medium mt-3 mb-20">Registration Number (Optional)</label>
-            <InputText name="registrationNumber" id="registrationNumber" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
+            <InputText name="registrationNumber" id="registrationNumber" type="text" placeholder="" className="w-full mb-3" value={formData.registrationNumber}  onChange={onChange} disabled/>
 
             <label htmlFor="address" className="block text-900 font-medium mb-20">Address</label>
-            <InputText name="address" id="address" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
+            <InputText name="address" id="address" type="text" placeholder="" className="w-full mb-3" value={formData.address} onChange={onChange}/>
 
             <label htmlFor="city" className="block text-900 font-medium mb-20">City</label>
-            <InputText name="city" id="city" type="text" placeholder="" className="w-full mb-3" onChange={onChange}/>
+            <InputText name="city" id="city" type="text" placeholder="" className="w-full mb-3" value={formData.city} onChange={onChange}/>
 
             <label htmlFor="address" className="block text-900 font-medium mb-20">Country*</label>
             <div className="card flex mb-3">
@@ -209,4 +179,4 @@ const NewOrganisationForm = ({ formData, setFormData, setVisible }) => {
     );
 };
 
-export default NewOrganisationForm;
+export default EditOrganisationForm;

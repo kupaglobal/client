@@ -9,6 +9,15 @@ import ListCohortCard from "../../components/Cards/ListCohortCard";
 import EditCohortForm from "./EditCohort";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import AddFacilitatorToCohort from "./AddFacilitatorToCohort";
+import { truncateStringWithEllipsis, ucFirst } from "../../utils";
+import { cleanedDateStr } from "../../utils/moment";
+import Table from "../../components/Table/Table";
+import Popupcontent from "../Assessments/Popup/CreateAssessmentPopup";
+import { Column } from "primereact/column";
+import MeatballMenu from "../../components/MeatballMenu";
+
+const tableRowItem = "cohorts";
+
 
 const Studentcohort = ({ user }) => {
   const { toast } = useContext(toastStore);
@@ -26,11 +35,10 @@ const Studentcohort = ({ user }) => {
   })
 
   const [selectedCohort, setSelectedCohort] = useState(null)
-
-  const showDeletePopup = (event) => {
+  const showDeletePopup = (event, cohort) => {
     confirmPopup({
       target: event.currentTarget,
-      message: `Do you want to delete the ${selectedCohort.name} cohort?`,
+      message: `Are you sure you want to delete the ${cohort.name} cohort?`,
       icon: 'pi pi-info-circle',
       defaultFocus: 'reject',
       acceptClassName: 'p-button-danger',
@@ -47,7 +55,6 @@ const Studentcohort = ({ user }) => {
         setTimeout(() => {
             window.location.href = '/students?a=Cohorts'
         }, 2000)
-
     } catch (e) {
         setIsLoading(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -55,14 +62,95 @@ const Studentcohort = ({ user }) => {
     }
   }
 
-  const options = [
-    { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {setEditCohortVisibility(true)} },
-    { label: "Add Facilitator to Cohort", icon: "pi pi-user-plus", command: () => {setAddFacilitatorVisibility(true)} },
-    { label: "View Students", icon: "pi pi-users", url: `/students?a=Students&cohortId=${selectedCohort?.id}`  },
-    { label: "View Report", icon: "pi pi-dollar", url: `/reports?cohortId=${selectedCohort?.id}`  },
-    { label: "Message Cohort", icon: "pi pi-comment", command: () => {toast('info', 'This feature is coming soon...')} },
-    { label: "Delete Cohort", icon: "pi pi-trash", command: showDeletePopup },
+  
+  const cohortActionTemplate = (cohort) => {
+    const options = setOptions(cohort)
+    return <div>
+      <MeatballMenu options={options} />
+    </div>
+  }
+
+  const columns = [
+    {
+      id: "name",
+      name: "Name",
+      selector: (row) => row.name,
+      sortable: true,
+      width: '20%'
+    },
+    {
+      id: "startDate",
+      name: "Start Date",
+      selector: (row) => cleanedDateStr(row.startDate),
+      sortable: true,
+      width: '10%'
+    },
+    {
+      id: "endDate",
+      name: "End Date",
+      selector: (row) => cleanedDateStr(row.endDate),
+      sortable: true,
+      width: '10%'
+    },
+    {
+      id: "description",
+      name: "Description",
+      selector: (row) => truncateStringWithEllipsis(ucFirst(row.description), 160),
+      style: {wordWrap: 'break-word'},
+      wrap: true,
+      width: '35%'
+    },
+    {
+      id: "costPerStudent",
+      name: "Cost Per Student",
+      selector: (row) => `${row.costPerStudent ? `${row.costPerStudentCurrency}${row.costPerStudent}` : 'n/a'}`,
+      sortable: true,
+      width: '15%'
+    },
+    {
+      id: "action",
+      name: "Action",
+      selector: (row) => cohortActionTemplate(row),
+      sortable: true,
+    },
   ];
+
+  const handleCohortDelete = (e, cohort) => {
+    showDeletePopup(e, cohort)
+  }
+  
+  const handleCohortEdit = (cohort) => {
+    setSelectedCohort(cohort)
+    setTimeout(() => {
+      setEditCohortVisibility(true)
+    }, 0)
+  }
+
+  const handleAddFacilitator = (cohort) => {
+    setSelectedCohort(cohort)
+    setTimeout(() => {
+      setAddFacilitatorVisibility(true)
+    }, 0)
+  }
+
+  const setOptions = (cohort) => {
+    return [
+      { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {handleCohortEdit(cohort)} },
+      { label: "Add Facilitator to Cohort", icon: "pi pi-user-plus", command: () => {handleAddFacilitator(cohort)} },
+      { label: "View Students", icon: "pi pi-users", url: `/students?a=Students&cohortId=${cohort?.id}`  },
+      { label: "View Report", icon: "pi pi-dollar", url: `/reports?cohortId=${cohort?.id}`  },
+      // { label: "Message Cohort", icon: "pi pi-comment", command: () => {toast('info', 'This feature is coming soon...')} },
+      { label: "Delete Cohort", icon: "pi pi-trash", command: (e) => handleCohortDelete(e, cohort) },
+    ]
+  }
+  const [pagination, setPagination] = useState({ page: 1, limit: 50})
+  const handlePaginationChange = (newPagination) => {
+    setPagination({
+      page: newPagination.page,
+      limit: newPagination.limit
+    })
+    setShouldRefetch(true)
+  }
 
   const handleOptionClick = () => {}
 
@@ -109,9 +197,14 @@ const Studentcohort = ({ user }) => {
           gap: "20px",
         }}
       >
-        {cohorts.length > 0 ? cohorts.map(cohort => (
-          <ListCohortCard key={cohort.id} cohort={cohort} options={options} handleOptionClick={handleOptionClick} setSelectedCohort={setSelectedCohort} />
-        )) : 
+        {/* <ListCohortCard key={cohort.id} cohort={cohort} options={options} handleOptionClick={handleOptionClick} setSelectedCohort={setSelectedCohort} /> */}
+
+        {cohorts.length > 0 ? 
+        <>
+          <Table isLoading={isLoading} columns={columns} data={cohorts} tableRowItem={tableRowItem}
+            pagination={pagination} onPaginationChange={handlePaginationChange}>
+          </Table>
+        </> :
         <div className="flex justify-center">
             {isLoading ? 'Please wait...' : user.role === 'FACILITATOR' ? `You haven't been added to any cohort.` : 'There are no cohorts created.'}
         </div>}
@@ -143,7 +236,7 @@ const Studentcohort = ({ user }) => {
       </Dialog>
 
       <Dialog
-        header="Add Facilitator to Cohort"
+        header={`Add Facilitator to ${selectedCohort?.name ?? 'Cohort'}`}
         visible={addFacilitatorVisibility}
         style={{ width: "30vw" }}
         maximizable

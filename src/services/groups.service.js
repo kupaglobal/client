@@ -15,4 +15,12 @@ export class GroupsService {
         })
     }
 
+    static deleteGroup(groupId) {
+        return httpClient.delete(`/groups/${groupId}`)
+    }
+
+    static editCohort(cohortId, editCohortData) {
+        return httpClient.patch(`/cohorts/${cohortId}`, editCohortData)
+    }
+
 }

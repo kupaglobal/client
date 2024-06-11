@@ -1,8 +1,13 @@
-import httpClient from "../utils/httpClient";
+import axios from "axios";
+import httpClient, { baseURL, generateHeaders } from "../utils/httpClient";
 
 export class CohortsService {
     static getCohorts() {
         return httpClient.get('/cohorts')
+    }
+
+    static getCohort(cohortId) {
+        return httpClient.get(`/cohorts/${cohortId}`)
     }
 
     static createCohort(newCohort) {
@@ -24,6 +29,15 @@ export class CohortsService {
     static addStudentsToCohort(studentIds, cohortId) {
         return httpClient.post(`/cohorts/${cohortId}/students`, {
             studentIds
+        })
+    }
+
+    static removeStudentsFromCohort(studentIDs, cohortId) {
+        return axios.delete(`${baseURL}/cohorts/${cohortId}/students`, {
+            data: {
+                studentIDs
+            },
+            headers: generateHeaders()
         })
     }
 

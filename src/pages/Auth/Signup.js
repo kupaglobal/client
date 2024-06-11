@@ -18,7 +18,7 @@ const Signup = () => {
 
     const [formData,setFormData]=useState({
         fullName: '',
-        email:'',
+        email: savedInvitation ? savedInvitation.invitedEmail : '',
         password:'',
         role: savedInvitation?.role ?? null
     })
@@ -59,7 +59,7 @@ const Signup = () => {
 
 
                 <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-                <InputText id="email" name="email" type="text" placeholder="" className="w-full" aria-describedby="username-help" onChange={onChange} required />
+                <InputText id="email" name="email" value={formData.email} type="text" placeholder="" className="w-full" aria-describedby="username-help" onChange={onChange} required />
                 {formData.email!=='' 
                     ? <small id="username-help" className="mb-3">We will send you an OTP on this email.</small> : null
                 }

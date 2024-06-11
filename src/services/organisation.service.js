@@ -4,6 +4,9 @@ export default class OrganisationService {
     static createOrganisation(createOrganisationData) {
         return httpClient.post('/organisations', createOrganisationData)
     }
+    static updateOrganisation(editOrganisationData) {
+        return httpClient.patch(`/organisations/${editOrganisationData.id}`, editOrganisationData)
+    }
     static async getMyOrganisation() {
         const {data} = await httpClient.get('/auth/profile')
         return data.organisation || null

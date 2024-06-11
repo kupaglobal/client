@@ -7,7 +7,7 @@ import { toastStore } from "../../store/toast";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AssessmentsService } from "../../services/assessments.service";
-import { ucFirst } from "../../utils"
+import { truncateStringWithEllipsis, ucFirst } from "../../utils"
 import { cleanedDateStr } from "../../utils/moment";
 
 // const handleButtonClick = (row) => {
@@ -32,10 +32,10 @@ const columns = [
   {
     id: "description",
     name: "Description",
-    selector: (row) => ucFirst(row.description),
+    selector: (row) => truncateStringWithEllipsis(ucFirst(row.description), 160),
     style: {wordWrap: 'break-word'},
     wrap: true,
-    width: '45%'
+    width: '35%'
   },
   {
     id: "ass_dateConducted",
