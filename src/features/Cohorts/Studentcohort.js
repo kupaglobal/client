@@ -5,15 +5,12 @@ import { toastStore } from "../../store/toast";
 import { Dialog } from "primereact/dialog";
 import NewCohortForm from "./NewCohortForm";
 import { CohortsService } from "../../services/cohorts.service";
-import ListCohortCard from "../../components/Cards/ListCohortCard";
 import EditCohortForm from "./EditCohort";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import AddFacilitatorToCohort from "./AddFacilitatorToCohort";
 import { truncateStringWithEllipsis, ucFirst } from "../../utils";
 import { cleanedDateStr } from "../../utils/moment";
 import Table from "../../components/Table/Table";
-import Popupcontent from "../Assessments/Popup/CreateAssessmentPopup";
-import { Column } from "primereact/column";
 import MeatballMenu from "../../components/MeatballMenu";
 
 const tableRowItem = "cohorts";
@@ -151,8 +148,6 @@ const Studentcohort = ({ user }) => {
     })
     setShouldRefetch(true)
   }
-
-  const handleOptionClick = () => {}
 
   const [shouldRefetch, setShouldRefetch] = useState(true)
   useEffect(() => {

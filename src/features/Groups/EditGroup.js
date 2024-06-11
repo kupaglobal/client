@@ -1,10 +1,7 @@
 import React, { useContext, useState } from "react";
 import { InputText } from "primereact/inputtext";
-import { CohortsService } from "../../services/cohorts.service";
 import { toastStore } from "../../store/toast";
-import { Calendar } from 'primereact/calendar';
 import { Button } from "primereact/button";
-import { SelectButton } from "primereact/selectbutton";
 import { GroupsService } from "../../services/groups.service";
 
 const EditGroupForm = ({ group, formData, setFormData }) => {
