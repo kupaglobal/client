@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 import EditStudentDetailsForm from "./EditStudentDetailsForm";
 import { Dialog } from "primereact/dialog";
 import { StudentsService } from "../../../services/students.service";
-import { studentFullName } from "../../../utils";
+import { studentFullName, studentName } from "../../../utils";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { toastStore } from "../../../store/toast";
+import { Tag } from "primereact/tag";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
@@ -28,7 +29,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
     { heading: "Student Number", paragraph: student.studentNumber },
     { heading: "Year of Birth", paragraph: student.yearOfBirth },
     { heading: "Gender", paragraph: student.gender },
-    { heading: "Cohort", paragraph: student.cohorts.map(cohort => cohort.name).join(', ') },
+    { heading: "Cohort", paragraph: student.cohorts?.map(cohort => cohort.name).join(', ') },
     { heading: "City, Country", paragraph: `${student.city} ${student.country}` },
   ];
 
@@ -89,6 +90,10 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
       console.error(`Exception when deleting student: ${e}`)
     }
   }
+
+  const studentTags = async (tags) => {
+    <Tag value={tags[0].name} icon="pi pi-times" className="mr-1" key={tags[0].id} /> 
+  }
   return (
     <>
       <Card style={{ width: "300px" }}>
@@ -119,7 +124,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p style={{ fontSize: 20, fontWeight: 800, marginBottom: "8px" }}>
-              {studentFullName(student)}
+              {studentName(student)}
             </p>
 
             {student.phone && student.phone!=='N/a' ? 
@@ -136,8 +141,13 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
               </Link> 
               : ''}
           </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p>
+              {student.tags?.map(tag => <Tag value={tag.name} className="mr-1 mt-1" key={tag.id} /> )}
+            </p>
+          </div>
           <div>
-            {userDetails.map((detail, index) => (
+            {userDetails?.map((detail, index) => (
               <DetailsContent
                 key={index}
                 heading={detail.heading}
@@ -172,7 +182,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
             </div>
           </div>
           <div style={{ marginLeft: 15 }}>
-            {categories.map((category) => {
+            {categories?.map((category) => {
               return (
                 <div key={category.key} style={{ marginBottom: 15 }}>
                   <Checkbox

@@ -28,7 +28,9 @@ const Studentcohort = ({ user }) => {
     name: "",
     dates: null,
     costPerStudent: 0,
-    costPerStudentCurrency: ''
+    costPerStudentCurrency: '',
+    lowestAge: 0,
+    highestAge: 0
   })
 
   const [selectedCohort, setSelectedCohort] = useState(null)
@@ -39,16 +41,16 @@ const Studentcohort = ({ user }) => {
       icon: 'pi pi-info-circle',
       defaultFocus: 'reject',
       acceptClassName: 'p-button-danger',
-      accept: deleteCohort,
+      accept: () => deleteCohort(cohort),
       reject: () => {}
     });        
   }
 
-  const deleteCohort = async () => {
+  const deleteCohort = async (cohort) => {
     setIsLoading(true)
     try {
-        await CohortsService.deleteCohort(selectedCohort.id)
-        toast('success', `${selectedCohort.name} cohort has been deleted.`)
+        await CohortsService.deleteCohort(cohort.id)
+        toast('success', `${cohort.name} cohort has been deleted.`)
         setTimeout(() => {
             window.location.href = '/students?a=Cohorts'
         }, 2000)
@@ -95,12 +97,19 @@ const Studentcohort = ({ user }) => {
       selector: (row) => truncateStringWithEllipsis(ucFirst(row.description), 160),
       style: {wordWrap: 'break-word'},
       wrap: true,
-      width: '35%'
+      width: '25%'
     },
     {
       id: "costPerStudent",
       name: "Cost Per Student",
       selector: (row) => `${row.costPerStudent ? `${row.costPerStudentCurrency}${row.costPerStudent}` : 'n/a'}`,
+      sortable: true,
+      width: '15%'
+    },
+    {
+      id: "ageRange",
+      name: "Age Range",
+      selector: (row) => `${!row.lowestAge && !row.highestAge ? 'n/a' : `${row.lowestAge} - ${row.highestAge}`}`,
       sortable: true,
       width: '15%'
     },
@@ -113,6 +122,7 @@ const Studentcohort = ({ user }) => {
   ];
 
   const handleCohortDelete = (e, cohort) => {
+    setSelectedCohort(cohort)
     showDeletePopup(e, cohort)
   }
   
@@ -196,7 +206,7 @@ const Studentcohort = ({ user }) => {
 
         {cohorts.length > 0 ? 
         <>
-          <Table isLoading={isLoading} columns={columns} data={cohorts} tableRowItem={tableRowItem}
+          <Table selectableRows={false} isLoading={isLoading} columns={columns} data={cohorts}
             pagination={pagination} onPaginationChange={handlePaginationChange}>
           </Table>
         </> :

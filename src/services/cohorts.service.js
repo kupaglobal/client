@@ -19,7 +19,7 @@ export class CohortsService {
     }
 
     static addFacilitatorsToCohort(cohortId, facilitatorIds) {
-        return httpClient.post(`/cohorts/${cohortId}/tag`, facilitatorIds)
+        return httpClient.post(`/cohorts/${cohortId}/add-facilitator`, facilitatorIds)
     }
 
     static deleteCohort(cohortId) {

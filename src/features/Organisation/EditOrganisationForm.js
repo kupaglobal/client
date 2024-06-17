@@ -160,7 +160,7 @@ const EditOrganisationForm = ({ formData, setFormData, setVisible, onReload }) =
 
             <label htmlFor="type" className="block text-900 font-medium mb-20">Organisation Type*</label>
             <Dropdown scrollHeight="260px" value={selectedOrganisationType} onChange={handleOrganisationTypeChange} options={organisationTypes}
-                placeholder="Select an organisation Type" className="w-full  h-max md:w-14rem" />
+                placeholder="Select an organisation Type" className="w-full  h-max" />
          
             {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
             <div className="w-full mt-3"

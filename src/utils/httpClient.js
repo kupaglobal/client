@@ -29,7 +29,8 @@ instance.interceptors.response.use((response) => (response), (error) => {
         window.localStorage.clear();
         return window.location.href = '/auth/login'
     }
-    throw error;
+    console.log('kulapha yini', error.response.data.message)
+    throw error?.response?.data?.message ? new Error(error?.response?.data?.message) : error;
 })
 
 export default instance;

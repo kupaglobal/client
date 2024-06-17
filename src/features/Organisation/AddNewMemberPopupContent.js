@@ -118,7 +118,7 @@ export default function AddNewMemberPopupContent() {
               onChange={(e) => setSelectedRole(e.value)}
               options={roles}
               placeholder="Select a Role"
-              className="w-full md:w-14rem mr-2"
+              className="w-full mr-2"
             />
           </form>
         </div>

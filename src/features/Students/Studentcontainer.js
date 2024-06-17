@@ -1,6 +1,6 @@
 // import { useState } from "react";
 import Table from "../../components/Table/Table";
-import Studentgroup from "../Groups/Studentgroup";
+import Studenttag from "../Tags/Studenttag";
 import Studentcohort from "../Cohorts/Studentcohort";
 import "./student.css";
 import { TabView, TabPanel } from "primereact/tabview";
@@ -12,22 +12,20 @@ import { studentsStore } from "../../store/students";
 import { SET_SELECTED_STUDENTS } from "../../store/actions";
 import { useSearchParams } from "react-router-dom";
 import { authStore } from "../../store/auth";
-import { rankTrophy, ucFirst } from "../../utils";
+import { rankTrophy, studentName, ucFirst } from "../../utils";
 import { Tooltip } from "primereact/tooltip";
 import { CohortsService } from "../../services/cohorts.service";
+import { cleanedDateStr } from "../../utils/moment";
 
 // const handleButtonClick = (row) => {
 //   console.log("Button clicked for row:", row);
 // };
-const studentName = (row) => {
-  const name = `${row.firstName} ${row.middleName ? ` ${row.middleName} `: ''}${row.lastName}`
-  return (row.topPerformerRank && row.topPerformerScore) ? <><Tooltip target=".tooltip"/><span className="tooltip" data-pr-tooltip={`#${row.topPerformerRank} Top Performer`}>{name} {rankTrophy[row.topPerformerRank]}</span></> : name
-}
 
 const columns = [
   {
     id: "avatar",
     name: "No.",
+    width: '10%',
     selector: (row) => row.studentNumber,
     sortable: true,
   },
@@ -35,6 +33,7 @@ const columns = [
     id: "st_name",
     name: "Student Name",
     body: studentName,
+    width: '25%',
     selector: studentName,//(row) => `${row.firstName} ${row.middleName ? ` ${row.middleName} `: ''}${row.lastName} ${topPerformerTrophy(row)}`,
     sortable: true,
   },
@@ -47,13 +46,36 @@ const columns = [
   {
     id: "st_gender",
     name: "Gender",
+    width: '10%',
     selector: (row) => ucFirst(row.gender),
     sortable: true,
   },
   {
     id: "st_class",
     name: "Cohort",
-    selector: (row) => row.cohorts?.map(cohort => cohort.name).join(', '),
+    width: '21%',
+    selector: (row) => row.cohorts?.map(cohort => <><p className="mt-1">{cohort.name}</p></>),
+    sortable: true,
+  },
+  {
+    id: "st_city",
+    name: "City",
+    width: '10%',
+    selector: (row) => row.city,
+    sortable: true,
+  },
+  {
+    id: "st_yearOfBirth",
+    name: "Year of Birth",
+    width: '10%',
+    selector: (row) => row.yearOfBirth,
+    sortable: true,
+  },
+  {
+    id: "st_dateCreated",
+    name: "Date Added",
+    width: '10%',
+    selector: (row) => cleanedDateStr(row.dateCreated),
     sortable: true,
   },
 ];
@@ -145,9 +167,9 @@ const Studentcontainer = () => {
     })
   }
 
-  const groupsContainer = authState.loggedInUser.role === 'FACILITATOR' ? "" : (
+  const tagsContainer = authState.loggedInUser.role === 'FACILITATOR' ? "" : (
     <TabPanel header="Tags" rightIcon="" style={{ fontSize: "14px" }}>
-      <Studentgroup user={authState.loggedInUser} />
+      <Studenttag user={authState.loggedInUser} />
     </TabPanel>
 )
   return (
@@ -170,7 +192,7 @@ const Studentcontainer = () => {
         <TabPanel header="Cohorts" rightIcon="" style={{ fontSize: "14px" }}>
           <Studentcohort user={authState.loggedInUser} />
         </TabPanel>
-        {groupsContainer}
+        {tagsContainer}
       </TabView>
     </div>
   );

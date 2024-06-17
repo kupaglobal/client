@@ -37,12 +37,13 @@ const Table = ({
   data,
   // filter,
   // setFilter,
-  // setFilteredGroups,
+  // setFilteredTags,
   // setFilteredSessions,
-  tableRowItem,
+  tableRowItem = null,
   popupContent = null,
   hideSearch = false,
   filterOptions = [],
+  selectableRows = true,
   onFilter,
   isLoading,
   pagination,
@@ -55,7 +56,8 @@ const Table = ({
   // const [selectedRows, setSelectedRows] = useState([]); // Add this line
 
   const handleRowClick = (row) => {
-    navigate(`/${tableRowItem}/${row.id}`);
+    if (tableRowItem)
+      navigate(`/${tableRowItem}/${row.id}`);
   };
  
   const [searchText, setSearchText] = useState("");
@@ -134,6 +136,7 @@ const Table = ({
         }
       </div>
       <DataTable
+      
         progressPending={isLoading}
         progressComponent={loadingSkeleton}
         data={searchText.length > 0 ? filteredData : data}
@@ -141,7 +144,7 @@ const Table = ({
         onRowClicked={handleRowClick}
         highlightOnHover
         contextActions={contextActions}
-        selectableRows // Enable selection
+        selectableRows={selectableRows} // Enable selection
         onSelectedRowsChange={handleSelectedRowsChanged}
         customStyles={customStyles}
       >

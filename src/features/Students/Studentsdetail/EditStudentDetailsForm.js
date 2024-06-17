@@ -5,6 +5,7 @@ import { StudentsService } from "../../../services/students.service";
 import { SelectButton } from "primereact/selectbutton";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Tag } from "primereact/tag";
+import { Dropdown } from "primereact/dropdown";
 
 const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, isLoading }) => {
     const [error, setError] = useState()
@@ -36,7 +37,6 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
             const { data: studentFieldsRes} = await StudentsService.getStudentFields();
             setStudentFields(studentFieldsRes.map(studentField => {
                 studentField.selected = studentField.isArray === true && formData[studentField.columnName] ? formData[studentField.columnName] : null;
-                console.log('test', studentField.columnName, studentField.isArray, formData[studentField.columnName])
                 if (studentField.isArray) {
                     setFormData({ ...formData, [studentField.columnName]: ''})
                 }
@@ -116,23 +116,34 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
             default: 
                 return <div key={studentField.id} className="mb-2">
                     <label htmlFor={studentField.columnName} className="block text-900 font-medium mb-20">{studentField.displayName}</label>
-                    <InputText
-                        key={studentField.id}
-                        value={formData[studentField.columnName]}
-                        name={studentField.columnName}
-                        id={studentField.columnName}
-                        type={studentField.type}
-                        placeholder={studentField.isArray ? `Enter individual ${studentField.columnName} and press enter` : ''}
-                        className="w-full mb-2"
-                        onChange={onChange}
-                        required={studentField.isRequired}
-                        onKeyUp={(e) => handleEnterKey(e, studentField)}
-                    />
+                    {studentField.columnName !== "yearOfBirth" || (studentField.columnName === "yearOfBirth" && studentField.values.length == 0) ? 
+                        <InputText
+                            key={studentField.id}
+                            value={formData[studentField.columnName]}
+                            name={studentField.columnName}
+                            id={studentField.columnName}
+                            type={studentField.type}
+                            placeholder={studentField.isArray ? `Enter individual ${studentField.columnName} and press enter` : ''}
+                            className="w-full mb-2"
+                            onChange={onChange}
+                            required={studentField.isRequired}
+                            onKeyUp={(e) => handleEnterKey(e, studentField)}
+                        /> : null}
                     {studentField.isArray && Array.isArray(studentField.selected) && studentField.selected?.length > 0 ?
                         <div className="flex flex-row">
                             {(studentField.selected).map((item) => <Tag value={item} icon="pi pi-times" className="mr-1" key={item} onClick={() => removeItem(item, studentField.columnName)}></Tag>)}
                         </div>
                     : null}
+                    {studentField.columnName === "yearOfBirth" && studentField.values.length > 0 ?
+                        <Dropdown
+                            name={studentField.columnName}
+                            value={formData[studentField.columnName]}
+                            onChange={onChange}
+                            options={studentField.values}
+                            placeholder={`Select a ${studentField.displayName}`}
+                            className="w-full mb-3 "
+                        /> : null
+                    }
                 </div>
         }
     } 

@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { InputText } from "primereact/inputtext";
-import { GroupsService } from "../../services/groups.service";
+import { TagsService } from "../../services/tags.service";
 import { toastStore } from "../../store/toast";
 
-const NewGroupForm = ({ formData, setFormData }) => {
+const NewTagForm = ({ formData, setFormData }) => {
     const { toast } = useContext(toastStore)
     const [error] = useState('')
     const onChange=(e)=>{
@@ -14,9 +14,9 @@ const NewGroupForm = ({ formData, setFormData }) => {
         e.preventDefault();
 
         try {
-            await GroupsService.createGroup(formData)
-            toast('success', 'New group was successfully created.')
-            window.location.href = '/students?a=Groups'
+            await TagsService.createTag(formData)
+            toast('success', 'New Tag was created.')
+            window.location.href = '/students?a=Tags'
         } catch (e) {
             toast('error', e.response?.data?.error ? e.response?.data?.error : e.message)
         }
@@ -34,4 +34,4 @@ const NewGroupForm = ({ formData, setFormData }) => {
     );
 };
 
-export default NewGroupForm;
+export default NewTagForm;

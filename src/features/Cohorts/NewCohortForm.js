@@ -5,6 +5,7 @@ import { toastStore } from "../../store/toast";
 import { Calendar } from 'primereact/calendar';
 import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
+import { InputTextarea } from "primereact/inputtextarea";
 
 const NewCohortForm = ({ formData, setFormData, createCohort }) => {
     const { toast } = useContext(toastStore)
@@ -27,7 +28,9 @@ const NewCohortForm = ({ formData, setFormData, createCohort }) => {
                 startDate: dates[0],
                 endDate: dates[1],
                 costPerStudent: formData.costPerStudent,
-                costPerStudentCurrency: selectedCurrency
+                costPerStudentCurrency: selectedCurrency,
+                lowestAge: formData.lowestAge,
+                highestAge: formData.highestAge
             })
             toast('success', 'New cohort was successfully created.')
             setTimeout(() => {
@@ -59,6 +62,11 @@ const NewCohortForm = ({ formData, setFormData, createCohort }) => {
             
                 {error!=='' ? <div><span className="line-height-3 text-red-500 mb-3">{error}</span></div> : null}
             </div>
+            <div>
+                <label htmlFor="description" className="block text-900 font-medium mb-20">Description</label>
+                <InputTextarea name="description" id="description" type="text" placeholder="" className="w-full mb-3" onChange={onChange} required/>
+            </div>
+
             <div className="">
                 <label htmlFor="costPerStudent" className="block text-900 font-medium mb-20">Funding Cost Per Student</label>
                 <InputText name="costPerStudent" id="costPerStudent" type="text" placeholder="" className="w-full mb-3" onChange={onChange} required/>
@@ -73,6 +81,14 @@ const NewCohortForm = ({ formData, setFormData, createCohort }) => {
                     <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput required />
                     <label htmlFor="range">Start - End Dates</label>
                 </span>
+            </div>
+            <div className="">
+                <label htmlFor="lowestAge" className="block text-900 font-medium mb-20">Lowest Age</label>
+                <InputText name="lowestAge" id="lowestAge" type="number" placeholder="e.g 13" className="w-full mb-3" onChange={onChange} required/>
+            </div>
+            <div className="">
+                <label htmlFor="highestAge" className="block text-900 font-medium mb-20">Highest Age</label>
+                <InputText name="highestAge" id="highestAge" type="number" placeholder="e.g 19" className="w-full mb-3" onChange={onChange} required/>
             </div>
             <Button
                 label="Create Cohort"

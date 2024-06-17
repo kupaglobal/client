@@ -1,4 +1,5 @@
 import { Skeleton } from "primereact/skeleton";
+import { Tooltip } from "primereact/tooltip";
 
 export function ucFirst(str) {
     return !str || str === null ? '' : (str.toLowerCase().charAt(0).toUpperCase() + str.toLowerCase().slice(1)).replace(/_/g, ' ');
@@ -58,6 +59,12 @@ export const moneyFormatter = (currency = 'GBP', locale = 'en-US') => new Intl.N
 export function studentFullName(student) {
     return student ? `${student.firstName} ${student.middleName ? `${student.middleName} `: ''}${student.lastName}` : '---'
 }
+
+export const studentName = (student) => {
+    const name = `${student.firstName} ${student.middleName ? ` ${student.middleName} `: ''}${student.lastName}`
+    return (student.topPerformerRank && student.topPerformerScore) ? <><Tooltip target=".tooltip"/><span className="tooltip" data-pr-tooltip={`#${student.topPerformerRank} Top Performer`}>{name} {rankTrophy[student.topPerformerRank]}</span></> : name
+}
+  
 
 export const truncateStringWithEllipsis = (str, length) => {
     if (!str) return ''

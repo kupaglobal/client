@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { toastStore } from "../../store/toast";
 import { Button } from "primereact/button";
-import { GroupsService } from "../../services/groups.service";
+import { TagsService } from "../../services/tags.service";
 
-const EditGroupForm = ({ group, formData, setFormData }) => {
+const EditTagForm = ({ tag, formData, setFormData }) => {
     const { toast } = useContext(toastStore)
     const [error] = useState('')
     const [isLoading, setIsLoading] = useState(false);
@@ -16,11 +16,11 @@ const EditGroupForm = ({ group, formData, setFormData }) => {
         setIsLoading(true)
         e.preventDefault();
         try {
-            await GroupsService.editCohort(group.id, {
+            await TagsService.editTag(tag.id, {
                 name: formData.name,
             })
-            toast('success', 'Group was successfully edited.')
-            window.location.href = '/students?a=Groups'
+            toast('success', 'Tag was successfully edited.')
+            window.location.href = '/students?a=Tags'
             setIsLoading(false)
         } catch (e) {
             toast('error', e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -51,4 +51,4 @@ const EditGroupForm = ({ group, formData, setFormData }) => {
     );
 };
 
-export default EditGroupForm;
+export default EditTagForm;

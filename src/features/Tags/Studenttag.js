@@ -3,28 +3,28 @@ import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { Button } from "primereact/button";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toastStore } from "../../store/toast";
-import { GroupsService } from "../../services/groups.service";
-import NewGroupForm from "./NewGroupForm";
+import { TagsService } from "../../services/tags.service";
+import NewTagForm from "./NewTagForm";
 import { Dialog } from "primereact/dialog";
 import MeatballMenu from "../../components/MeatballMenu";
 import { cleanedDateStr } from "../../utils/moment";
 import Table from "../../components/Table/Table";
-import EditGroupForm from "./EditGroup";
+import EditTagForm from "./EditTag";
 
 // const options = [
-//   { label: "Edit Group", icon: "pi pi-pencil" },
+//   { label: "Edit Tag", icon: "pi pi-pencil" },
 //   { label: "Add Student", icon: "pi pi-user-plus" },
-//   { label: "Message Group", icon: "pi pi-comment" },
-//   { label: "Delete Group", icon: "pi pi-trash" },
+//   { label: "Message Student with Tag", icon: "pi pi-comment" },
+//   { label: "Delete Tag", icon: "pi pi-trash" },
 // ];
 
-const Studentgroup = ({ user }) => {
+const Studenttag = ({ user }) => {
   const { toast } = useContext(toastStore);
-  const [ groups, setGroups ] = useState([])
+  const [ tags, setTags ] = useState([])
   const [ isLoading, setIsLoading ] = useState(false)
-  const [createGroupVisibility, setCreateGroupVisibility] = useState(false)
-  const [editGroupVisibility, setEditGroupVisibility] = useState(false)
-  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [createTagVisibility, setCreateTagVisibility] = useState(false)
+  const [editTagVisibility, setEditTagVisibility] = useState(false)
+  const [selectedTag, setSelectedTag] = useState(null)
 
   const [formData,setFormData]=useState({
     "name": ""
@@ -36,14 +36,14 @@ const Studentgroup = ({ user }) => {
       <Button
         label="Cancel"
         icon="pi pi-times"
-        onClick={() => setCreateGroupVisibility(false)}
+        onClick={() => setCreateTagVisibility(false)}
         className="custom-button"
         outlined
       />
       <Button
-        label="Create Group"
+        label="Create Tag"
         icon="pi pi-users"
-        onClick={() => createGroup()}
+        onClick={() => createTag()}
         className="custom-button"
         disabled={!formData.name}
         loading={isLoading}
@@ -51,36 +51,37 @@ const Studentgroup = ({ user }) => {
     </div>
   );
   
-  const createGroup = async () => {
+  const createTag = async () => {
     setIsLoading(true)
     try {
-      await GroupsService.createGroup(formData)
-      toast('success', 'New Group Created')
+      await TagsService.createTag(formData)
+      toast('success', 'New Tag Created')
       window.location.href = '/students?a=Tags'
       setIsLoading(false)
     } catch (e) {
+      console.log('e', e)
       toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
       setIsLoading(false)
     }
   }
 
-  const showDeletePopup = (event, group) => {
+  const showDeletePopup = (event, tag) => {
     confirmPopup({
       target: event.currentTarget,
-      message: `Are you sure you want to delete the ${group.name} group?`,
+      message: `Are you sure you want to delete the ${tag.name} tag?`,
       icon: 'pi pi-info-circle',
       defaultFocus: 'reject',
       acceptClassName: 'p-button-danger',
-      accept: () => deleteGroup(group),
+      accept: () => deleteTag(tag),
       reject: () => {}
     });        
   }
 
-  const deleteGroup = async (group) => {
+  const deleteTag = async (tag) => {
     setIsLoading(true)
     try {
-        await GroupsService.deleteGroup(group.id)
-        toast('success', `${group.name} tag has been deleted.`)
+        await TagsService.deleteTag(tag.id)
+        toast('success', `${tag.name} tag has been deleted.`)
         setTimeout(() => {
             window.location.href = '/students?a=Tags'
         }, 2000)
@@ -91,8 +92,8 @@ const Studentgroup = ({ user }) => {
     }
   }
 
-  const groupActionTemplate = (group) => {
-    const options = setOptions(group)
+  const tagActionTemplate = (tag) => {
+    const options = setOptions(tag)
     return <div>
       <MeatballMenu options={options} />
     </div>
@@ -116,36 +117,36 @@ const Studentgroup = ({ user }) => {
     {
       id: "action",
       name: "Action",
-      selector: (row) => groupActionTemplate(row),
+      selector: (row) => tagActionTemplate(row),
       width: '30%'
     },
   ];
 
-  const handleGroupDelete = (e, group) => {
-    setSelectedGroup(group)
+  const handleTagDelete = (e, tag) => {
+    setSelectedTag(tag)
     setTimeout(() => {
-      showDeletePopup(e, group)
+      showDeletePopup(e, tag)
     }, 0)
   }
   
-  const handleGroupEdit = (group) => {
-    setSelectedGroup(group)
+  const handleTagEdit = (tag) => {
+    setSelectedTag(tag)
     setTimeout(() => {
-      setEditGroupVisibility(true)
+      setEditTagVisibility(true)
     }, 0)
   }
-  const setOptions = (group) => {
+  const setOptions = (tag) => {
     return [
-      { label: "Edit Group", icon: "pi pi-pencil", command: () => {handleGroupEdit(group)} },
+      { label: "Edit tag", icon: "pi pi-pencil", command: () => {handleTagEdit(tag)} },
       // { label: "Add Student", icon: "pi pi-user-plus" },
-      // { label: "Message Group", icon: "pi pi-comment" },
-      { label: "Delete Group", icon: "pi pi-trash", command: (e) => handleGroupDelete(e, group) },
+      // { label: "Message Student with Tag", icon: "pi pi-comment" },
+      { label: "Delete Tag", icon: "pi pi-trash", command: (e) => handleTagDelete(e, tag) },
     ]
   }
   
   // const setOptions = (cohort) => {
   //   return [
-  //     { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {handleGroupEdit(cohort)} },
+  //     { label: "Edit Cohort", icon: "pi pi-pencil", command: () => {handleTagEdit(cohort)} },
   //     { label: "Add Facilitator to Cohort", icon: "pi pi-user-plus", command: () => {handleAddFacilitator(cohort)} },
   //     { label: "View Students", icon: "pi pi-users", url: `/students?a=Students&cohortId=${cohort?.id}`  },
   //     { label: "View Report", icon: "pi pi-dollar", url: `/reports?cohortId=${cohort?.id}`  },
@@ -154,7 +155,7 @@ const Studentgroup = ({ user }) => {
   //   ]
   // }
 
-  const tableRowItem = "groups"
+  const tableRowItem = "tags"
   
   const [pagination, setPagination] = useState({ page: 1, limit: 50})
   const handlePaginationChange = (newPagination) => {
@@ -168,11 +169,11 @@ const Studentgroup = ({ user }) => {
   
   const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
-    async function fetchGroups() {
+    async function fetchTags() {
       try {
-        const {data: groupsRes} = await GroupsService.getGroups()
-        const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
-        setGroups(groups)
+        const {data: tagsRes} = await TagsService.getTags()
+        const tags = tagsRes.tags.map(tag => ({ ...tag, isSelected: false }))
+        setTags(tags)
       } catch (e) {
         setShouldRetry(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -180,7 +181,7 @@ const Studentgroup = ({ user }) => {
       }
     }
     if (shouldRetry) {
-      fetchGroups()
+      fetchTags()
 
     }
   }, [toast, shouldRetry])
@@ -190,9 +191,9 @@ const Studentgroup = ({ user }) => {
       <Button
           className="custom-button"
           icon={<AiOutlinePlus />}
-          label="Create new Group"
+          label="Create new Tag"
           outlined
-          onClick={() => setCreateGroupVisibility(true)}
+          onClick={() => setCreateTagVisibility(true)}
         />
       </div>
       <div
@@ -203,39 +204,39 @@ const Studentgroup = ({ user }) => {
           gap: "20px",
         }}
       >
-        {groups.length > 0 ? 
+        {tags.length > 0 ? 
         <>
-          <Table isLoading={isLoading} columns={columns} data={groups} tableRowItem={tableRowItem}
+          <Table isLoading={isLoading} columns={columns} data={tags} tableRowItem={tableRowItem}
             pagination={pagination} onPaginationChange={handlePaginationChange}>
           </Table>
         </> :
         <div className="flex justify-center">
-            There are no groups created yet.
+            There are no tags created yet.
         </div>}
       </div>
       <Dialog
-        header="New Group"
-        visible={createGroupVisibility}
+        header="New Tag"
+        visible={createTagVisibility}
         style={{ width: "30vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => setCreateGroupVisibility(false)}
+        onHide={() => setCreateTagVisibility(false)}
         footer={footerContent}
       >
        <div>
-          <NewGroupForm formData={formData} setFormData={setFormData} />
+          <NewTagForm formData={formData} setFormData={setFormData} />
         </div>
       </Dialog>
       <Dialog
-        header="Edit Group"
-        visible={editGroupVisibility}
+        header="Edit Tag"
+        visible={editTagVisibility}
         style={{ width: "30vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => setEditGroupVisibility(false)}
+        onHide={() => setEditTagVisibility(false)}
       >
         <div>
-          <EditGroupForm formData={selectedGroup} setFormData={setSelectedGroup} group={selectedGroup} isLoading={isLoading} />
+          <EditTagForm formData={selectedTag} setFormData={setSelectedTag} tag={selectedTag} isLoading={isLoading} />
         </div>
       </Dialog>
 
@@ -245,4 +246,4 @@ const Studentgroup = ({ user }) => {
   );
 };
 
-export default Studentgroup;
+export default Studenttag;

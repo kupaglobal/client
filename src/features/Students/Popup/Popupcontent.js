@@ -7,39 +7,48 @@ import ErroredStudents from "./ErroredStudents";
 import { useContext, useEffect, useState } from "react";
 import { HIDE_ERRORED_STUDENTS_POPUP, RELOAD, SHOW_ADD_STUDENTS_POPUP } from "../../../store/actions";
 import { studentsStore } from "../../../store/students";
-import { GroupsService } from "../../../services/groups.service";
+import { TagsService } from "../../../services/tags.service";
 import { toastStore } from "../../../store/toast";
 import { HttpStatusCode } from "axios";
 import { CohortsService } from "../../../services/cohorts.service";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { StudentsService } from "../../../services/students.service";
+import { Dropdown } from "primereact/dropdown";
         
 export default function Popupcontent({ onReload, loggedInUser, currentCohort }) {
 
   const { state, dispatch } = useContext(studentsStore)
   const {showAddStudentsPopup, showErroredStudentsPopup, reloadStudents, selectedStudents} = state
-  const [addToGroupVisibility, setAddToGroupVisibility] = useState(false)
+  const [addToTagVisibility, setAddToTagVisibility] = useState(false)
   const [addToCohortVisibility, setAddToCohortVisibility] = useState(false)
   const { toast } = useContext(toastStore);
-  const [groups, setGroups] = useState([])
+  const [tags, setTags] = useState([])
   const [cohorts, setCohorts] = useState([])
-  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [selectedTag, setSelectedTag] = useState(null)
+  const [selectedTagId, setSelectedTagId] = useState('')
   const [selectedCohort, setSelectedCohort] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const addSelectedStudentsToGroup = async () => {
+  const onChange = (e) => {
+    setSelectedTagId(e.value);
+    const tag = tags.filter(tag => tag.id === e.value)[0];
+    setSelectedTag(tag)
+  }
+
+  const addSelectedStudentsToTag = async () => {
     try {
-      const res = await GroupsService.addStudentsToGroup(selectedStudents.map(selectedStudent => selectedStudent.id), selectedGroup.id)
-      if (res.status === HttpStatusCode.Ok) {
-        toast('success', `${selectedStudents.length} Students were added to the group: ${selectedGroup.name}`)
-        setAddToGroupVisibility(false)
+      const res = await TagsService.addStudentsToTag(selectedStudents.map(selectedStudent => selectedStudent.id), selectedTagId)
+      if (res.status === HttpStatusCode.Ok || res.status === HttpStatusCode.Created) {
+        toast('success', `${selectedStudents.length} Students were tagged.`)
+        setAddToTagVisibility(false)
+        onReload()
       } else {
         console.log(res)
-        toast('error', res.response.data.message)
+        toast('error', res.response?.data?.message)
       }
     } catch (e) {
       console.log(e)
-      toast('error', 'Failed to add students to the group. Please try again.')
+      toast('error', 'Failed to add students to the tag. Please try again.')
     }
   } 
 
@@ -49,6 +58,7 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
       if (res.status === HttpStatusCode.Created) {
         toast('success', `${selectedStudents.length} Students were added to the cohort: ${selectedCohort.name}`)
         setAddToCohortVisibility(false)
+        onReload()
       } else {
         console.log(res)
         toast('error', res.response?.data?.message ?? 'Something went wrong, please try again.')
@@ -72,11 +82,18 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
 
   const [shouldRetry, setShouldRetry] = useState(true)
   useEffect(() => {
-    async function fetchGroups() {
+    async function fetchTags() {
       try {
-        const {data: groupsRes} = await GroupsService.getGroups()
-        const groups = groupsRes.groups.map(group => ({ ...group, isSelected: false }))
-        setGroups(groups)
+        const {data: tagsRes} = await TagsService.getTags()
+        const tags = tagsRes.tags.map(tmpTag => { 
+          const selectedStudentsInTag = selectedStudents.filter(selectedStudent => selectedStudent.tags.map(tag => tag.name).includes(tmpTag.name)) ?? []; 
+          return {
+            ...tmpTag, 
+            isSelected: false,
+            name: selectedStudentsInTag.length > 0 ? `${tmpTag.name} (Already in: ${selectedStudentsInTag.map(s => s.firstName).join(", ")})` : tmpTag.name
+          }
+        })
+        setTags(tags)
       } catch (e) {
         setShouldRetry(false)
         toast('error',e.response?.data?.error ? e.response?.data?.error : e.message)
@@ -97,7 +114,7 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
     }
 
     if (shouldRetry) {
-      fetchGroups()
+      fetchTags()
       fetchCohorts()
     }
   }, [toast, shouldRetry])
@@ -190,21 +207,21 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
       /> */}
     </div>
   );
-  const addToGroupFooterContent = (
+  const addToTagFooterContent = (
     <div style={{ borderTop: '0.75px solid #ccc', paddingTop: '15px'}}>
       <Button
         label="Cancel"
         icon="pi pi-times"
-        onClick={() => setAddToGroupVisibility(false)}
+        onClick={() => setAddToTagVisibility(false)}
         className="custom-button"
         outlined
       />
       <Button
-        label="Add to group"
+        label="Add Tag"
         icon="pi pi-user-plus"
-        onClick={() => addSelectedStudentsToGroup()}
+        onClick={() => addSelectedStudentsToTag()}
         className="custom-button"
-        disabled={!selectedGroup}
+        disabled={!selectedTagId}
       />
     </div>
   );
@@ -245,9 +262,9 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
             <Button
               outlined
               icon={<AiOutlinePlus />}
-              label="Add Students To Group"
+              label="Tag Students"
               className="custom-button mx-2"
-              onClick={() => setAddToGroupVisibility(true)}
+              onClick={() => setAddToTagVisibility(true)}
             />
             <Button
               icon={<AiOutlinePlus />}
@@ -294,22 +311,33 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
       </div>
        
       <Dialog
-        header="Add Selected Students to Group"
-        visible={addToGroupVisibility}
+        header="Tag Selected Students"
+        visible={addToTagVisibility}
         style={{ width: "30vw" }}
         maximizable
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
-        onHide={() => setAddToGroupVisibility(false)}
-        footer={addToGroupFooterContent}
+        onHide={() => setAddToTagVisibility(false)}
+        footer={addToTagFooterContent}
       >
         <div>
           <p style={{ fontSize: "13px" }}>
-            Select a group to add the students to
+            Select or type a new tag:
           </p>
-          <Dropdowncomp
-            projectoption={groups}
-            onSelected={setSelectedGroup}
+          <Dropdown
+            name="tag"
+            editable
+            value={selectedTagId}
+            onChange={onChange}
+            options={tags}
+            optionLabel="name" 
+            optionValue="id"
+            placeholder={`Select a tag`}
+            className="w-full mb-3 "
           />
+          {/* <Dropdowncomp
+            projectoption={tags}
+            onSelected={setSelectedTag}
+          /> */}
         </div>
 
       </Dialog>
@@ -346,7 +374,7 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
 
         <div>
           <p style={{ fontSize: "13px" }}>
-            How Are you sure you want to add the new data ?
+            Are you sure you want to add the new data ?
           </p>
           <Dropdowncomp
             projectoption={projectOptions}

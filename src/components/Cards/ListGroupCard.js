@@ -4,7 +4,7 @@ import MeatballMenu from "../MeatballMenu";
 
 
 
-const ListGroupCard = ({group, options}) => {
+const ListGroupCard = ({tag, options}) => {
     const handleClick = () =>{
         console.log("new")
     }
@@ -12,11 +12,11 @@ const ListGroupCard = ({group, options}) => {
     <>
       <div className="horizontal-card" onClick={handleClick}   >
         <div className="frame">
-          <div className="div">{group.name}</div>
+          <div className="div">{tag.name}</div>
         </div>
         <div className="frame-2">
           <div className="frame-3">
-            {group.students.map(student => <div className="text-wrapper-2">{student.firstName} {student.lastName}</div>)}
+            {tag.students.map(student => <div className="text-wrapper-2">{student.firstName} {student.lastName}</div>)}
             
           </div>
 
@@ -32,7 +32,7 @@ ListGroupCard.defaultProps = {
     studentname1: "Default Student 1",
     studentname2: "Default Student 2",
     studentname3: "Default Student 3",
-    groupname: "Default Group",
+    groupname: "Default Tag",
     cohortnumber: "Default Cohort",
   };
 

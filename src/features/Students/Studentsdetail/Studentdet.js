@@ -43,6 +43,7 @@ const Studentdet = () => {
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <MeatballMenu options={options} />
       </div>
+      
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
           {student ? <Studentcontent student={student} setStudent={setStudent} user={authState.loggedInUser} reloadStudent={() => window.location.href=''}/> : ''}

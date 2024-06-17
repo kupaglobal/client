@@ -74,7 +74,7 @@ export default function WelcomePopup({ user }) {
       footer={footerContent}
       > 
       <div>
-        Welcome to Helio{ user?.firstName ? `, ${user.firstName}` : "" }! Before you start adding data, you need to create an organisation. This is how all your Cohorts, Groups and Students will be grouped. You will also be able to add other team members to this organisation.
+        Welcome to Helio{ user?.firstName ? `, ${user.firstName}` : "" }! Before you start adding data, you need to create an organisation. This is how all your Cohorts and Students will be grouped. You will also be able to add other team members to this organisation.
       </div>
     </Dialog>
     <Dialog
