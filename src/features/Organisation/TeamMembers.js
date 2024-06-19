@@ -20,6 +20,12 @@ const columns = [
       sortable: true,
     },
     {
+      id: "jobTitle",
+      name: "Job Title",
+      selector: (row) => row.jobTitle,
+      sortable: true,
+    },
+    {
       id: "phone_number",
       name: "Phone Number",
       selector: (row) => row.phoneNumber || "n/a",

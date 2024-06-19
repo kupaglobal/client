@@ -24,15 +24,15 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
   const { toast } = useContext(toastStore);
   const [tags, setTags] = useState([])
   const [cohorts, setCohorts] = useState([])
-  const [selectedTag, setSelectedTag] = useState(null)
+  // const [selectedTag, setSelectedTag] = useState(null)
   const [selectedTagId, setSelectedTagId] = useState('')
   const [selectedCohort, setSelectedCohort] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const onChange = (e) => {
     setSelectedTagId(e.value);
-    const tag = tags.filter(tag => tag.id === e.value)[0];
-    setSelectedTag(tag)
+    // const tag = tags.filter(tag => tag.id === e.value)[0];
+    // setSelectedTag(tag)
   }
 
   const addSelectedStudentsToTag = async () => {
@@ -117,7 +117,7 @@ export default function Popupcontent({ onReload, loggedInUser, currentCohort }) 
       fetchTags()
       fetchCohorts()
     }
-  }, [toast, shouldRetry])
+  }, [toast, shouldRetry, selectedStudents])
 
   useEffect(() => {
     if (reloadStudents) {

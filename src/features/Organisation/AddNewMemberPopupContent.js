@@ -112,6 +112,9 @@ export default function AddNewMemberPopupContent() {
             <label htmlFor="invitedEmail" className="block text-900 font-medium mb-20">Email</label>
             <InputText name="invitedEmail" id="invitedEmail" type="email" placeholder="" className="w-full mb-3" onChange={onChange} required/>
 
+            <label htmlFor="jobTitle" className="block text-900 font-medium mb-20">Job Title</label>
+            <InputText name="jobTitle" id="jobTitle" type="jobTitle" placeholder="" className="w-full mb-3" onChange={onChange} required/>
+
             <label htmlFor="role" className="block text-900 font-medium mb-20">Role</label>
             <Dropdown
               value={selectedRole}

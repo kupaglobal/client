@@ -13,9 +13,6 @@ import { cleanedDateStr } from "../../utils/moment";
 import Table from "../../components/Table/Table";
 import MeatballMenu from "../../components/MeatballMenu";
 
-const tableRowItem = "cohorts";
-
-
 const Studentcohort = ({ user }) => {
   const { toast } = useContext(toastStore);
   const [ cohorts, setCohorts ] = useState([])

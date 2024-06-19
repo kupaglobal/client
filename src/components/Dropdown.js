@@ -8,7 +8,7 @@ const Dropdowncomp = ({projectoption, onSelected, placeholder, isLoading = true,
   return (
     <span className="p-float-label">
     <Dropdown value={selectedOption} loading={isLoading} onChange={(e) => handleSelectedOption(e)} options={projectoption} optionLabel="name" 
-              placeholder={placeholder ?? "Select an option"}/>
+              placeholder={placeholder ?? "Select an option"} className='w-full'/>
               {label ? <label htmlFor="item">{label}</label> : null }
   </span>
 )

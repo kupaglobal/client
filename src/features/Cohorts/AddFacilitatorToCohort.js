@@ -3,7 +3,6 @@ import { CohortsService } from "../../services/cohorts.service";
 import { toastStore } from "../../store/toast";
 import { Button } from "primereact/button";
 import { UsersService } from "../../services/users.service";
-import Dropdowncomp from "../../components/Dropdown";
 import { Dropdown } from "primereact/dropdown";
 
 const AddFacilitatorToCohort = ({ cohort, formData, setFormData }) => {

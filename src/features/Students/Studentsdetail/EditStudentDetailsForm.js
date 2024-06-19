@@ -116,7 +116,7 @@ const EditStudentDetailsForm = ({ formData, setFormData, updateStudentDetails, i
             default: 
                 return <div key={studentField.id} className="mb-2">
                     <label htmlFor={studentField.columnName} className="block text-900 font-medium mb-20">{studentField.displayName}</label>
-                    {studentField.columnName !== "yearOfBirth" || (studentField.columnName === "yearOfBirth" && studentField.values.length == 0) ? 
+                    {studentField.columnName !== "yearOfBirth" || (studentField.columnName === "yearOfBirth" && studentField.values.length === 0) ? 
                         <InputText
                             key={studentField.id}
                             value={formData[studentField.columnName]}

@@ -12,8 +12,7 @@ import { studentsStore } from "../../store/students";
 import { SET_SELECTED_STUDENTS } from "../../store/actions";
 import { useSearchParams } from "react-router-dom";
 import { authStore } from "../../store/auth";
-import { rankTrophy, studentName, ucFirst } from "../../utils";
-import { Tooltip } from "primereact/tooltip";
+import { studentName, ucFirst } from "../../utils";
 import { CohortsService } from "../../services/cohorts.service";
 import { cleanedDateStr } from "../../utils/moment";
 

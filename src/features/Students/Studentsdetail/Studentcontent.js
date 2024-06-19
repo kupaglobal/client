@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Avatar from "react-avatar";
 import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
@@ -15,6 +15,8 @@ import { studentFullName, studentName } from "../../../utils";
 import { ConfirmPopup, confirmPopup } from 'primereact/confirmpopup';
 import { toastStore } from "../../../store/toast";
 import { Tag } from "primereact/tag";
+import { OverlayPanel } from 'primereact/overlaypanel';
+import { InputTextarea } from "primereact/inputtextarea";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
@@ -91,8 +93,28 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
     }
   }
 
-  const studentTags = async (tags) => {
-    <Tag value={tags[0].name} icon="pi pi-times" className="mr-1" key={tags[0].id} /> 
+  // const studentTags = async (tags) => {
+  //   <Tag value={tags[0].name} icon="pi pi-times" className="mr-1" key={tags[0].id} /> 
+  // }
+
+  const op = useRef(null);
+
+  const [feedbackFormData, setFeedBackFormData] = useState({
+    cohortId: '',
+    rating: '',
+    remarks: ''
+  })
+  const setRating = (rating) => {
+    setFeedBackFormData({
+      ...feedbackFormData,
+      rating
+    })
+  }
+  const onChange = (e) => {
+    setFeedBackFormData({ 
+      ...feedbackFormData,
+      [e.target.name]: e.target.value
+    })
   }
   return (
     <>
@@ -205,23 +227,43 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
 
         <div
           style={{
-            flexDirection: "row",
+            flexDirection: "column",
             display: "flex",
             justifyContent: "space-between",
           }}
         >
-          {user.role !== 'FACILITATOR' ? (<Button
+          {user.role !== 'FACILITATOR' ? (
+          <>
+          <Button
             label="Edit Profile"
             icon="pi pi-user-edit"
             className="p-button-outlined p-button-sm"
             onClick={() => setShowEditStudentDetailsForm(true)}
-          />) : ''}
+          />          
 
-          <Button
+          <Button type="button" icon="pi pi-star" className="p-button-sm my-1" label="Add Feedback" onClick={(e) => op.current.toggle(e)} />
+            <OverlayPanel ref={op} className="md:w-21rem">
+              <div className="mb-10">
+                <label htmlFor="feedback" className="block mb-20">Give your remarks (Optional) </label>
+                <InputTextarea value={feedbackFormData.remarks} className="p-2 w-full" name="remarks" onChange={onChange} rows={10} />
+              </div>
+
+
+
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+                <Button icon="pi pi-star" onClick={() => setRating('STAR')} className="p-button-primary p-button-outlined" />
+                <Button icon="pi pi-thumbs-up" onClick={() => setRating('THUMBS_UP')} className="p-button-primary p-button-outlined" />
+                <Button icon="pi pi-thumbs-down" onClick={() => setRating('THUMBS_DOWN')} className="p-button-primary p-button-outlined" />
+              </div>
+            </OverlayPanel>
+
+          </>) : ''}
+
+          {/* <Button
             label="Share"
             icon="pi pi-share-alt"
             className="p-button-outlined p-button-sm"
-          />
+          /> */}
         </div>
         <div          
           style={{
@@ -236,11 +278,11 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
             loading={isLoading}
             label="Delete Student"
             icon="pi pi-trash"
-            className="p-button-outlined p-button-danger p-button-sm"
+            className="p-button-outlined w-full p-button-danger p-button-sm"
             onClick={showDeletePopup}
           />) : ''}
 
-        </div>
+          </div>
         <Dialog
           header={`Edit Student Details`}
           style={{ width: "40vw" }}
