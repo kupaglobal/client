@@ -41,4 +41,8 @@ export class CohortsService {
         })
     }
 
+    static addStudentFeedback(cohortId, feedbackDto) {
+        return httpClient.post(`${baseURL}/cohorts/${cohortId}/feedback`, feedbackDto);
+    }
+
 }

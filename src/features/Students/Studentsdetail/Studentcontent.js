@@ -17,16 +17,31 @@ import { toastStore } from "../../../store/toast";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { InputTextarea } from "primereact/inputtextarea";
+import { CohortsService } from "../../../services/cohorts.service";
+import { Dropdown } from "primereact/dropdown";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const handleClickOpen = () => {};
-  const categories = [
-    { name: "Review assessment", key: "RA" },
-    { name: "Submit portfolio files", key: "SPF" },
-    { name: "Request for feedback", key: "RCE" },
-  ];
 
-  const [selectedCategories] = useState([categories[1]]);
+  const userCategories = {
+    'FACILITATOR': [
+      { name: "Review assessment", key: "RA", selected: false },
+      { name: user.role === 'FACILITATOR' ? "Add feedback" : "Request for feedback", key: "RCE", selected: true },
+    ],
+    'ORGANISATION_ADMIN': [
+      { name: "Review assessment", key: "RA", selected: false },
+      { name: "Submit portfolio files", key: "SPF", selected: false },
+      { name: "Request for feedback", key: "RCE", selected: false },
+    ],
+    'ORGANISATION_MEMBER': [
+      { name: "Review assessment", key: "RA", selected: false },
+      { name: "Submit portfolio files", key: "SPF", selected: false },
+      { name: "Request for feedback", key: "RCE", selected: true },
+    ]
+  }
+  const categories = userCategories[user.role];
+
+  const [selectedCategories] = useState(categories.filter(category => category.selected));
   const userDetails = [
     { heading: "Student Number", paragraph: student.studentNumber },
     { heading: "Year of Birth", paragraph: student.yearOfBirth },
@@ -47,6 +62,8 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const [showEditStudentDetailsForm, setShowEditStudentDetailsForm] = useState(false)
   const [showDeleteStudentDialog, setShowDeleteStudentDialog] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedRating, setSelectedRating] = useState('')
+  const [selectedCohortId, setSelectedCohortId] = useState(student.cohorts.length === 1 ? student.cohorts[0].id : '')
 
   const updateStudentDetails = async () => {
     try {
@@ -93,6 +110,21 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
     }
   }
 
+  const saveFeedback = async () => {
+    setIsLoading(true)
+
+    try {
+      await CohortsService.addStudentFeedback(selectedCohortId, feedbackFormData);
+      toast('success', 'Student feedback has been added.');
+      setIsLoading(false)
+      reloadStudent()
+    } catch (e) {
+      setIsLoading(false)
+      toast('error', 'Failed to save student rating. Please try again.');
+      console.error(`Exception when deleting student: ${e}`)
+    }
+  }
+
   // const studentTags = async (tags) => {
   //   <Tag value={tags[0].name} icon="pi pi-times" className="mr-1" key={tags[0].id} /> 
   // }
@@ -100,11 +132,12 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const op = useRef(null);
 
   const [feedbackFormData, setFeedBackFormData] = useState({
-    cohortId: '',
+    studentId: student.id,
     rating: '',
     remarks: ''
   })
   const setRating = (rating) => {
+    setSelectedRating(rating)
     setFeedBackFormData({
       ...feedbackFormData,
       rating
@@ -241,21 +274,6 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
             onClick={() => setShowEditStudentDetailsForm(true)}
           />          
 
-          <Button type="button" icon="pi pi-star" className="p-button-sm my-1" label="Add Feedback" onClick={(e) => op.current.toggle(e)} />
-            <OverlayPanel ref={op} className="md:w-21rem">
-              <div className="mb-10">
-                <label htmlFor="feedback" className="block mb-20">Give your remarks (Optional) </label>
-                <InputTextarea value={feedbackFormData.remarks} className="p-2 w-full" name="remarks" onChange={onChange} rows={10} />
-              </div>
-
-
-
-              <div style={{ display: "flex", justifyContent: "space-around" }}>
-                <Button icon="pi pi-star" onClick={() => setRating('STAR')} className="p-button-primary p-button-outlined" />
-                <Button icon="pi pi-thumbs-up" onClick={() => setRating('THUMBS_UP')} className="p-button-primary p-button-outlined" />
-                <Button icon="pi pi-thumbs-down" onClick={() => setRating('THUMBS_DOWN')} className="p-button-primary p-button-outlined" />
-              </div>
-            </OverlayPanel>
 
           </>) : ''}
 
@@ -274,6 +292,31 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
           }}
         >
           <ConfirmPopup />
+          {user.role === 'FACILITATOR' && student.cohorts.length > 0 ? (<>
+            <Button type="button" icon="pi pi-star" className="p-button-sm my-1" label="Add Feedback" onClick={(e) => op.current.toggle(e)} />
+            <OverlayPanel ref={op} className="md:w-21rem bg-bluegray-100 p-2">
+              <p style={{ fontSize: 16, fontWeight: 500, marginBottom: 20 }}>Give your feedback below</p>
+
+              <div className="mt-1 text-xs mb-4" style={{ display: "flex", justifyContent: "space-between" }}>
+                <Button icon="pi pi-star" onClick={() => setRating('STAR')} className={`${selectedRating === 'STAR' ? '' : 'p-button-outlined'} p-button-primary`}  />
+                <Button icon="pi pi-thumbs-up" onClick={() => setRating('THUMBS_UP')} className={`${selectedRating === 'THUMBS_UP' ? '' : 'p-button-outlined'} p-button-primary`} />
+                <Button icon="pi pi-thumbs-down" onClick={() => setRating('THUMBS_DOWN')} className={`${selectedRating === 'THUMBS_DOWN' ? '' : 'p-button-outlined'} p-button-primary`} />
+              </div>
+
+              <div className="my-2">
+                <label htmlFor="feedback" className="block mb-20">Select a cohort</label>
+                <Dropdown scrollHeight="260px" value={selectedCohortId} onChange={(e) => setSelectedCohortId(e.target.value)} options={student.cohorts}
+                  placeholder="Select an organisation Type" className="w-full h-max" optionLabel="name" optionValue="id" />
+              </div>
+
+              <div className="mb-10">
+                <label htmlFor="feedback" className="block mb-20">Remarks (Optional) </label>
+                <InputTextarea value={feedbackFormData.remarks} className="p-2 w-full" name="remarks" onChange={onChange} rows={7} />
+              </div>
+              <Button type="button" loading={isLoading} className="p-button-sm my-1" label="Save" onClick={saveFeedback} disabled={!selectedCohortId || !selectedRating}  />
+            </OverlayPanel>
+
+          </>) : null}
           {user.role === 'ORGANISATION_ADMIN' ? (<Button
             loading={isLoading}
             label="Delete Student"

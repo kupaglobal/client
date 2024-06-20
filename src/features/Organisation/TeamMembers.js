@@ -38,7 +38,6 @@ const columns = [
       sortable: true,
     }
   ];
-  const tableRowItem = "members";
             
 export default function TeamMembersContent() {
   const [members, setMembers] = useState([])
@@ -74,7 +73,7 @@ export default function TeamMembersContent() {
 
   return (
     <>
-      <Table columns={columns} data={members} tableRowItem={tableRowItem} popupContent={<AddNewMemberPopupContent/>} />
+      <Table columns={columns} data={members} popupContent={<AddNewMemberPopupContent/>} />
     </>
   );
 }
