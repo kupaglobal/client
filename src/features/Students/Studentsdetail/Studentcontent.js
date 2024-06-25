@@ -26,7 +26,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
   const userCategories = {
     'FACILITATOR': [
       { name: "Review assessment", key: "RA", selected: false },
-      { name: user.role === 'FACILITATOR' ? "Add feedback" : "Request for feedback", key: "RCE", selected: true },
+      { name: user.role === 'FACILITATOR' ? "Add feedback" : "Request for feedback", key: "RCE", selected: student.feedback.filter(feedback => feedback.facilitatorId === user.id).length > 0, onClick: (e) => op.current.toggle(e) },
     ],
     'ORGANISATION_ADMIN': [
       { name: "Review assessment", key: "RA", selected: false },
@@ -216,12 +216,11 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
           <div
             style={{
               display: "flex",
-              justifyContent: "space-around",
               marginBottom: "20px",
             }}
           >
             <p style={{ fontSize: 16, fontWeight: 500 }}>Outstanding Items</p>
-            <div>
+            {/* <div>
               <Button
                 onClick={handleClickOpen()}
                 icon={<AiOutlinePlus size={22} />}
@@ -234,7 +233,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
                 text
                 style={{ alignItems: "flex-start", padding: 0 }}
               />
-            </div>
+            </div> */}
           </div>
           <div style={{ marginLeft: 15 }}>
             {categories?.map((category) => {

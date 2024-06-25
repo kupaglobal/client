@@ -4,6 +4,7 @@ import { Card } from "primereact/card";
 import Tab1 from "./Tabs/Tab1";
 import Tab2 from "./Tabs/Tab2";
 import Tab4 from "./Tabs/Tab4";
+import Tab5 from "./Tabs/Tab5";
 import Tab3 from "./Tabs/Tab3";
 
 const Studenttabs1 = ({ student }) => {
@@ -33,6 +34,9 @@ const Studenttabs1 = ({ student }) => {
         </TabPanel>
         <TabPanel header="Portfolio" rightIcon="" style={{ fontSize: "14px" }}>
           <Tab4 student={student} />
+        </TabPanel>
+        <TabPanel header="Feedback" rightIcon="" style={{ fontSize: "14px" }}>
+          <Tab5 student={student} />
         </TabPanel>
       </TabView>
     </Card>

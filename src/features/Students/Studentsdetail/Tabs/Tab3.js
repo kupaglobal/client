@@ -145,7 +145,6 @@ const Tab3 = ({ student }) => {
             rows={5}
             tableStyle={{ minWidth: "50rem" }}
             globalFilter={globalFilter}
-            header={header}
             emptyMessage="No data found."
             selectionMode="single"
             scrollable
