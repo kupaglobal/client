@@ -131,7 +131,6 @@ const Tab3 = ({ student }) => {
       </div>
     );
   };
-  const header = renderHeader();
 
   return (
     <>
