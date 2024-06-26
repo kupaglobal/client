@@ -35,7 +35,7 @@ const Studenttabs1 = ({ student }) => {
         <TabPanel header="Portfolio" rightIcon="" style={{ fontSize: "14px" }}>
           <Tab4 student={student} />
         </TabPanel>
-        <TabPanel header="Feedback" rightIcon="" style={{ fontSize: "14px" }}>
+        <TabPanel header={`Feedback${student.feedback && student.feedback.length > 0 ? ` (${student.feedback.length})` : ''}`} rightIcon="" style={{ fontSize: "14px" }}>
           <Tab5 student={student} />
         </TabPanel>
       </TabView>
