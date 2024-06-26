@@ -4,7 +4,6 @@ import { Button } from "primereact/button"; // Import PrimeReact Button
 import { Card } from "primereact/card";
 import DetailsContent from "../../../components/DetailsContent";
 import { BiLogoWhatsapp } from "react-icons/bi";
-import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { useState } from "react";
 import { Checkbox } from "primereact/checkbox";
 import { Link } from "react-router-dom";
@@ -21,7 +20,6 @@ import { CohortsService } from "../../../services/cohorts.service";
 import { Dropdown } from "primereact/dropdown";
 
 const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
-  const handleClickOpen = () => {};
 
   const userCategories = {
     'FACILITATOR': [
