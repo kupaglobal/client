@@ -29,7 +29,7 @@ const UpsertProfile = () => {
             if (authResponse && authResponse.emailVerified === true) { // successful
                 const {data: profileRes} = await AuthService.getProfile()
                 dispatch({ type: SET_LOGGED_IN_USER, payload: profileRes })
-                if (IsNewUser && !authResponse.organisationId) {
+                if (IsNewUser) {
                     goTo('/dashboard?welcome')
                 } else {
                     goTo('/dashboard')
