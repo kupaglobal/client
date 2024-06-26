@@ -303,7 +303,7 @@ const Studentcontent = ({ student, setStudent, user, reloadStudent }) => {
               <div className="my-2">
                 <label htmlFor="feedback" className="block mb-20">Select a cohort</label>
                 <Dropdown scrollHeight="260px" value={selectedCohortId} onChange={(e) => setSelectedCohortId(e.target.value)} options={student.cohorts}
-                  placeholder="Select an organisation Type" className="w-full h-max" optionLabel="name" optionValue="id" />
+                  placeholder="Select a cohort" className="w-full h-max" optionLabel="name" optionValue="id" />
               </div>
 
               <div className="mb-10">
