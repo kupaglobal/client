@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Tab2headings } from "./Tab2";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputText } from "primereact/inputtext";
 import { AssessmentsService } from "../../../../services/assessments.service";
 import { toastStore } from "../../../../store/toast";
 import EditAssessmentResultForm from "../../../Assessments/Popup/EditAssessmentResultForm";
@@ -109,28 +108,6 @@ const Tab3 = ({ student }) => {
     },
   ];
   
-  const [globalFilter, setGlobalFilter] = useState("");
-
-  const onInputChange = (event) => {
-    setGlobalFilter(event.target.value);
-  };
-
-  const renderHeader = () => {
-    return (
-      <div className="flex justify-content-end">
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-            type="text"
-            value={globalFilter}
-            onChange={onInputChange}
-            placeholder="Keyword Search"
-            style={{ fontSize: "12px" }}
-          />
-        </span>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -143,7 +120,6 @@ const Tab3 = ({ student }) => {
             paginator
             rows={5}
             tableStyle={{ minWidth: "50rem" }}
-            globalFilter={globalFilter}
             emptyMessage="No data found."
             selectionMode="single"
             scrollable
